@@ -1,0 +1,40 @@
+-module(£).
+-compile(nowarn_export_all).
+-compile(export_all).
+
+-include_lib("common_test/include/ct.hrl").
+-include_lib("eunit/include/eunit.hrl").
+
+all() -> 
+	[
+		standalone_test1,
+		{group, group1}
+	].
+
+groups() ->
+	[
+		{group1, [parallel, shuffle], [
+			test1
+		]}
+	].
+
+init_per_suite(Config) ->
+	Config.
+
+init_per_group(_Group, Config) ->
+	Config.
+
+init_per_testcase(_Test, Config) ->
+	Config.
+
+%%%===================================================================
+%%% Tests
+%%%===================================================================
+test1(_Config) ->
+	ok.
+
+%%%===================================================================
+%%% Helpers
+%%%===================================================================
+
+

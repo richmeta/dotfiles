@@ -1,0 +1,579 @@
+# overrides all
+priority 1
+
+snippet iof "io:format"
+io:format(${1}, [${2}])${0}
+endsnippet
+
+snippet ct.hrl "common test lib" b
+-include_lib("common_test/include/ct.hrl").
+endsnippet
+
+snippet eunit.hrl "eunit test lib" b
+-include_lib("eunit/include/eunit.hrl").
+endsnippet
+
+snippet assert.hrl "include asserts" b
+-include_lib("stdlib/include/assert.hrl").
+endsnippet
+
+snippet err
+{error, Error}
+endsnippet
+
+snippet cerr
+{error, Error} ->
+	{error, Error}${0}
+endsnippet
+
+# for specs
+snippet serr
+{error, any()}
+endsnippet
+
+# operators
+snippet == "equals" i
+=:= 
+endsnippet
+
+snippet != "not equals" i
+=/= 
+endsnippet
+
+# common type conversions
+snippet btl "binary_to_list" i
+binary_to_list(${0})
+endsnippet
+
+snippet ltb "list_to_binary" i
+list_to_binary(${0})
+endsnippet
+
+snippet atb "atom_to_binary" i
+atom_to_binary(${0}, utf8)
+endsnippet
+
+snippet bta "binary_to_atom" i
+binary_to_atom(${0}, utf8)
+endsnippet
+
+# exports
+snippet exall
+-compile(nowarn_export_all).
+-compile(export_all).
+endsnippet
+
+snippet nowarn
+-compile(nowarnings_as_errors).
+endsnippet 
+
+snippet "(:?-)?exp" "export (exp or -exp)" br
+-export([${VISUAL}${0}]).
+endsnippet
+
+snippet "(:?-)?beh" "Behaviour" br
+-behaviour(${0}).
+endsnippet
+
+snippet "(:?-)?def" "Define" br
+-define(${1:macro}, ${2:body}).
+endsnippet
+
+snippet doc "doc tag" b
+%% @doc ${0}
+endsnippet
+
+snippet mn "?module macro" i
+?MODULE
+endsnippet
+
+snippet fn "?function_name macro" i
+?FUNCTION_NAME
+endsnippet
+
+snippet pat "Case:Receive:Try Clause"
+${1:pattern}${2: when ${3:guard}} ->
+	${4:body}
+endsnippet
+
+snippet casev
+${1} -> $1;${0}
+endsnippet
+
+snippet mod "Module Directive" b
+-module(`!p snip.rv = snip.basename or "module"`).
+endsnippet
+
+snippet || "List Comprehension"
+[${1:X} || ${2:X} <- ${3:List}${4:, gen}]
+endsnippet
+
+snippet gen "Generator Expression"
+${1:X} <- ${2:List}${3:, gen}
+endsnippet
+
+snippet fun
+fun (${1:Parameters}) ->
+	${2:body}
+end
+endsnippet
+
+snippet try
+try
+	${1:${VISUAL}}
+catch
+	${2:_:_} -> ${0:got_some_exception}
+end
+endsnippet
+
+snippet todo
+%% TODO: ${0}
+endsnippet
+
+snippet supervisor
+-module(${1:`!p snip.rv = snip.basename or "module"`}).
+
+-behaviour(supervisor).
+
+-define(CHILD(I, Type), #{
+	id => I,
+	start => {I, start_link},
+	restart => permanent,
+	shutdown => 5000,
+	type => Type,
+	modules => [I]
+}).
+
+-define(WORKER(M), ?CHILD(M, worker)).
+-define(SUPERVISOR(M), ?CHILD(M, supervisor)).
+
+%% API
+-export([start_link/0]).
+
+%% Supervisor callbacks
+-export([init/1]).
+
+-define(SERVER, ?MODULE).
+
+%%%===================================================================
+%% API
+%%%===================================================================
+
+start_link() ->
+	supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+
+%%%===================================================================
+%% Supervisor callbacks
+%%%===================================================================
+
+init([]) ->
+	Children = [
+		?SUPERVISOR(mod_sup),
+		?WORKER(mod)
+	],
+	SupFlags = #{
+		strategy =>  one_for_one,
+		intensity => 1,
+		period => 5
+	},
+	{ok, {SupFlags, Children}}.
+endsnippet
+
+snippet ct
+-module(${1:`!p snip.rv = snip.basename or "module"`}).
+-compile(nowarn_export_all).
+-compile(export_all).
+
+-include_lib("common_test/include/ct.hrl").
+-include_lib("eunit/include/eunit.hrl").
+
+all() -> 
+	[
+		standalone_test1,
+		{group, group1}
+	].
+
+groups() ->
+	[
+		{group1, [parallel, shuffle], [
+			test1
+		]}
+	].
+
+init_per_suite(Config) ->
+	Config.
+
+init_per_group(_Group, Config) ->
+	Config.
+
+init_per_testcase(_Test, Config) ->
+	Config.
+
+%%%===================================================================
+%%% Tests
+%%%===================================================================
+test1(_Config) ->
+	ok.
+
+%%%===================================================================
+%%% Helpers
+%%%===================================================================
+
+endsnippet
+
+snippet eunit
+-module(${1:`!p snip.rv = snip.basename or "module"`}).
+
+-include_lib("eunit/include/eunit.hrl").
+
+%%%===================================================================
+%%% Fixtures
+%%%===================================================================
+
+start() ->
+	{ok, Pid} = some_module:start_link(),
+	Pid.
+
+stop(Pid) ->
+	gen_server:stop(Pid).
+
+%%%===================================================================
+%%% Tests
+%%%===================================================================
+
+gen_foreach_test_() ->
+	{
+		foreach,
+		fun start/0,
+		fun stop/1,
+		[
+			fun run_thing1/1,
+			fun run_thing2/1
+		]
+	}.
+
+gen_setup_test_() ->
+	{
+		setup,
+		fun start/0,
+		fun stop/1,
+		fun run_thing1/1
+	}.
+
+normal_test() ->
+	?assert(true).
+
+test_gen_() -> 
+	[
+		?_assert(true)
+	].
+
+%%%===================================================================
+%%% Helpers
+%%%===================================================================
+
+endsnippet
+
+snippet gen_server
+-module(${1:`!p snip.rv = snip.basename or "module"`}).
+
+-behaviour(gen_server).
+
+%% API
+-export([start_link/0]).
+
+%% gen_server callbacks
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2, handle_continue/2, terminate/2, code_change/3]).
+
+-define(SERVER, ?MODULE).
+
+-type state() :: #{}.
+
+%%%===================================================================
+%%% API
+%%%===================================================================
+
+server_opts() ->
+	%% [{debug, [log, trace]}].
+	[].
+
+start_link() ->
+	gen_server:start_link({local, ?SERVER}, ?MODULE, [], server_opts()).
+
+%%%===================================================================
+%%% gen_server callbacks
+%%%===================================================================
+
+-spec init([]) -> {ok, state(), {continue, term()}}.
+init([]) ->
+	{ok, #{}}.
+
+handle_call({a, Data}, _From, State) ->
+	Reply = ok,
+	{reply, Reply, State};
+handle_call(Request, _From, _State) ->
+	error({unhandled_call, Request}).
+
+handle_cast({b, _Data}, State) ->
+	{noreply, State};
+handle_cast(Msg, _State) ->
+	error({unhandled_cast, Msg}).
+
+handle_info({c, _Data}, State) ->
+	{noreply, State};
+handle_info(Info, _State) ->
+	error({unhandled_info, Info}).
+
+handle_continue({d, _Data}, State) ->
+	{noreply, State};
+handle_continue(Continue, _State) ->
+	error({unhandled_continue, Continue}).
+
+terminate(_Reason, _State) ->
+	ok.
+
+code_change(_OldVsn, State, _Extra) ->
+	{ok, State}.
+
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
+endsnippet
+
+##
+## gen_server bits
+##
+snippet cast
+gen_server:cast(?SERVER, ${0}),
+endsnippet
+
+snippet call
+gen_server:call(?SERVER, ${0}),
+endsnippet
+
+snippet handle_cast
+handle_cast(${1}, ${2}State) ->
+	${0}{noreply, State};
+endsnippet
+
+snippet handle_call
+handle_call(${1}, _From, ${2}State) ->
+	${0}{reply, ok, State};
+endsnippet
+
+snippet handle_info
+handle_info(${1}, ${2}State) ->
+	${0}{noreply, State};
+endsnippet
+
+snippet handle_continue
+handle_continue(${1}, ${2}State) ->
+	${0}{noreply, State};
+endsnippet
+
+snippet application
+-module(${1:`!p snip.rv = snip.basename or "module"`}).
+-behaviour(application).
+
+-export([start/2, stop/1]).
+
+start(_Type, _Args) ->
+	some_supervisor:start_link().
+
+stop(_State) ->
+	ok.
+
+endsnippet
+
+
+global !p
+import re
+
+# Var = ~p
+reg_format = re.compile(r'\b([\w:]+)\b,?')
+reg_start = re.compile(r'\s*(.*)\|(.*)')
+reg_trailing = re.compile(r'([,;.])\s*$')
+
+# Replace vars
+special_vars = {
+    # use M F for mod:func
+    'M': '?MODULE',
+    'F': '?FUNCTION_NAME',
+    'MF': '?MODULE, ?FUNCTION_NAME'
+}
+
+format_vars = {
+    # use M F for mod:func
+    'M': '~s',
+    'F': '~s',
+    'MF': '~s:~s'
+}
+
+
+
+def create_erlformat(snip, erlcode, newline=False):
+    spec = snip.context['spec']
+    ht = reg_trailing.search(spec)
+    # support trailing comma/semi
+    trailing = ht.group(1) if ht else ''
+    (fmt, varnames) = erlformat(spec, newline)
+    ret = f'{erlcode}("{fmt}", {varnames}){trailing}'
+    snip.expand_anon(ret)
+
+
+def varformat(name):
+    if name in format_vars:
+        return format_vars[name]
+    prefix_name = name.split(':')
+    if len(prefix_name) != 1:
+        name = prefix_name[0]
+    return f'{name} = ~p'
+
+
+def varname(name):
+    # returns list
+    if name in special_vars:
+        name = special_vars[name]
+    prefix_name = name.split(':')
+    if len(prefix_name) == 1:
+        return prefix_name
+    return [prefix_name[1]]
+
+
+def erlformat(spec, newline=False):
+    # A B C -> (fmt, vs)
+    #   fmt ==> A = ~p, B = ~p, C = ~p
+    #   vs  ==> [A, B, C]
+    # a:A b:B c:C -> (fmt, vs) # with prefix
+    #   fmt ==> a = ~p, b = ~p, c = ~p
+    # message here|A B C -> (fmt, vs) # with preamble
+    #   fmt ==> message here: A = ~p, B = ~p, C = ~p
+    # M F -> (fmt, vs)
+    #   fmt ==> ?~s:?~s
+    #   vs  ==> [MODULE, FUNCTION_NAME]
+    if not spec:
+        return ""
+
+    # allow preamble eg: debug info|A, B, C
+    start = ""
+    m = reg_start.match(spec)
+    if m is not None:
+        start = m.group(1) + ": "
+        spec = m.group(2)
+
+    varnames = []
+    fmts = []
+    for m in reg_format.finditer(spec):
+        vname = varname(m.group(1))
+        varnames.extend(vname)
+        fmt = varformat(m.group(1))
+        fmts.append(fmt)
+
+    vs = f'[{", ".join(varnames)}]'
+    fmt = ", ".join([v for v in fmts])
+
+    if newline:
+        fmt += "~n"
+
+    return (start + fmt, vs)
+
+def quote_words(spec):
+	if not spec:
+		return ""
+
+	words = spec.split(",")
+	return ", ".join([f'"{word.strip()}"' for word in words])
+
+# expand aliased snippet. usage: 
+# post_jump "px.snippets.expand(snip)"
+# snippet
+# name$1
+def expand(snip, jump_pos=1):
+    if snip.tabstop != jump_pos:
+        return
+
+    vim.eval('feedkeys("\<C-R>=UltiSnips#ExpandSnippet()\<CR>")')
+endglobal
+
+context "{'spec': ''}"
+post_jump "create_erlformat(snip, 'ct:pal')"
+snippet "pal\s*(.+$)" "ct:pal helper" r
+`!p snip.context['spec'] = match.group(1)`
+endsnippet
+
+context "{'spec': ''}"
+post_jump "create_erlformat(snip, 'io:format', True)"
+snippet "iof\s*(.+$)" "io:format helper" r
+`!p snip.context['spec'] = match.group(1)`
+endsnippet
+
+context "{'spec': ''}"
+post_jump "create_erlformat(snip, '?debugFmt')"
+snippet "debugFmt\s*(.+$)" "eunit ?debugFmt helper" r
+`!p snip.context['spec'] = match.group(1)`
+endsnippet
+
+snippet rfdbg
+%% $1
+rfdbg:log(?MODULE, ?FUNCTION_NAME, [${0}`!p snip.rv = quote_words(t[1])`], [$1]),
+endsnippet
+
+snippet palv "visual selection to pal"
+ct:pal("${VISUAL} = ~p", [${VISUAL}]),
+endsnippet
+
+
+snippet escript "add escript shbang" b
+#!/usr/bin/env escript -c
+
+-export([main/1]).
+
+main(Args) ->
+	ok.
+endsnippet
+
+snippet ctest "create ct test func" b
+test_${1}(_Config) ->
+	${0:ok}.
+endsnippet
+
+snippet uuid
+<<"`!p from uuid import uuid4
+if not snip.c:
+	snip.rv = str(uuid4())`">>,
+endsnippet
+
+snippet int "integer" w
+integer()
+endsnippet
+
+snippet nni "non_neg_integer" w
+non_neg_integer()
+endsnippet
+
+snippet pi "pos_integer" w
+pos_integer()
+endsnippet
+
+snippet proplist "proplists:proplist()"
+proplists:proplist()
+endsnippet
+
+priority 10
+snippet palx "normal ct:pal without fancy expansion"
+ct:pal("${1}", [${2}]),
+endsnippet
+
+snippet gitignore
+# rebar 3
+.rebar3
+_build/
+_checkouts/
+conf/temp_generated.*
+conf/local.sys.config
+rebar.config.script
+*.crashdump
+rebar.lock
+endsnippet
+
+# vim:ft=snippets:

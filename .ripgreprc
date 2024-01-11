@@ -1,0 +1,6 @@
+
+-i
+
+# only one glob allowed per --type-add
+--type-add
+yml:*.y*ml
