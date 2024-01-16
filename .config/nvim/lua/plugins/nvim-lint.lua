@@ -9,7 +9,7 @@ return {
     config = function()
         local lint = require('lint')
         lint.linters_by_ft = {
-            python = {'mypy', 'flake8'},
+            python = {'mypy', 'flake8', 'ruff'},
             cpp = {'cppcheck'},
             javascript = {'eslint'},
             lua = {'selene'},

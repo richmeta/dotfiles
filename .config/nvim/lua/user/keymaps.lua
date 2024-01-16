@@ -128,16 +128,6 @@ if executable("base64") then
     vnoremap("<Leader>bf", [[y:let @"=system('base64 -d', @")<cr>gvP]])
 end
 
-if executable("erlfmtx") then
-    -- \ef = format with erlfmt
-    nnoremap("<Leader>ef", ":silent %!erlfmtx --print-width 120 - <cr><cr>")
-    vnoremap("<Leader>ef", ":!erlfmtx --print-width 120 - <cr><cr>")
-elseif executable("erlfmt") then
-    -- fallback
-    nnoremap("<Leader>ef", ":silent %!erlfmt --print-width 120 - <cr><cr>")
-    vnoremap("<Leader>ef", ":!erlfmt --print-width 120 - <cr><cr>")
-end
-
 if executable("black") then
     -- \pf = format black
     nnoremap("<Leader>pf", ":%!black -q - <cr><cr>")

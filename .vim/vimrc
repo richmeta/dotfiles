@@ -340,16 +340,6 @@ if executable('base64')
     vmap <Leader>bf y:let @"=system('base64 -d', @")<cr>gvP
 endif
 
-if executable('erlfmtx')
-    " \ef = format with erlfmt
-    map <Leader>ef :silent %!erlfmtx --print-width 120 - <cr><cr>
-    vmap <Leader>ef :!erlfmtx --print-width 120 - <cr><cr>
-elseif executable('erlfmt')
-    " fallback
-    map <Leader>ef :silent %!erlfmt --print-width 120 - <cr><cr>
-    vmap <Leader>ef :!erlfmt --print-width 120 - <cr><cr>
-endif
-
 " shift-F1 - help current word
 nnoremap <S-F1> :execute 'help ' . expand('<cword>')<cr>
 vnoremap <S-F1> :<C-U>execute 'help ' . getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-2]<cr>
@@ -979,7 +969,7 @@ endif
 
 let g:ale_linters = {
     \   'javascript': ['eslint'],
-    \   'python': ['mypy', 'flake8'],
+    \   'python': ['mypy', 'flake8', 'ruff'],
     \   'c': ['gcc'],
     \   'go': ['gobuild'],
     \   'cpp': ['cppcheck'],
