@@ -25,7 +25,6 @@ rcfile ".zshrc"
 rcfile ".zprofile"
 rcfile ".tmux.conf"
 rcfile ".ripgreprc"
-rcfile ".gitignore_global"
 
 # tmux
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then
@@ -56,4 +55,9 @@ fi
 # vifm
 if [ ! -e ~/.config/vifm ]; then
     ln -sv $(readlink -f .config/vifm) ~/.config/vifm 
+fi
+
+if [ ! -e ~/.config/git/ignore ]; then
+    ln -sv $(readlink -f .config/git/ignore) ~/.config/git/ignore
+    git config --global core.excludesFile $HOME/.config/git/ignore
 fi

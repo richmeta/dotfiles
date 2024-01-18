@@ -17,7 +17,8 @@ function M.relative_from_buffer()
         return vim.fn.expand("%")
     end
     local fugitive_path = vim.fn["FugitivePath"]
-    return fugitive_path(vim.fn.getreg("%"), "")
+    local p = fugitive_path(vim.fn.getreg("%"), "")
+    return tostring(Path:new(p))
 end
 
 function M.branch()

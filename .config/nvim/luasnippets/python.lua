@@ -30,6 +30,7 @@ return {
     s( "pprint", t{'from pprint import pprint', ''} ),
     s( "dataclass", t{'from dataclasses import dataclass', ''} ),
     s( "StringIO", t{'from io import StringIO', ''} ),
+    s( "contextmanager", t{'from contextlib import contextmanager', ''} ),
 
     s( { trig = "pdb", dscr = "pdb trace" },
         t{'__import__("pdb").set_trace()'}

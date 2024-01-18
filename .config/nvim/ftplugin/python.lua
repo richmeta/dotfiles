@@ -4,6 +4,8 @@ local mp = require("user.map")
 vim.bo.tabstop = 4
 vim.bo.shiftwidth = 4
 
+--  notes:  \@<! is positive lookbehind, so only matches when not preceded with quotes
+
 -- switch defs
 vim.b.switch_custom_definitions =
     {
@@ -19,6 +21,12 @@ vim.b.switch_custom_definitions =
 
           -- from \k import => import \k+
           [ [[from\s\+\(\k\+\)\s\+import\s.*$]] ] = [[import \1]],
+
+          -- something => _something
+          [ [["\@<!\<\(\w*\)\>]] = '_\1',
+
+          -- _something => something
+          [ [["\@<!\<_\(\w*\)\>]] = '\1',
       }
     }
 
