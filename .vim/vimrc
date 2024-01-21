@@ -4,6 +4,7 @@ filetype on
 
 " ~/.vim or ~/vimfiles
 let s:vim_home_dir = fnamemodify(resolve(expand("$MYVIMRC")), ":p:h")
+let s:wiki_dir = expand("$WIKIDIR")
 
 call plug#begin(s:vim_home_dir . '/bundle')
 
@@ -763,12 +764,12 @@ command! -nargs=1 Vgrep :execute "silent grep! '^\\s*\".*" .
 
 " search Sync
 " Ngrep = search command wiki
-command! -nargs=1 Ngrep silent grep! "<args>" ~/src/wiki/*  <bar> cwindow
+command! -nargs=1 Ngrep silent execute ':grep! ' .expand("<args>") . ' ' . s:wiki_dir <bar> cwindow
 
 function! s:glob_commands_dir(A,L,P)
     let l:pat = '^' . a:A
     let l:result = []
-    for fn in split(globpath('~/src/wiki', '*'), "\n")
+    for fn in split(globpath(s:wiki_dir, '*'), "\n")
         let l:file = fnamemodify(fn, ':t')
         if match(l:file, l:pat) >= 0
             call add(l:result, l:file)
@@ -792,7 +793,7 @@ endfunction
 " Open command wiki
 " Nopen = open command wiki
 command! -complete=customlist,<SID>glob_commands_dir -nargs=1 -bang Nopen
-    \ :call <SID>nopen_window_or_tab("~/src/wiki/", "<args>", "<bang>")
+    \ :call <SID>nopen_window_or_tab(s:wiki_dir, "<args>", "<bang>")
 
 " \no = Nopen current filetype
 nnoremap <leader>no :execute ':Nopen ' . &filetype<cr>
@@ -1107,8 +1108,8 @@ nnoremap <Leader>Pb :CtrlPBranches<cr>
 " -------
 " note: 'g:vimwiki_list' set in local.vim
 
-if isdirectory(expand("~/src/wiki"))
-    let g:vimwiki_list = [{'path': "~/src/wiki", 'name': 'Commands'}]
+if isdirectory(expand(s:wiki_dir))
+    let g:vimwiki_list = [{'path': s:wiki_dir, 'name': 'Commands'}]
 endif
 
 " prevent link shortening

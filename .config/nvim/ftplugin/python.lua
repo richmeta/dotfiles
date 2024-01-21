@@ -23,10 +23,10 @@ vim.b.switch_custom_definitions =
           [ [[from\s\+\(\k\+\)\s\+import\s.*$]] ] = [[import \1]],
 
           -- something => _something
-          [ [["\@<!\<\(\w*\)\>]] = '_\1',
+          [ [["\@<!\<\(\w*\)\>]] ] = '_\1',
 
           -- _something => something
-          [ [["\@<!\<_\(\w*\)\>]] = '\1',
+          [ [["\@<!\<_\(\w*\)\>]] ] = '\1',
       }
     }
 

@@ -5,5 +5,5 @@ vim.g.grep_word_boundary = false
 vim.g.grep_filetype = ""
 vim.g.grep_glob = ""
 vim.g.grep_regex = 0
-vim.g.sync_commands_dir = vim.fn.expand("~/src/wiki")
+vim.g.sync_commands_dir = vim.fn.expand("$WIKIDIR")
 

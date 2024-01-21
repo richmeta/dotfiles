@@ -470,16 +470,37 @@ nnoremap yr :!echo -n %c:r | clip<cr>:echo expand('%"c:r') "is yanked to clipboa
 " open other pane with selected (directories only)
 nnoremap zo :sync %c<CR><Tab>
 
+" mvup
+if executable("mvup")
+    nnoremap \m :!cd %d && mvup && read<CR>
+endif
+
 " unzip
-nnoremap \z :!7z x %c<CR>
+if executable("7z")
+    nnoremap \z :!7z x %c<CR>
+endif
+
+" copypath
+if executable("clip")
+    nnoremap \c :!clip -p %f<CR>
+endif
 
 " bcompare
-nnoremap \d :!bcompare %d %D<CR>
+if executable("bcompare")
+    nnoremap \d :!bcompare %d %D<CR>
+endif
+
+" vlc
+if executable("vlc")
+    nnoremap \v :!vlc %f<CR>
+endif
 
 " M = move to other view
 nnoremap M :move<cr>
 vnoremap M :move<cr>
 
+noremap <Leader>t :tabnew<cr>
 
+filetype *.mp3,*.flac, vlc %f &
 cabbrev md mkdir
 

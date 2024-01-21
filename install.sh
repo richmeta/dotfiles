@@ -24,6 +24,7 @@ rcfile ".zshenv"
 rcfile ".zshrc"
 rcfile ".zprofile"
 rcfile ".tmux.conf"
+rcfile ".rgignore"
 rcfile ".ripgreprc"
 
 # tmux
@@ -38,13 +39,16 @@ if [ ! -e ~/.vim ]; then
 fi
 
 # dirs
-if [ ! -d ~/.config ]; then
-    mkdir -p ~/.config
-fi
+[ ! -d ~/.config ] && mkdir -p ~/.config
 
 # nvim
 if [ ! -e ~/.config/nvim ]; then
     ln -sv $(readlink -f .config/nvim) ~/.config/nvim 
+fi
+
+# i3
+if [ ! -e ~/.config/i3 ]; then
+    ln -sv $(readlink -f .config/i3) ~/.config/i3 
 fi
 
 # ctags
@@ -57,7 +61,15 @@ if [ ! -e ~/.config/vifm ]; then
     ln -sv $(readlink -f .config/vifm) ~/.config/vifm 
 fi
 
+# git
+mkdir -p ~/.config/git
 if [ ! -e ~/.config/git/ignore ]; then
     ln -sv $(readlink -f .config/git/ignore) ~/.config/git/ignore
     git config --global core.excludesFile $HOME/.config/git/ignore
 fi
+
+# black
+if [ ! -e ~/.config/black ]; then
+    ln -sv $(readlink -f .config/black) ~/.config/black
+fi
+
