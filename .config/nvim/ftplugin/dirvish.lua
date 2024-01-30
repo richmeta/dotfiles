@@ -98,7 +98,7 @@ mp.nmap_b("l", open, { nowait = true, silent = true })
 mp.nmap_b("<RightMouse>", "p")
 
 -- h = up dir (dirvish) [like vifm]
-mp.nmap_b("h", "<Plug>(dirvish_up)", silent)
+mp.nmap_b("h", "<Plug>(dirvish_up):echo(expand('%'))<cr>", silent)
 
 -- copypath
 mp.nmap_b("<Leader>cd", function()

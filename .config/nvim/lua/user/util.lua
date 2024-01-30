@@ -131,4 +131,14 @@ function M.isempty(T)
     end
 end
 
+function M.has_value(T, value)
+    for _, v in ipairs(T) do
+        if v == value then
+            return true
+        end
+    end
+
+    return false
+end
+
 return M

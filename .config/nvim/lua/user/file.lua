@@ -48,7 +48,6 @@ function M.stem(fn)
 end
 
 function M.prompt_rename(source)
-    -- local newfilename = vim.fn.input('new filename: ', source)
     vim.ui.input({ prompt = 'new filename: ', default = source},
         function(newfilename)
             if newfilename and newfilename ~= source then
@@ -74,6 +73,16 @@ function M.join(head, ...)
     local p1 = Path:new(head)
     local p2 = p1:joinpath(...)
     return tostring(p2)
+end
+
+function M.any_exists(filenames)
+    -- returns fullpath to found
+    for _, fn in pairs(filenames) do
+        if M.exists(fn) then
+            return M.full(fn)
+        end
+    end
+    return nil
 end
 
 function M.exists(filename)

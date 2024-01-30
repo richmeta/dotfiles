@@ -33,9 +33,15 @@ local tg = require("user.toggler")
 --------------------------------------------------------------------------------
 local group = vim.api.nvim_create_augroup("LSPAutoCmd", {})
 
-local function with_tab(mapfn, mapping, action)
+local function with_view(view, mapfn, mapping, action)
     mapfn(mapping, function()
-        vim.cmd("tab split")
+        if view == 't' then
+            vim.cmd("tab split")
+        elseif view == 'v' then
+            vim.cmd("vsplit")
+        elseif view == 's' then
+            vim.cmd("split")
+        end
         if type(action) == "function" then
             action()
         elseif type(action) == "string" then
@@ -54,14 +60,18 @@ local function on_attach(client, bufnr)
         -- gd = goto definition (lsp)
         mp.nmap_b("gd", vim.lsp.buf.definition)
         mp.vmap_b("gd", vim.lsp.buf.definition)
-        with_tab(mp.nmap_b, "tgd", vim.lsp.buf.definition)
+        with_view('t', mp.nmap_b, "tgd", vim.lsp.buf.definition)
+        with_view('v', mp.nmap_b, "vgd", vim.lsp.buf.definition)
+        with_view('s', mp.nmap_b, "sgd", vim.lsp.buf.definition)
     end
 
     if client.supports_method("textDocument/declaration") then
         -- gD = goto declaration (lsp)
         mp.nmap_b("gD", vim.lsp.buf.declaration)
         mp.vmap_b("gD", vim.lsp.buf.declaration)
-        with_tab(mp.nmap_b, "tgD", vim.lsp.buf.declaration)
+        with_view('t', mp.nmap_b, "tgD", vim.lsp.buf.declaration)
+        with_view('v', mp.nmap_b, "vgD", vim.lsp.buf.declaration)
+        with_view('s', mp.nmap_b, "sgD", vim.lsp.buf.declaration)
     end
 
     if client.supports_method("textDocument/hover") then
@@ -73,14 +83,18 @@ local function on_attach(client, bufnr)
         -- td = goto type declaration (lsp)
         mp.nmap_b("td", vim.lsp.buf.type_definition)
         mp.vmap_b("td", vim.lsp.buf.type_definition)
-        with_tab(mp.nmap_b, "ttd", vim.lsp.buf.type_definition)
+        with_view('t', mp.nmap_b, "ttd", vim.lsp.buf.type_definition)
+        with_view('v', mp.nmap_b, "vtd", vim.lsp.buf.type_definition)
+        with_view('s', mp.nmap_b, "std", vim.lsp.buf.type_definition)
     end
 
     if client.supports_method("textDocument/implementation") then
         -- gi = goto implementation (lsp)
         mp.nmap_b("gi", vim.lsp.buf.implementation)
         mp.vmap_b("gi", vim.lsp.buf.implementation)
-        with_tab(mp.nmap_b, "tgi", vim.lsp.buf.implementation)
+        with_view('t', mp.nmap_b, "tgi", vim.lsp.buf.implementation)
+        with_view('v', mp.nmap_b, "vgi", vim.lsp.buf.implementation)
+        with_view('s', mp.nmap_b, "sgi", vim.lsp.buf.implementation)
     end
 
     if client.supports_method("textDocument/references") then
