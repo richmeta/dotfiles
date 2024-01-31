@@ -11,13 +11,13 @@ function M.root()
     return tostring(p1:parent())
 end
 
-function M.relative_from_buffer()
-    local dir = vim.fn["FugitiveExtractGitDir"](".")
+function M.relative_from_buffer(filename)
+    local dir = vim.fn.FugitiveExtractGitDir(".")
     if dir == "" then
+        -- not a git dir
         return vim.fn.expand("%")
     end
-    local fugitive_path = vim.fn["FugitivePath"]
-    local p = fugitive_path(vim.fn.getreg("%"), "")
+    local p = vim.fn.FugitivePath(filename, "")
     return tostring(Path:new(p))
 end
 

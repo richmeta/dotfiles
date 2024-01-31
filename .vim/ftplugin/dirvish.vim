@@ -63,10 +63,11 @@ nmap <buffer> <silent> h <Plug>(dirvish_up)
 nmap <buffer> <silent> l :<C-U>call dirvish#open("edit", 0)<cr>:echo(expand('%'))<cr>
 
 " copypath
-nmap <silent> <Leader>cd :call file#clip(file#ex_dir(), 1)<cr>         " directory
-nmap <silent> <Leader>cf :call file#clip(file#ex_full(), 1)<cr>        " full path
-nmap <silent> <Leader>cv :call file#clip(file#ex_filename(), 1)<cr>    " filename only
-nmap <silent> <Leader>cs :call file#clip(file#ex_stem(), 1)<cr>        " stem only
+nmap <buffer> <silent> <Leader>cd :call file#clip(file#ex_dir(), 1)<cr>         " directory
+nmap <buffer> <silent> <Leader>cf :call file#clip(file#ex_full(), 1)<cr>        " full path
+nmap <buffer> <silent> <Leader>cv :call file#clip(file#ex_filename(), 1)<cr>    " filename only
+nmap <buffer> <silent> <Leader>cs :call file#clip(file#ex_stem(), 1)<cr>        " stem only
+nmap <buffer> <silent> <Leader>cg :let @+=(FugitiveExtractGitDir('.') != '' ? FugitivePath(expand('<cfile>'), '') : expand('<cfile>'))<cr>
 
 " override for grep buffer
 nmap <buffer> <Leader>gD :call RunGrep('', expand('%'))<cr>

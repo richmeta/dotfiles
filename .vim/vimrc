@@ -138,6 +138,9 @@ onoremap <C-A> <C-C>gggH<C-O>G
 snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
 
+" override blockwise Put without overwriting
+vnoremap P I<C-R>"
+
 set hidden
 set nobackup
 set tabstop=4

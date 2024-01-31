@@ -87,6 +87,9 @@ nnoremap("<Leader>wN", [[:let @/='\<'.expand('<cword>').'\>'<bar>split<bar>norma
 -- \sw = start search/replace word under cursor
 nnoremap("<Leader>sw", [[:%s/<c-r><c-w>/]])
 
+-- override blockwise P to Put without overwrite
+vnoremap("P", [[I<c-r>"]])
+
 -- \xf = format xml
 if executable("xml_pp") then
     -- xml_pp = xml pretty print from XML::Twig

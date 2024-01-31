@@ -1,6 +1,8 @@
 local mp = require("user.map")
 local util = require("user.util")
 local file = require("user.file")
+local git = require("user.git")
+local clipboard = require("user.clip")
 
 local silent = { silent = true }
 
@@ -28,7 +30,7 @@ mp.nmap_b("<leader>pd", function()
 end)
 
 -- md = mkdir (dirvish)
-mp.nmap_b("md", [[:!mkdir %/]])
+mp.nmap_b("md", [[:!mkdir -p %/]])
 
 -- rd = rmdir (dirvish)
 mp.nmap_b("rd", function()
@@ -120,3 +122,10 @@ mp.nmap_b("<Leader>cs", function()
     file.clip({ typ = "stem" })
 end,
 silent)
+
+-- \cg = copy git path relative
+mp.nmap_b("<Leader>cg", function()
+    local path = git.relative_from_buffer(cfile())
+    clipboard.copy(path)
+end)
+

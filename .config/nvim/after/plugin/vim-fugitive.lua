@@ -24,7 +24,8 @@ end)
 -- \cg = copy git path relative
 mp.nnoremap("<Leader>cg", function()
     -- git path else current buffer
-    local path = git.relative_from_buffer()
+    local current_filename = vim.fn.getreg("%")
+    local path = git.relative_from_buffer(current_filename)
     clipboard.copy(path)
 end)
 
