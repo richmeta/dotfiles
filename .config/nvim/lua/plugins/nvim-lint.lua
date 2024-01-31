@@ -24,7 +24,7 @@ return {
         -- only insert if executable
         for lang, linters in pairs(desired) do
             for _, linter in pairs(linters) do
-                if executable(linter) then
+                if executable(linter) == 1 then
                     if not lint.linters_by_ft[lang] then
                         lint.linters_by_ft[lang] = {}
                     end
@@ -33,18 +33,20 @@ return {
             end
         end
 
-        -- flake8
-        if util.has_value(lint.linters_by_ft.python, "flake8") then
-            local flake8 = lint.linters.flake8
-            table.insert(flake8.args, "--ignore=E501,E731,W391,F403,W292")
-        end
+        -- -- flake8
+        if lint.linters_by_ft.python then
+            if util.has_value(lint.linters_by_ft.python, "flake8") then
+                local flake8 = lint.linters.flake8
+                table.insert(flake8.args, "--ignore=E501,E731,W391,F403,W292")
+            end
 
-        -- mypy
-        if util.has_value(lint.linters_by_ft.python, "mypy") then
-            local mypy_config = file.any_exists({"mypy.ini", ".mypy.ini", "pyproject.toml"})
-            if mypy_config ~= nil then
-                local mypy = lint.linters.mypy
-                table.insert(mypy.args, "--config-file="..mypy_config)
+            -- mypy
+            if util.has_value(lint.linters_by_ft.python, "mypy") then
+                local mypy_config = file.any_exists({"mypy.ini", ".mypy.ini", "pyproject.toml"})
+                if mypy_config ~= nil then
+                    local mypy = lint.linters.mypy
+                    table.insert(mypy.args, "--config-file="..mypy_config)
+                end
             end
         end
 

@@ -30,3 +30,6 @@ shell.nix
 
 # pyright
 pyrightconfig.json
+
+# pre-commit
+.pre-commit-config.yaml
