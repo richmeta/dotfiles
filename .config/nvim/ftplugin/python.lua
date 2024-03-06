@@ -1,4 +1,5 @@
 local mp = require("user.map")
+local clipboard = require("user.clip")
 
 -- buffer local
 vim.bo.tabstop = 4
@@ -37,3 +38,21 @@ if vim.fn.executable('black') then
     mp.nnoremap("<Leader>pf", ":%!black -q - <cr><cr>")
     mp.vnoremap("<Leader>pf", ":!black -q - <cr><cr>")
 end
+
+local function pyinfo_find_symbol_clip(return_as)
+    local pyinfo_find_symbol = vim.fn["pyinfo#find_symbol"]
+    local result = pyinfo_find_symbol(return_as)
+    clipboard.copy(result)
+end
+
+-- \cy = copy python path of current symbol
+mp.nnoremap("<Leader>cy", function()
+    pyinfo_find_symbol_clip("pypath")
+end, mp.buffer)
+
+-- \cp = copy file path of current symbol
+mp.nnoremap("<Leader>cp", function()
+    pyinfo_find_symbol_clip("path")
+end, mp.buffer)
+
+

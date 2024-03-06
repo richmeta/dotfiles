@@ -495,6 +495,9 @@ if executable("vlc")
     nnoremap \v :!vlc %f<CR>
 endif
 
+" generic open
+nnoremap \o :!xdg-open %c<CR>
+
 " M = move to other view
 nnoremap M :move<cr>
 vnoremap M :move<cr>
@@ -502,5 +505,6 @@ vnoremap M :move<cr>
 noremap <Leader>t :tabnew<cr>
 
 filetype *.mp3,*.flac, vlc %f &
+filetype *.jpg,*.png, geeqie %c &
 cabbrev md mkdir
 

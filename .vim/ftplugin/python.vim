@@ -20,3 +20,15 @@ let b:switch_custom_definitions =
 
 " \dp = remove pdb
 nnoremap <buffer> <Leader>dp :%g/set_trace\(\)/d<cr>
+
+function s:pyinfo_find_symbol_clip(return_as)
+    let result = pyinfo#find_symbol(a:return_as)
+    call file#clip(result, 1)
+endfunction
+
+" \cy = copy python path of current symbol
+nnoremap <buffer> <Leader>cy :call <SID>pyinfo_find_symbol_clip("pypath")<cr>
+
+" \cp = copy file path of current symbol
+nnoremap <buffer> <Leader>cp :call <SID>pyinfo_find_symbol_clip("path")<cr>
+
