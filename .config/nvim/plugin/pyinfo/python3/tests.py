@@ -2,6 +2,7 @@
 
 import unittest
 import re
+import os
 from pathlib import Path
 from unittest.mock import patch
 from contextlib import contextmanager
@@ -112,6 +113,50 @@ class PyInfoTests(unittest.TestCase):
 
             find_symbol(PROJECT_ROOT, MAIN_PY, "re", "path")
             self.assertEqual(d["result"], re.__file__)
+
+    def test_rest(self):
+        virtual_env = "/Users/richard.french/Library/Caches/pypoetry/virtualenvs/data-rest-api-UlJkt8h--py3.11"
+        try:
+            os.environ["VIRTUAL_ENV"] = virtual_env
+            root = "/Users/richard.french/src/data-rest-api"
+            buf = Path("/Users/richard.french/src/data-rest-api/apps/commission_delivery/domain.py")
+            with self.buffer(buf) as d:
+                find_symbol(root, buf, "CommissionDeliveryWorkspaceScoreStatus", "pypath")
+                self.assertEqual(d["result"], "apps.commission_delivery.types.CommissionDeliveryWorkspaceScoreStatus")
+        finally:
+            os.environ["VIRTUAL_ENV"] = virtual_env
+
+    def test_rest2(self):
+        virtual_env = "/Users/richard.french/Library/Caches/pypoetry/virtualenvs/data-rest-api-UlJkt8h--py3.11"
+        try:
+            os.environ["VIRTUAL_ENV"] = virtual_env
+            root = "/Users/richard.french/src/data-rest-api"
+            buf = Path("/Users/richard.french/src/data-rest-api/apps/commission_delivery/controller.py")
+            with self.buffer(buf) as d:
+                find_symbol(root, buf, "store", "pypath")
+                self.assertEqual(d["result"], "apps.commission_delivery.store")
+        finally:
+            os.environ["VIRTUAL_ENV"] = virtual_env
+
+    def test_rest3(self):
+        virtual_env = "/Users/richard.french/Library/Caches/pypoetry/virtualenvs/data-rest-api-UlJkt8h--py3.11"
+        try:
+            os.environ["VIRTUAL_ENV"] = virtual_env
+            root = "/Users/richard.french/src/data-rest-api"
+            buf = Path("/Users/richard.french/src/data-rest-api/apps/commission_delivery/controller.py")
+            with self.buffer(buf) as d:
+                find_symbol(root, buf, "", "pypath")
+                self.assertEqual(d["result"], "apps.commission_delivery.controller")
+
+                find_symbol(root, buf, "", "path")
+                self.assertEqual(d["result"], "apps/commission_delivery/controller.py")
+        finally:
+            os.environ["VIRTUAL_ENV"] = virtual_env
+
+
+
+
+
 
 
 if __name__ == "__main__":

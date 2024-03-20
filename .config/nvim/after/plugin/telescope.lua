@@ -28,7 +28,7 @@ nnoremap("<leader>pp", function()
     end
 end)
 
--- \gr = cwd grep prompt (telescope)
+-- \gr = cwd grep prompt (telescope) in cwd
 nnoremap("<leader>gr", function()
     grep.grep(ts_builtin.grep_string, {
         prompt = true,
@@ -38,7 +38,7 @@ nnoremap("<leader>gr", function()
     })
 end)
 
--- \br = buffer grep prompt (telescope)
+-- \br = buffer grep prompt (telescope) in buffer dir
 nnoremap("<leader>br", function()
     grep.grep(ts_builtin.grep_string, {
         prompt = true,
@@ -52,7 +52,7 @@ end)
 -- TODO:
 -- grep visual selected
 
--- \gw = cwd grep current word (telescope)
+-- \gw = cwd grep current word (telescope) in cwd
 nnoremap("<leader>gw", function()
     grep.grep(ts_builtin.grep_string, {
         word = vim.g.grep_word_boundary,
@@ -61,7 +61,7 @@ nnoremap("<leader>gw", function()
     })
 end)
 
--- \bw = buffer grep current word (telescope)
+-- \bw = buffer grep current word (telescope) in buffer dir
 nnoremap("<leader>bw", function()
     grep.grep(ts_builtin.grep_string, {
         dir = "#",
@@ -71,7 +71,7 @@ nnoremap("<leader>bw", function()
     })
 end)
 
---  \lg = live grep (telescope)
+--  \lg = live grep (telescope) in cwd
 nnoremap("<leader>lg", function()
     grep.grep(ts_builtin.live_grep, {
         word = vim.g.grep_word_boundary,

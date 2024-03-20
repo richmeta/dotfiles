@@ -1,4 +1,3 @@
-
 if exists("g:loaded_pyinfo")
     finish
 endif

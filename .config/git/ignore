@@ -33,3 +33,6 @@ pyrightconfig.json
 
 # pre-commit
 .pre-commit-config.yaml
+
+# tmp scripts
+go.sh

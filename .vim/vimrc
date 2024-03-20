@@ -8,6 +8,7 @@ let s:wiki_dir = expand("$WIKIDIR")
 
 call plug#begin(s:vim_home_dir . '/bundle')
 
+Plug 'marcweber/vim-addon-local-vimrc'
 Plug 'godlygeek/tabular'
 Plug 'preservim/tagbar'
 Plug 'vim-scripts/CmdlineComplete'
@@ -15,7 +16,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-commentary'
-Plug 'thinca/vim-localrc'
 Plug 'dense-analysis/ale'
 Plug 'andymass/vim-matchup'
 Plug 'davidhalter/jedi-vim'
@@ -92,6 +92,14 @@ Plug 'kana/vim-textobj-indent'
 " iv = select value (in k/v pair)
 Plug 'vimtaku/vim-textobj-keyvalue'
 
+" af = function including definition
+" if = function without definition
+" ac = A class
+" ic = inner class
+" TODO: clashes with vim-indent-object, see
+" https://github.com/bps/vim-textobj-python?tab=readme-ov-file#configuration
+Plug 'bps/vim-textobj-python'
+
 " Toggle words/expressions
 Plug 'AndrewRadev/switch.vim'
 
@@ -137,6 +145,10 @@ cnoremap <C-A> <C-C>gggH<C-O>G
 onoremap <C-A> <C-C>gggH<C-O>G
 snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
+
+" override default V without nl
+" since we are in exclusive mode it would include the newline
+noremap V 0v$h
 
 " override blockwise Put without overwriting
 vnoremap P I<C-R>"
@@ -503,6 +515,14 @@ cabbrev _sshconfig ~/.ssh/config
 " Y = yank to EOL
 map Y y$
 
+" \,' = surround with single quote
+nnoremap <leader>,' :normal yss'A,<Esc>
+vnoremap <leader>,' :normal yss'A,<Esc>
+
+" \," = surround with double quote
+nnoremap <leader>," :normal yss"A,<Esc>
+vnoremap <leader>," :normal yss"A,<Esc>
+
 " forward/back to space
 nmap gw f<space>
 nmap gb F<space>
@@ -747,7 +767,7 @@ endfunction
 
 " \Ctrl-] = open tag in new tab
 " alt-] = prompt open tag in new tab
-nnoremap <silent><Leader><C-]> :call <SID>tagtab(expand("<cWORD>"))<cr>
+nnoremap <silent><Leader><C-]> :call <SID>tagtab(expand("<cword>"))<cr>
 nnoremap <m-]> :tab tjump<space>
 
 
@@ -910,16 +930,16 @@ nnoremap <Leader>ns :new<cr>
 nmap <F4> <Plug>(dirvish_up):echo(expand('%'))<cr>
 
 " g<F4> = dirvish git root dir
-nmap g<F4> :execute 'Dirvish ' . fnamemodify(FugitiveGitDir(), ':h')<cr>
+nmap g<F4> :execute 'Dirvish ' . fnameescape(fnamemodify(FugitiveGitDir(), ':h'))<cr>
 
 " <Ctrl-F4> = dirvish git root dir (newtab)
-nmap <silent><leader>g<F4> :execute 'tabedit +Dirvish\ ' . fnamemodify(FugitiveGitDir(), ':h')<cr>
+nmap <silent><leader>g<F4> :execute 'tabedit +Dirvish\ ' . fnameescape(fnamemodify(FugitiveGitDir(), ':h'))<cr>
 
 " Shift-<F4> = vsplit + dirvish current dir
 nmap <S-F4> <Plug>(dirvish_vsplit_up)
 
 " \F4 = dirvish from this directory or file (tab)
-nmap <silent><Leader><F4> :<C-U>exe 'tabedit +Dirvish\ ' .expand('%:p')<cr>
+nmap <silent><Leader><F4> :<C-U>exe 'tabedit +Dirvish\ ' . fnameescape(expand('%:p'))<cr>
 
 " F4 = :Dirvish (commandmode)
 cnoremap <F4> Dirvish<Space>

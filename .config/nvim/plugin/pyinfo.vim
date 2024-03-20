@@ -4,5 +4,5 @@ if exists("g:loaded_pyinfo")
 endif
 let g:loaded_pyinfo = 1
 
-set runtimepath+=~/.vim/plugin/pyinfo
+set runtimepath+=~/.config/nvim/plugin/pyinfo
 python3 import pyinfo
