@@ -2,6 +2,15 @@ local file = require('user.file')
 local util = require('user.util')
 local executable = vim.fn.executable
 
+local defaults = {
+    python = {'flake8', 'ruff'},
+    cpp = {'cppcheck'},
+    javascript = {'eslint'},
+}
+
+-- per project linting (overrides defaults)
+--  let g:desired_linters = { "python": ["mypy", "ruff"] }
+--  let g:desired_linters_options = { "python": {"mypy": "--config-file X"} }
 
 return {
     "mfussenegger/nvim-lint",
@@ -15,11 +24,7 @@ return {
         local lint = require('lint')
         lint.linters_by_ft = {}
 
-        local desired = {
-            python = {'mypy', 'flake8', 'ruff'},
-            cpp = {'cppcheck'},
-            javascript = {'eslint'},
-        }
+        local desired = vim.g.desired_linters or defaults
 
         -- only insert if executable
         for lang, linters in pairs(desired) do
@@ -29,11 +34,16 @@ return {
                         lint.linters_by_ft[lang] = {}
                     end
                     table.insert(lint.linters_by_ft[lang], linter)
+                else
+                    -- warning if not found from g:desired_linters
+                    if vim.g.desired_linters ~= nil then
+                        vim.notify("linter " .. linter .. " not found", vim.log.levels.WARN)
+                    end
                 end
             end
         end
 
-        -- -- flake8
+        -- flake8
         if lint.linters_by_ft.python then
             if util.has_value(lint.linters_by_ft.python, "flake8") then
                 local flake8 = lint.linters.flake8
@@ -46,6 +56,20 @@ return {
                 if mypy_config ~= nil then
                     local mypy = lint.linters.mypy
                     table.insert(mypy.args, "--config-file="..mypy_config)
+                    -- TODO: linting through stdin
+                    -- table.insert(mypy.args, "-")
+                    -- mypy.stdin = true
+                    -- mypy.parser = require('lint.parser').from_pattern('(%f[^:]:%d+: %m)', {'lnum', 'message'})
+                end
+            end
+        end
+
+        -- add any custom args
+        if vim.g.desired_linters_options ~= nil then
+            for _, options in pairs(vim.g.desired_linters_options) do
+                for name, args in pairs(options) do
+                    local linter_cfg = lint.linters[name]
+                    table.insert(linter_cfg.args, args)
                 end
             end
         end

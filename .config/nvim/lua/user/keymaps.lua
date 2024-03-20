@@ -263,6 +263,14 @@ cnoremap("w!!", "w !sudo tee > /dev/null %")
 -- Y = yank to EOL
 nmap("Y", "y$")
 
+-- \,' = surround with single quote
+nnoremap([[<leader>,']], [[:normal yss'A,<Esc>]])
+vnoremap([[<leader>,']], [[:normal yss'A,<Esc>]])
+
+-- \," = surround with double quote
+nnoremap([[<leader>,"]], [[:normal yss"A,<Esc>]])
+vnoremap([[<leader>,"]], [[:normal yss"A,<Esc>]])
+
 -- forward/back to space
 nmap("gw", "f<space>")
 nmap("gb", "F<space>")

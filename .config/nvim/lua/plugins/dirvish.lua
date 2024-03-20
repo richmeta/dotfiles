@@ -26,7 +26,7 @@ return {
 
         -- \F4 = dirvish from this directory or file (tab)
         { "<leader><F4>", function()
-            vim.cmd(string.format("tabedit +Dirvish %s", vim.fn.expand('%', 'dir')))
+            vim.cmd(string.format("tabedit +Dirvish %s", vim.fn.expand('%')))
         end, mode = "n" },
 
         -- \g<F4> = dirvish git root dir (newtab)

@@ -146,9 +146,9 @@ onoremap <C-A> <C-C>gggH<C-O>G
 snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
 
-" override default V without nl
-" since we are in exclusive mode it would include the newline
-noremap V 0v$h
+" ctlr-x +v = select whole line excl newline
+" TODO: <m-v> doesn't work
+nnoremap <C-X>v ^vg_
 
 " override blockwise Put without overwriting
 vnoremap P I<C-R>"

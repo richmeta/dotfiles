@@ -2,6 +2,9 @@ local plugins = {
     -- essential
     { "nvim-lua/plenary.nvim" },
 
+    -- vim localrc
+    { "marcweber/vim-addon-local-vimrc" },
+
     -- treesitter
     { "nvim-treesitter/nvim-treesitter" },                      -- yes
     { "nvim-treesitter/playground" },
@@ -91,6 +94,14 @@ local plugins = {
     -- iv = inner variable segment (motion)
     -- av = inner variable segment (motion)
     { "Julian/vim-textobj-variable-segment",  dependencies = { "kana/vim-textobj-user" } },
+
+    -- af = function including definition
+    -- if = function without definition
+    -- ac = A class
+    -- ic = inner class
+    -- TODO: clashes with vim-indent-object, see
+    -- https://github.com/bps/vim-textobj-python?tab=readme-ov-file#configuration
+    { "bps/vim-textobj-python", dependencies = { "kana/vim-textobj-user" } },
 }
 
 -- load any local plugins, from user/localplugins.lua
