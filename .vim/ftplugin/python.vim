@@ -32,3 +32,5 @@ nnoremap <buffer> <Leader>cy :call <SID>pyinfo_find_symbol_clip("pypath")<cr>
 " \cp = copy file path of current symbol
 nnoremap <buffer> <Leader>cp :call <SID>pyinfo_find_symbol_clip("path")<cr>
 
+abbr <buffer> true True
+abbr <buffer> false False

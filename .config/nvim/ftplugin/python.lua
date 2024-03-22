@@ -86,3 +86,6 @@ mp.nnoremap("<Leader>cp", function()
     pyinfo_find_symbol_clip("path")
 end, mp.buffer)
 
+vim.cmd("abbr <buffer> true True")
+vim.cmd("abbr <buffer> false False")
+

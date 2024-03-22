@@ -35,13 +35,16 @@ if [[ $OSTYPE == darwin* ]]; then
     export HOMEBREW_NO_AUTO_UPDATE=1              # Experiment replacing HOMEBREW with NIX
 fi
 
-if [[ -x $(which gvim) ]]; then
+if [[ $OSTYPE == darwin* ]] && [[ -x mvim ]]; then
+    export EDITOR='mvim -v'
+elif [[ -x $(which gvim) ]]; then
     export EDITOR=gvim
 elif [[ -x $(which vim) ]]; then
     export EDITOR=vim
 else
     export EDITOR=vi
 fi
+export VISUAL="$EDITOR"
 
 # activate python
 function activate() {
