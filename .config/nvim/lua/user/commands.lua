@@ -24,7 +24,7 @@ vim.api.nvim_create_user_command(
     function()
         vim.fn.execute("write")
         vim.fn.execute("write !chmod a+x % >/dev/null")
-        vim.fn.execute("silent! edit!")
+        vim.fn.execute("silent edit!")
     end,
     {
         nargs = 0
@@ -39,7 +39,7 @@ vim.api.nvim_create_user_command(
         local arg = opts.args:gsub('\\', '\\\\')    -- need double delimited for leader mappings
         local cmd = string.format("silent grep! '^\\s*--.*%s' %s", arg, los.nvim_config_dir)
         util.execute(cmd)
-        util.execute("cwindow")
+        vim.fn.execute("cwindow")
     end,
     { nargs = 1 }
 )
@@ -50,17 +50,18 @@ vim.api.nvim_create_user_command(
     function(opts)
         local cmd = string.format("silent grep! %s %s", opts.args, vim.g.sync_commands_dir)
         util.execute(cmd)
-        util.execute("cwindow")
+        vim.fn.execute("cwindow")
     end,
     { nargs = 1 }
 )
 
 local nopen_complete_func = function(arglead)
-    local pat = "^" .. arglead
-    local ret = {}
-    local found = scan.scan_dir(vim.g.sync_commands_dir, { search_pattern = arglead })
+    local search_dir = file.full(vim.g.sync_commands_dir)  -- because plenary does not expand ~
+    local pat = string.format("%s%%a+.%%a+$", arglead)
+    local found = scan.scan_dir(search_dir, { search_pattern = pat })
 
     -- further match on filename only
+    local ret = {}
     for _, v in ipairs(found) do
         local filename = file.filename(v)
         if filename:match(pat) then
@@ -204,3 +205,4 @@ end
 
 vim.api.nvim_create_user_command('ClipStart', clip_start, {})
 vim.api.nvim_create_user_command('ClipStop', clip_stop, {})
+

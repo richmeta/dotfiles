@@ -7,3 +7,4 @@ vim.g.grep_glob = ""
 vim.g.grep_regex = 0
 vim.g.sync_commands_dir = vim.fn.expand("$WIKIDIR")
 
+

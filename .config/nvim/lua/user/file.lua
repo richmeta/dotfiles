@@ -47,6 +47,11 @@ function M.stem(fn)
     return M.expand(fn, "stem")
 end
 
+function M.relative(fn, base_dir)
+    local p1 = Path:new(fn)
+    return p1:make_relative(base_dir)
+end
+
 function M.prompt_rename(source)
     vim.ui.input({ prompt = 'new filename: ', default = source},
         function(newfilename)
