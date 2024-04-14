@@ -63,7 +63,7 @@ local plugins = {
     { "preservim/vim-markdown" },
 
     -- tmux
-    { "christoomey/vim-tmux-navigator" },
+    { "christoomey/vim-tmux-navigator" },                       -- yes
 
     -- TEXT OBJECTS
 
