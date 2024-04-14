@@ -2,7 +2,7 @@ local lsp = require("lspconfig")
 local mp = require("user.map")
 local buffer = require("user.buffer")
 local tg = require("user.toggler")
--- local util = require("user.util")
+local fn = mp.fn_term
 
 -- capabilities
 -- ['textDocument/hover'] = { 'hoverProvider' },
@@ -32,6 +32,10 @@ local tg = require("user.toggler")
 
 --------------------------------------------------------------------------------
 local group = vim.api.nvim_create_augroup("LSPAutoCmd", {})
+local handlers =  {
+  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = "single"}),
+  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = "single" }),
+}
 
 local function with_view(view, mapfn, mapping, action)
     mapfn(mapping, function()
@@ -77,6 +81,7 @@ local function on_attach(client, bufnr)
     if client.supports_method("textDocument/hover") then
         -- K = hover signature (lsp)
         mp.nmap_b("K", vim.lsp.buf.hover)
+        mp.imap_b("<m-k>", vim.lsp.buf.hover)
     end
 
     if client.supports_method("textDocument/typeDefinition") then
@@ -123,18 +128,18 @@ local function on_attach(client, bufnr)
     end
 
     if client.supports_method("textDocument/signatureHelp") then
-        -- ctrl-k = signature help (lsp)
+        -- \sh = signature help (lsp)
         mp.nmap_b("<Leader>sh", vim.lsp.buf.signature_help)
     end
 
     if client.supports_method("textDocument/rangeFormatting") then
         -- ctrl-F5 = format code (lsp)
-        mp.vmap_b("<C-f5>", vim.lsp.buf.format)
+        mp.vmap_b(fn("<C-f5>"), vim.lsp.buf.format)
     end
 
     if client.supports_method("textDocument/formatting") then
         -- ctrl-F5 = format code (lsp)
-        mp.nmap_b("<C-f5>", vim.lsp.buf.format)
+        mp.nmap_b(fn("<C-f5>"), vim.lsp.buf.format)
     end
 
     -- gF = diagnostics float (lsp)
@@ -152,13 +157,30 @@ end
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lsp.pyright.setup({
+lsp.pylsp.setup({
     capabilities = capabilities,
+    handlers = handlers,
     on_attach = on_attach,
+    settings = {
+        pylsp = {
+            plugins = {
+                pyls_isort = {
+                    enabled = true
+                },
+                rope_autoimport = {
+                    enabled = true
+                },
+                jedi_hover = {
+                    enabled = true
+                },
+            }
+        }
+    }
 })
 
 lsp.rust_analyzer.setup({
     on_attach = on_attach,
+    handlers = handlers,
     settings = {
         ["rust-analyzer"] = {
             imports = {
@@ -181,6 +203,7 @@ lsp.rust_analyzer.setup({
 
 lsp.tsserver.setup({
     capabilities = capabilities,
+    handlers = handlers,
     on_attach = on_attach,
     single_file_support = true,
     init_options = {
@@ -220,6 +243,7 @@ lsp.tsserver.setup({
 
 lsp.lua_ls.setup({
     capabilities = capabilities,
+    handlers = handlers,
     on_attach = on_attach,
     settings = {
         Lua = {
@@ -235,6 +259,7 @@ lsp.lua_ls.setup({
 
 lsp.clangd.setup({
     capabilities = capabilities,
+    handlers = handlers,
     on_attach = on_attach,
 })
 

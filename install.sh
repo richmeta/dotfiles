@@ -73,3 +73,9 @@ if [ ! -e ~/.config/black ]; then
     ln -sv $(readlink -f .config/black) ~/.config/black
 fi
 
+# pycodestyle
+if [ ! -e ~/.config/pycodestyle ]; then
+    ln -sv $(readlink -f .config/pycodestyle) ~/.config/pycodestyle
+fi
+
+

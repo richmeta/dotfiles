@@ -4,7 +4,7 @@ return {
     opts = {
         ensure_installed = {
             "lua_ls",
-            "pyright",
+            "pylsp",
             "rust_analyzer",
             "tsserver",
             "docker_compose_language_service",
