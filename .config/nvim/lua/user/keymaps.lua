@@ -39,7 +39,10 @@ vnoremap("<C-X>", [["+x]])
 map("<C-V>", [["+gP]])
 cmap("<C-V>", "<C-R>+")
 
--- Use CTRL-Q to do what CTRL-V used to do
+-- alt-v = select line (without nl)
+nnoremap("<m-v>", "^vg_")
+
+-- Use CTRL-Q for visual mode (originally CTRL-V)
 -- ctrl-q = blockwise visual select
 noremap("<C-Q>", "<C-V>")
 
@@ -59,6 +62,10 @@ noremap("<C-A>", "gggH<C-O>G")
 onoremap("<C-A>", "<C-C>gggH<C-O>G")
 snoremap("<C-A>", "<C-C>gggH<C-O>G")
 xnoremap("<C-A>", "<C-C>ggVG")
+
+-- TODO:
+-- -- gx = go back to previous space
+-- nnoremap("gx", "gEl")
 
 -- \tt = new tab
 nnoremap("<Leader>tt", ":tabnew<cr>")

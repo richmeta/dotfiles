@@ -129,7 +129,8 @@ if has("clipboard")
     endif
 endif
 
-" Use CTRL-Q to do what CTRL-V used to do
+
+" Use CTRL-Q for visual mode (originally CTRL-V)
 noremap <C-Q> <C-V>
 
 " Use CTRL-S for saving, also in Insert mode (<C-O> doesn't work well when
@@ -146,12 +147,18 @@ onoremap <C-A> <C-C>gggH<C-O>G
 snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
 
-" ctlr-x +v = select whole line excl newline
-" TODO: <m-v> doesn't work
-nnoremap <C-X>v ^vg_
+" required so terminal recognises m-v
+silent! execute "set <M-v>=\<Esc>v"
+
+" alt-v = select line (without nl)
+nnoremap <m-v> ^vg_
 
 " override blockwise Put without overwriting
 vnoremap P I<C-R>"
+
+" TODO:
+" " gx = go back to previous space
+" nnoremap gx gEl
 
 set hidden
 set nobackup
@@ -990,6 +997,8 @@ else
     let g:ale_python_flake8_executable = 'python3'
     let g:ale_python_flake8_options = '-m flake8 --ignore=E501,E731,W391,F403,W292'
 endif
+
+let g:ale_python_mypy_auto_poetry = 1
 
 let g:ale_linters = {
     \   'javascript': ['eslint'],
