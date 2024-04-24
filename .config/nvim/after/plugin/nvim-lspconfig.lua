@@ -157,25 +157,21 @@ end
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lsp.pylsp.setup({
+lsp.ruff_lsp.setup({
     capabilities = capabilities,
     handlers = handlers,
     on_attach = on_attach,
-    settings = {
-        pylsp = {
-            plugins = {
-                pyls_isort = {
-                    enabled = true
-                },
-                rope_autoimport = {
-                    enabled = true
-                },
-                jedi_hover = {
-                    enabled = true
-                },
-            }
+    init_options = {
+        settings = {
+            args = {
+            },
         }
     }
+})
+
+lsp.pyright.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
 })
 
 lsp.rust_analyzer.setup({

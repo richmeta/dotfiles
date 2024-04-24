@@ -3,12 +3,14 @@ return {
 
     opts = {
         ensure_installed = {
+            "clangd",
+            "docker_compose_language_service",
             "lua_ls",
-            "pylsp",
+            "pyright",
+            "ruff_lsp",
             "rust_analyzer",
             "tsserver",
-            "docker_compose_language_service",
-            "clangd"
+            "yamlls",
         }
     }
 }
