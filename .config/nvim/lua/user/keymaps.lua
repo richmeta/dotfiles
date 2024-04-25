@@ -42,6 +42,20 @@ cmap("<C-V>", "<C-R>+")
 -- alt-v = select line (without nl)
 nnoremap("<m-v>", "^vg_")
 
+-- alt-c = select line (without nl) and copy
+nnoremap("<m-c>", [[^vg_"+y]])
+vnoremap("<m-c>", function()
+    local start_pos = vim.api.nvim_buf_get_mark(0, '<')
+    local end_pos = vim.api.nvim_buf_get_mark(0, '>')
+    if start_pos[1] ~= end_pos[1] then
+        -- multiline just copy
+        return [["+y]]
+    else
+        -- without nl
+        return [[^vg_"+y]]
+    end
+end, { expr = true })
+
 -- Use CTRL-Q for visual mode (originally CTRL-V)
 -- ctrl-q = blockwise visual select
 noremap("<C-Q>", "<C-V>")

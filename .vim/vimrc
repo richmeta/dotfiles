@@ -147,11 +147,31 @@ onoremap <C-A> <C-C>gggH<C-O>G
 snoremap <C-A> <C-C>gggH<C-O>G
 xnoremap <C-A> <C-C>ggVG
 
+function! s:check_copy_mc()
+    " if single line selected, copy without nl
+    " if multiple, just copy
+    let start_pos = getpos("'<")
+    let end_pos = getpos("'>")
+
+    if start_pos[1] != end_pos[1]
+        " multiline
+        return '"+y'
+    else
+        return '^vg_"+y'
+    endif
+endfunction
+
+
 " required so terminal recognises m-v
 silent! execute "set <M-v>=\<Esc>v"
+silent! execute "set <M-c>=\<Esc>c"
 
 " alt-v = select line (without nl)
 nnoremap <m-v> ^vg_
+
+" alt-c = select line (without nl)
+nnoremap <m-c> ^vg_"+y
+vnoremap <expr> <m-c> <SID>check_copy_mc()
 
 " override blockwise Put without overwriting
 vnoremap P I<C-R>"
