@@ -47,7 +47,7 @@ return {
         if lint.linters_by_ft.python then
             if util.has_value(lint.linters_by_ft.python, "flake8") then
                 local flake8 = lint.linters.flake8
-                table.insert(flake8.args, "--ignore=E501,E731,W391,F403,W292")
+                table.insert(flake8.args, "--ignore=E501,E704,E731,W391,F403,W292")
             end
 
             -- mypy

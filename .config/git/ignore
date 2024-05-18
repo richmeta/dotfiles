@@ -36,3 +36,9 @@ pyrightconfig.json
 
 # tmp scripts
 go.sh
+
+# .vimrc local
+.vimrc
+
+# lib links
+.lib

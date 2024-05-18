@@ -221,6 +221,12 @@ nnoremap("<Leader>ss", ":wa<cr>")
 nnoremap("<Leader>us", ":%!sort -u<cr>")
 vnoremap("<Leader>us", ":!sort -u<cr>")
 
+-- \un = Toggle Clipboard=unnamed
+nnoremap("<Leader>un", tg.toggle({
+    setting = "clipboard",
+    choices = { "unnamedplus", "" }
+}))
+
 -- \vs = Visual sort
 vnoremap("<Leader>vs", ":sort<cr>")
 
@@ -400,7 +406,13 @@ tnoremap("<C-\\>", [[<C-\><C-n>]])
 tmap("<C-S>", "<Nop>")
 
 -- \mt = open terminal at this dir
-map("<Leader>mt", [[:let $VIM_DIR=expand('%:p:h')<cr>:terminal<cr>cd $VIM_DIR<cr>]])
+local tt_found, toggleterm = pcall(require, "toggleterm")
+if tt_found then
+    map("<Leader>mt", function()
+        local dir = buffer.dirvish_or_buffer_dir()
+        toggleterm.toggle(1, nil, dir, nil, nil)
+    end)
+end
 
 -- \dt = diffthis
 nnoremap("<Leader>dt", tg.toggle({

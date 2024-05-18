@@ -27,7 +27,10 @@ return {
     end,
 
     keys = {
+        -- \sr = reload snippets
         { "<leader>sr", snippet_load, mode = "n" },
+
+        -- \se = reload snippets
         { "<leader>se", snippet_edit, mode = "n" },
     },
 }

@@ -11,5 +11,5 @@ return {
         size = function()
             return vim.o.columns * 0.4
         end,
-    }
+    },
 }

@@ -46,7 +46,11 @@ return {
                         ["<C-w>"] = actions.send_selected_to_qflist,
 
                         -- ctrl-q = send all results to quick fix (telescope)
-                        ["<C-q>"] = actions.send_to_qflist,
+                        ["<C-q>"] = function(...)
+                            local args = {...}
+                            actions.send_to_qflist(unpack(args))
+                            vim.cmd("copen")
+                        end,
                         ["<F7>"] = actions.delete_buffer
                     }
                 }

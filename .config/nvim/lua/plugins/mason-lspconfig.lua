@@ -7,7 +7,6 @@ return {
             "docker_compose_language_service",
             "lua_ls",
             "pyright",
-            "ruff_lsp",
             "rust_analyzer",
             "tsserver",
             "yamlls",

@@ -157,18 +157,6 @@ end
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lsp.ruff_lsp.setup({
-    capabilities = capabilities,
-    handlers = handlers,
-    on_attach = on_attach,
-    init_options = {
-        settings = {
-            args = {
-            },
-        }
-    }
-})
-
 lsp.pyright.setup({
     capabilities = capabilities,
     on_attach = on_attach,

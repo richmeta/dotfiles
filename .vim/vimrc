@@ -471,6 +471,9 @@ nnoremap <Leader>ss :wa<cr>
 nnoremap <Leader>us :%!sort -u<cr>
 vnoremap <Leader>us :!sort -u<cr>
 
+" \un = toggle unnamed
+map <Leader>un :let &clipboard=toggle#let_from(&clipboard, ['unnamed', ''])<bar>set clipboard?<cr>
+
 " \vs = Visual sort
 vnoremap <Leader>vs :sort<cr>
 

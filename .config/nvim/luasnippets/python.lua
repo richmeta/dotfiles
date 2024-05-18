@@ -31,10 +31,14 @@ return {
     s( "dataclass", t{'from dataclasses import dataclass', ''} ),
     s( "StringIO", t{'from io import StringIO', ''} ),
     s( "contextmanager", t{'from contextlib import contextmanager', ''} ),
+    s( "cache", t{'from functools import cache', ''} ),
+    s( "mock", t{'import unittest.mock', ''} ),
 
     s( { trig = "pdb", dscr = "pdb trace" },
         t{'__import__("pdb").set_trace()'}
     ),
+
+    s( "ignore", t{" # type: ignore"} ),
 
     s( { trig = "logging", dscr = "setup logging" }, fmt(
 [[import logging
@@ -49,6 +53,8 @@ if argv.verbose:
 ]],
         i(0))
     ),
+
+    s( { trig = "logger", dscr = "get the logger" }, t{"_logger = logging.getLogger(__name__)"} ),
 
     -- constructs
     s( { trig = "with", dscr = "with" }, fmt(
@@ -207,7 +213,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="{}")
     parser.add_argument("--verbose", "-v", action="store_true", help="verbose output")
 
-    return parser.parse_args()
+    argv = parser.parse_args()
+    if argv.verbose:
+        logger.setLevel(logging.DEBUG)
+    return argv
 ]],
         i(0) )
     ),

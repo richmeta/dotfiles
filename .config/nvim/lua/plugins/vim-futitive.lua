@@ -2,7 +2,7 @@
 return {
     "tpope/vim-fugitive",
 
-    lazy = false, 
+    lazy = false,
 
     keys = {
         -- \gd = Gvdiff
