@@ -43,7 +43,6 @@ opt.matchpairs:append("<:>")
 opt.iskeyword:append("-")
 o.wildmenu = true
 opt.wildignore:append { "*.sw*", "*.pyc", "node_modules", "tags", "__pycache__", ".DS_Store", ".git" }
-o.shellslash = true
 o.laststatus = 2
 o.keymodel = "startsel"
 opt.listchars = {
@@ -70,7 +69,6 @@ o.fixendofline = false
 o.mouse = "a"
 o.selection = "inclusive"
 o.dictionary = los.nvim_config_dir .. "/dict/dict.txt"
-o.pastetoggle = "<Leader>ps"
 o.autoread = false
 opt.diffopt:append("algorithm:patience")
 
