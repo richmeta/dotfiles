@@ -78,4 +78,7 @@ if [ ! -e ~/.config/pycodestyle ]; then
     ln -sv $(readlink -f .config/pycodestyle) ~/.config/pycodestyle
 fi
 
-
+# kitty
+if [ ! -e ~/.config/kitty/kitty.conf ]; then
+    ln -sv $(readlink -f .config/kitty/kitty.conf) ~/.config/kitty/kitty.conf
+fi
