@@ -203,8 +203,10 @@ def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str)
     ret = {}
     if symbol:
         ret["pypath"] = f"{mod.__name__}.{symbol}"
+        ret["import"] = f"from {mod.__name__} import {symbol}"
     else:
         ret["pypath"] = f"{mod.__name__}"
+        ret["import"] = f"import {mod.__name__}"
 
     if mod.__file__:
         path = Path(mod.__file__)

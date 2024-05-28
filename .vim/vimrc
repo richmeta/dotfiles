@@ -462,7 +462,7 @@ nnoremap <Leader>pb :echo expand('%:h')<cr>
 nnoremap <Leader>wd :execute 'cd ' . expand('%:h')<bar>:pwd<cr>
 
 " \wg = change working directory to git root
-nnoremap <Leader>wg :execute 'cd ' . fnamemodify(FugitiveGitDir(), ':h')<bar>:pwd<cr>
+nnoremap <Leader>wg :execute 'cd ' . fnamemodify(FugitiveWorkTree(), ':h')<bar>:pwd<cr>
 
 " \ss - save all
 nnoremap <Leader>ss :wa<cr>
@@ -915,7 +915,7 @@ let g:tagbar_type_vimwiki = {
 " Fugitive
 " --------
 " \cg = copy git path relative
-nnoremap <Leader>cg :let @+=(FugitiveExtractGitDir('.') != '' ? FugitivePath(@%, '') : expand('%'))<cr>
+nnoremap <Leader>cg :let @+=(FugitiveWorkTree() != '' ? FugitivePath(@%, '') : expand('%'))<cr>
 
 " \gd = Gvdiff
 nnoremap <Leader>gd :Gvdiff<cr>
@@ -960,10 +960,11 @@ nnoremap <Leader>ns :new<cr>
 nmap <F4> <Plug>(dirvish_up):echo(expand('%'))<cr>
 
 " g<F4> = dirvish git root dir
-nmap g<F4> :execute 'Dirvish ' . fnameescape(fnamemodify(FugitiveGitDir(), ':h'))<cr>
+nmap g<F4> :execute 'Dirvish ' . fnameescape(fnamemodify(FugitiveWorkTree(), ':h'))<cr>
 
 " <Ctrl-F4> = dirvish git root dir (newtab)
-nmap <silent><leader>g<F4> :execute 'tabedit +Dirvish\ ' . fnameescape(fnamemodify(FugitiveGitDir(), ':h'))<cr>
+" nmap <silent><leader>g<F4> :execute 'tabedit +Dirvish\ ' . fnameescape(fnamemodify(FugitiveWorkTree(), ':h'))<cr>
+nmap <silent><leader>g<F4> :execute 'tabedit +Dirvish\ ' . fnameescape(FugitiveWorkTree())<cr>
 
 " Shift-<F4> = vsplit + dirvish current dir
 nmap <S-F4> <Plug>(dirvish_vsplit_up)

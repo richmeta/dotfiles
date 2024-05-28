@@ -26,11 +26,25 @@ function s:pyinfo_find_symbol_clip(return_as)
     call file#clip(result, 1)
 endfunction
 
+function s:pytest_for_function_clip()
+    if FugitiveWorkTree() == ''
+        return
+    endif
+    let filepath = FugitivePath(@%, '')
+    let func = expand("<cword>")
+    let result = "pytest " . filepath . " -k " . func
+    call file#clip(result, 1)
+endfunction
+
 " \cy = copy python path of current symbol
-nnoremap <buffer> <Leader>cy :call <SID>pyinfo_find_symbol_clip("pypath")<cr>
+nnoremap <buffer> <Leader>cy :call <SID>pyinfo_find_symbol_clip("import")<cr>
 
 " \cp = copy file path of current symbol
 nnoremap <buffer> <Leader>cp :call <SID>pyinfo_find_symbol_clip("path")<cr>
+
+" \ct = copy test spec of current symbol
+" pytest <filename> -k func
+nnoremap <buffer> <Leader>ct :call <SID>pytest_for_function_clip()<cr>
 
 abbr <buffer> true True
 abbr <buffer> false False

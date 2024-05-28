@@ -1,28 +1,32 @@
-local Path = require("plenary.path")
 local M = {}
 
+local function git_root()
+    return vim.fn.FugitiveWorkTree()
+end
+
+local function git_branch()
+    return vim.fn.FugitiveHead()
+end
+
 function M.root(silent)
-    local dir = vim.fn["FugitiveExtractGitDir"](".")
+    local dir = git_root()
     if dir == "" then
         return M.no_git(silent)
     end
-    -- remove trailing .git/ dir
-    local p1 = Path:new(dir)
-    return tostring(p1:parent())
+    return dir
 end
 
 function M.relative_from_buffer(filename)
-    local dir = vim.fn.FugitiveExtractGitDir(".")
+    local dir = git_root()
     if dir == "" then
         -- not a git dir
         return vim.fn.expand("%")
     end
-    local p = vim.fn.FugitivePath(filename, "")
-    return tostring(Path:new(p))
+    return vim.fn.FugitivePath(filename, "")
 end
 
 function M.branch(silent)
-    local branch = vim.fn["FugitiveHead"]()
+    local branch = git_branch()
     if branch == "" then
         return M.no_git(silent)
     end

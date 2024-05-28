@@ -1,5 +1,8 @@
 local mp = require("user.map")
 local clipboard = require("user.clip")
+local git = require("user.git")
+local buffer = require("user.buffer")
+local util = require("user.util")
 
 -- buffer local
 vim.bo.tabstop = 4
@@ -78,12 +81,21 @@ end
 
 -- \cy = copy python path of current symbol
 mp.nnoremap("<Leader>cy", function()
-    pyinfo_find_symbol_clip("pypath")
+    pyinfo_find_symbol_clip("import")
 end, mp.buffer)
 
 -- \cp = copy file path of current symbol
 mp.nnoremap("<Leader>cp", function()
     pyinfo_find_symbol_clip("path")
+end, mp.buffer)
+
+-- \ct = copy test spec of current symbol
+-- pytest <filename> -k func
+mp.nnoremap("<Leader>ct", function()
+    local filepath = git.relative_from_buffer(buffer.full())
+    local func = util.expand("<cword>")
+    local result = string.format("pytest %s -k %s", filepath, func)
+    clipboard.copy(result)
 end, mp.buffer)
 
 vim.cmd("abbr <buffer> true True")
