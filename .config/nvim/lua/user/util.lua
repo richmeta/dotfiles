@@ -54,9 +54,9 @@ function M.execute(...)
     vim.cmd(cmd)
 end
 
-function M.expand(arg)
+function M.expand(arg, allow_empty)
     local value = vim.fn.expand(arg)
-    if value == nil or value == "" then
+    if not allow_empty and value == nil or value == "" then
         error("expand("..arg..") is empty")
     end
     return value

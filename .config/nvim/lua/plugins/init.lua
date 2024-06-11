@@ -7,7 +7,6 @@ local plugins = {
 
     -- treesitter
     { "nvim-treesitter/nvim-treesitter" },                      -- yes
-    { "nvim-treesitter/playground" },
 
     -- lsp
     { "williamboman/mason.nvim", opts = {}, build = ":MasonUpdate" },

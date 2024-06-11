@@ -56,11 +56,17 @@ function M.has_filename()
 end
 
 function M.dirvish_or_buffer_dir()
-    -- return current dir if dirvish window, else current buffer's dir
+    -- return:
+    --  current dir if dirvish window
+    --  otherwise current buffer's dir if not empty buffer
+    --  otherwise nil
     if vim.o.filetype == "dirvish" then
         return util.expand("%")
     end
-    return M.expand("dir")
+    if M.has_filename() then
+        return M.expand("dir")
+    end
+    return nil
 end
 
 M.fullpath = M.full
