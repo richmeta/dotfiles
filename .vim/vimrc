@@ -956,21 +956,33 @@ nnoremap <Leader>ns :new<cr>
 " Dirvish
 " -------
 
+function! s:dirvish_newtab()
+    let fname = expand("<cfile>")
+    let realpath = trim(system('readlink ' . fnameescape(fname)))
+    if realpath == ''
+        " normal file
+        let cmd = 'tabedit +Dirvish ' . fnameescape(fname)
+    else
+        let cmd = 'tabedit +Dirvish ' . fnameescape(realpath)
+    endif
+    execute cmd
+endfunction 
+
+
 " <F4> = dirvish current dir
 nmap <F4> <Plug>(dirvish_up):echo(expand('%'))<cr>
 
 " g<F4> = dirvish git root dir
 nmap g<F4> :execute 'Dirvish ' . fnameescape(fnamemodify(FugitiveWorkTree(), ':h'))<cr>
 
-" <Ctrl-F4> = dirvish git root dir (newtab)
-" nmap <silent><leader>g<F4> :execute 'tabedit +Dirvish\ ' . fnameescape(fnamemodify(FugitiveWorkTree(), ':h'))<cr>
+" \g<F4> = dirvish git root dir (newtab)
 nmap <silent><leader>g<F4> :execute 'tabedit +Dirvish\ ' . fnameescape(FugitiveWorkTree())<cr>
 
 " Shift-<F4> = vsplit + dirvish current dir
 nmap <S-F4> <Plug>(dirvish_vsplit_up)
 
 " \F4 = dirvish from this directory or file (tab)
-nmap <silent><Leader><F4> :<C-U>exe 'tabedit +Dirvish\ ' . fnameescape(expand('%:p'))<cr>
+nmap <silent><Leader><F4> :call <SID>dirvish_newtab()<cr>
 
 " F4 = :Dirvish (commandmode)
 cnoremap <F4> Dirvish<Space>

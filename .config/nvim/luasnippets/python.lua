@@ -18,11 +18,6 @@ return {
         t{'#!/usr/bin/env python3', ''}
     ),
 
-    s( { trig = "from", dscr = "with" },
-        fmt(
-[[from {} import {} ]], { i(1), i(2) })
-    ),
-
     -- common imports
     s( "Path", t{'from pathlib import Path', ''} ),
     s( "datetime", t{'from datetime import datetime, timedelta', ''} ),

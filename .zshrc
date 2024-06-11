@@ -32,11 +32,11 @@ zshaddhistory() {
 if [[ $OSTYPE == darwin* ]]; then
     export CLICOLOR=1
     export LSCOLORS=Exgxcxdxcxegedabagacad
-    export HOMEBREW_NO_AUTO_UPDATE=1              # Experiment replacing HOMEBREW with NIX
+    export HOMEBREW_NO_AUTO_UPDATE=1
 fi
 
-if [[ $OSTYPE == darwin* ]] && [[ -x mvim ]]; then
-    export EDITOR='mvim -v'
+if [[ $OSTYPE == darwin* ]] && [[ -x $(which nvim) ]]; then
+    export EDITOR=nvim
 elif [[ -x $(which gvim) ]]; then
     export EDITOR=gvim
 elif [[ -x $(which vim) ]]; then

@@ -71,6 +71,11 @@ if vim.fn.executable('ruff') then
         local exec = ":%!ruff check --fix-only " .. vim.fn.expand("%")
         vim.cmd(exec)
     end)
+
+    mp.nnoremap("<Leader>rF", function()
+        local exec = ":%!ruff format " .. vim.fn.expand("%")
+        vim.cmd(exec)
+    end)
 end
 
 local function pyinfo_find_symbol_clip(return_as)

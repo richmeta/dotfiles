@@ -42,6 +42,7 @@ alias Dc='docker-compose'
 alias pstty='ps -t $(tty)'
 alias setcpath='export PATH=$PATH:`pwd`'
 alias a='activate'
+alias d='deactivate'
 alias py=ipython3
 alias crontab="EDITOR=vim crontab"
 alias yt=yt-dlp

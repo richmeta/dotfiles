@@ -26,7 +26,16 @@ return {
 
         -- \F4 = dirvish from this directory or file (tab)
         { "<leader><F4>", function()
-            vim.cmd(string.format("tabedit +Dirvish %s", vim.fn.expand('%')))
+            local fname = vim.fn.expand("<cfile>")
+            local realpath = vim.fn.trim(vim.fn.system('readlink ' .. vim.fn.fnameescape(fname)))
+            local cmd
+            if realpath == '' then
+                -- normal file
+                cmd = 'tabedit +Dirvish ' .. vim.fn.fnameescape(fname)
+            else
+                cmd = 'tabedit +Dirvish ' .. vim.fn.fnameescape(realpath)
+            end
+            vim.cmd(cmd)
         end, mode = "n" },
 
         -- \g<F4> = dirvish git root dir (newtab)
