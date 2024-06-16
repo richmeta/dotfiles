@@ -1,6 +1,7 @@
 local util = require("user.util")
 local buffer = require("user.buffer")
 local clipboard = require("user.clip")
+local git = require("user.git")
 local Path = require("plenary.path")
 
 local M = {}
@@ -109,14 +110,16 @@ function M.clip(opts)
     -- opts = {
     --     path = optional, use expand or typ
     --     expand = pattern to expand into path
-    --     typ = expand by type (dir, full, filename, stem),
+    --     typ = expand by type (dir, full, filename, stem, git),
     --     populates expand",
     --     showmsg = false (default)
     -- }
     local path = opts.path
     if not path then
         local expand = opts.expand
-        if opts.typ then
+        if opts.typ == "git" then
+            expand = git.relative_from_buffer(buffer.expand("current"))
+        elseif opts.typ then
             expand = buffer.expand(opts.typ)
         end
         if not expand then

@@ -31,31 +31,32 @@ export VISUAL="$EDITOR"
 function activate() {
     if [[ -n "$1" ]]; then
         if [[ -f "$HOME/envs/$1/bin/activate" ]]; then
-            FILE="$HOME/envs/$1/bin/activate"
-            source $FILE
+            source "$HOME/envs/$1/bin/activate"
         elif [[ -f "$1/bin/activate" ]]; then
-            FILE="$1/bin/activate"
-            source $FILE
+            source "$1/bin/activate"
         else
             echo "Env $1 not found"
         fi
     elif [[ -L "./.env" && -d $(readlink .env) ]]; then
         source .env/bin/activate
     elif [[ -f pyproject.toml ]] && [[ -x $(which poetry) ]]; then
-        poetry shell
+        env=$(poetry env info --path)
+        if [[ -n "$env" ]]; then
+            source "$env/bin/activate"
+        fi
     else
         # find the activate and do it
-        FILE=$(find_activate)
-
+        file=$(find_activate)
         if [ $? -eq 0 ]; then
-            echo -n "Source $FILE (Y/n) ? "
+            echo -n "Source $file (Y/n) ? "
             read yn
             if [[ ${#yn} -eq 0 || $yn = 'y' ]]; then
-                source $FILE;
+                source $file;
             fi
         fi
     fi
 }
+
 
 
 function hgrep() {

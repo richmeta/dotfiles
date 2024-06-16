@@ -957,16 +957,20 @@ nnoremap <Leader>ns :new<cr>
 " -------
 
 function! s:dirvish_newtab()
-    let fname = expand("<cfile>")
-    let realpath = trim(system('readlink ' . fnameescape(fname)))
-    if realpath == ''
-        " normal file
-        let cmd = 'tabedit +Dirvish ' . fnameescape(fname)
+    if &filetype == "dirvish"
+        let fname = expand("<cfile>")
+        let realpath = trim(system('readlink ' . fnameescape(fname)))
+        if realpath == ''
+            " normal file
+            let cmd = 'tabedit +Dirvish ' . fnameescape(fname)
+        else
+            let cmd = 'tabedit +Dirvish ' . fnameescape(realpath)
+        endif
     else
-        let cmd = 'tabedit +Dirvish ' . fnameescape(realpath)
+        let cmd = 'tabedit +Dirvish ' . fnameescape(expand("%:p"))
     endif
     execute cmd
-endfunction 
+endfunction
 
 
 " <F4> = dirvish current dir

@@ -82,6 +82,7 @@ local function pyinfo_find_symbol_clip(return_as)
     local pyinfo_find_symbol = vim.fn["pyinfo#find_symbol"]
     local result = pyinfo_find_symbol(return_as)
     clipboard.copy(result)
+    vim.notify("copied", vim.log.levels.INFO)
 end
 
 -- \cy = copy python path of current symbol
@@ -101,6 +102,7 @@ mp.nnoremap("<Leader>ct", function()
     local func = util.expand("<cword>")
     local result = string.format("pytest %s -k %s", filepath, func)
     clipboard.copy(result)
+    vim.notify("copied", vim.log.levels.INFO)
 end, mp.buffer)
 
 vim.cmd("abbr <buffer> true True")

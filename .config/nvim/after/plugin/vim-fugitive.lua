@@ -1,5 +1,6 @@
 local util = require("user.util")
 local clipboard = require("user.clip")
+local file = require("user.file")
 local git = require("user.git")
 local mp = require("user.map")
 
@@ -24,8 +25,6 @@ end)
 -- \cg = copy git path relative
 mp.nnoremap("<Leader>cg", function()
     -- git path else current buffer
-    local current_filename = vim.fn.getreg("%")
-    local path = git.relative_from_buffer(current_filename)
-    clipboard.copy(path)
+    file.clip({ typ = "git", showmsg = true })
 end)
 

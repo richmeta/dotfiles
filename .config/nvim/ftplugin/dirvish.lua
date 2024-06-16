@@ -1,8 +1,6 @@
 local mp = require("user.map")
 local util = require("user.util")
 local file = require("user.file")
-local git = require("user.git")
-local clipboard = require("user.clip")
 
 local silent = { silent = true }
 
@@ -104,28 +102,27 @@ mp.nmap_b("h", "<Plug>(dirvish_up):echo(expand('%'))<cr>", silent)
 
 -- copypath
 mp.nmap_b("<Leader>cd", function()
-    file.clip({ typ = "dir" })
+    file.clip({ typ = "dir", showmsg = true })
 end,
 silent)
 
 mp.nmap_b("<Leader>cf", function()
-    file.clip({ typ = "full" })
+    file.clip({ typ = "full", showmsg = true })
 end,
 silent)
 
 mp.nmap_b("<Leader>cv", function()
-    file.clip({ typ = "filename" })
+    file.clip({ typ = "filename", showmsg = true })
 end,
 silent)
 
 mp.nmap_b("<Leader>cs", function()
-    file.clip({ typ = "stem" })
+    file.clip({ typ = "stem", showmsg = true })
 end,
 silent)
 
 -- \cg = copy git path relative
 mp.nmap_b("<Leader>cg", function()
-    local path = git.relative_from_buffer(cfile())
-    clipboard.copy(path)
+    file.clip({ typ = "git", showmsg = true })
 end)
 

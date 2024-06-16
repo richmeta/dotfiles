@@ -26,14 +26,18 @@ return {
 
         -- \F4 = dirvish from this directory or file (tab)
         { "<leader><F4>", function()
-            local fname = vim.fn.expand("<cfile>")
-            local realpath = vim.fn.trim(vim.fn.system('readlink ' .. vim.fn.fnameescape(fname)))
             local cmd
-            if realpath == '' then
-                -- normal file
-                cmd = 'tabedit +Dirvish ' .. vim.fn.fnameescape(fname)
+            if vim.o.filetype == 'dirvish' then
+                local fname = vim.fn.expand("<cfile>")
+                local realpath = vim.fn.trim(vim.fn.system('readlink ' .. vim.fn.fnameescape(fname)))
+                if realpath == '' then
+                    -- normal file
+                    cmd = 'tabedit +Dirvish ' .. vim.fn.fnameescape(fname)
+                else
+                    cmd = 'tabedit +Dirvish ' .. vim.fn.fnameescape(realpath)
+                end
             else
-                cmd = 'tabedit +Dirvish ' .. vim.fn.fnameescape(realpath)
+                cmd = 'tabedit +Dirvish ' .. vim.fn.fnameescape(vim.fn.expand("%:p"))
             end
             vim.cmd(cmd)
         end, mode = "n" },
