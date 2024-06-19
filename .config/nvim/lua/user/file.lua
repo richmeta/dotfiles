@@ -6,6 +6,18 @@ local Path = require("plenary.path")
 
 local M = {}
 
+local function as_path(fn)
+    if Path.is_path(fn) then
+        return fn
+    end
+    if type(fn) == "string" then
+        return Path:new(util.expand(fn))  -- expand ~ or %:p patterns
+    end
+    error("unknown type `fn` : " .. fn)
+end
+
+M.as_path = as_path
+
 function M.expand_expr(typ)
     -- returns the expand equiv of `typ`
     -- where typ in 'dir', 'directory', 'filename', 'full', 'fullpath', 'stem'
@@ -42,15 +54,21 @@ end
 
 function M.stem(fn)
     if string.find(fn, "/$") then
-        -- only tables are passed by reference
         fn = string.sub(fn, 1, #fn-1)
     end
     return M.expand(fn, "stem")
 end
 
 function M.relative(fn, base_dir)
-    local p1 = Path:new(fn)
+    local p1 = as_path(fn)
     return p1:make_relative(base_dir)
+end
+
+function M.strip_trailing(fn, ch)
+    while string.find(fn, ch) do
+        fn = string.sub(fn, 1, #fn-1)
+    end
+    return fn
 end
 
 function M.prompt_rename(source)
@@ -65,18 +83,18 @@ function M.prompt_rename(source)
 end
 
 function M.path_equal(a, b)
-    local p1 = tostring(Path:new(a))
-    local p2 = tostring(Path:new(b))
+    local p1 = tostring(as_path(a))
+    local p2 = tostring(as_path(b))
     return p1 == p2
 end
 
 function M.dirname(filename)
-    local p1 = Path:new(filename)
+    local p1 = as_path(filename)
     return p1:parent()
 end
 
 function M.join(head, ...)
-    local p1 = Path:new(head)
+    local p1 = as_path(head)
     local p2 = p1:joinpath(...)
     return tostring(p2)
 end
@@ -92,15 +110,25 @@ function M.any_exists(filenames)
 end
 
 function M.exists(filename)
-    local p1 = Path:new(util.expand(filename))  -- expand ~ or %:p patterns
+    local p1 = as_path(filename)
     return p1:exists()
 end
 
 function M.delete(filename)
-    local p1 = Path:new(util.expand(filename))  -- expand ~ or %:p patterns
+    local p1 = as_path(filename)
     vim.ui.input({ prompt = string.format("remove file '%s'? ", p1)}, function(value)
         if string.lower(value) == "y" then
             p1:rm()
+            vim.notify("deleted", vim.log.levels.INFO)
+        end
+    end)
+end
+
+function M.delete_directory(directory)
+    local p1 = as_path(directory)
+    vim.ui.input({ prompt = string.format("remove directory '%s'? - 'DELETE' to confirm ", p1)}, function(value)
+        if value == "DELETE" then
+            p1:rm({ recursive = true })
             vim.notify("deleted", vim.log.levels.INFO)
         end
     end)
@@ -125,7 +153,8 @@ function M.clip(opts)
         if not expand then
             error("expecting `expand` or `typ` option when `path` is omitted")
         end
-        path = tostring(Path:new(util.expand(expand)))   -- fullpath
+        path = M.full(expand)
+        -- path = tostring(Path:new(util.expand(expand)))   -- fullpath
     end
 
     clipboard.copy(path)
