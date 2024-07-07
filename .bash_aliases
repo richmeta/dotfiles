@@ -27,6 +27,7 @@ alias .........="cd ../../../../../../../.."
 alias l="ls"
 alias la="ls -a"
 alias ll="ls -lh"
+alias lla="ls -lha"
 alias lsd="ls -lF | grep '^d'"
 alias grep="grep --color=auto"
 alias mkdir="mkdir -p -v"
@@ -39,6 +40,7 @@ alias rm='rm -v'
 alias df='df -H'
 alias pst='ps -t `tty` $@'
 alias Dc='docker-compose'
+alias dc='docker-compose'
 alias pstty='ps -t $(tty)'
 alias setcpath='export PATH=$PATH:`pwd`'
 alias a='activate'

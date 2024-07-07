@@ -372,12 +372,6 @@ if executable('python3')
     vmap <Leader>pF :!python3 -c 'import sys, pprint; pprint.PrettyPrinter(indent=2).pprint(eval(sys.stdin.read()))' - <cr><cr>
 endif
 
-if executable('python3')
-    " \pf = format black
-    map <Leader>pf :%!black -q - <cr><cr>
-    vmap <Leader>pf :!black -q - <cr><cr>
-endif
-
 if executable('base64')
     " \bf = format base64
     vmap <Leader>bf y:let @"=system('base64 -d', @")<cr>gvP
@@ -684,14 +678,14 @@ nnoremap <Leader>gr :call RunGrep('', '')<cr>
 " \Gr = grep with dir prompt
 nnoremap <Leader>Gr :call RunGrep('', '#')<cr>
 
-" \gD = grep from buffer dir
-nnoremap <Leader>gD :call RunGrep('', expand('%:p:h'))<cr>
+" \br = grep from buffer dir
+nnoremap <Leader>br :call RunGrep('', expand('%:p:h'))<cr>
 
 " \gw = grep current word
 nnoremap <Leader>gw :call RunGrep('<cword>', '')<cr>
 
-" \gW = grep current WORD
-nnoremap <Leader>gW :call RunGrep('<cWORD>', '')<cr>
+" \bw = grep currend word from buffer dir
+nnoremap <Leader>bw :call RunGrep('<cword>', expand('%:p:h'))<cr>
 
 
 " FUNCTION BASED MAPS
@@ -835,10 +829,7 @@ function! s:nopen_window_or_tab(dir, filename, bang)
     let cmd = a:bang == "!" ? 'edit' : 'tabedit'
     let path = a:dir . "/" . a:filename
     if a:filename !~ "\.wiki$"
-        let altpath = globpath(a:dir, trim(a:filename) . ".wiki")
-        if !empty(altpath)
-            let path = altpath
-        endif
+        let path = a:dir . "/" . a:filename . ".wiki"
     endif
     execute cmd path
 endfunction

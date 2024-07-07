@@ -36,6 +36,16 @@ function s:pytest_for_function_clip()
     call file#clip(result, 1)
 endfunction
 
+if executable('python3')
+    " \pf = format black
+    map <Leader>pf :%!black -q - <cr><cr>
+    vmap <Leader>pf :!black -q - <cr><cr>
+endif
+
+if executable('ruff')
+    map <Leader>rf :!ruff check --fix-only -q % && ruff format -q %<cr><bar>:edit<cr>
+endif
+
 " \cy = copy python path of current symbol
 nnoremap <buffer> <Leader>cy :call <SID>pyinfo_find_symbol_clip("import")<cr>
 

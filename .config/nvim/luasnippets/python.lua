@@ -33,6 +33,10 @@ return {
         t{'__import__("pdb").set_trace()'}
     ),
 
+    s( { trig = "ipdb", dscr = "ipdb trace" },
+        t{'__import__("ipdb").set_trace()'}
+    ),
+
     s( "ignore", t{" # type: ignore"} ),
 
     s( { trig = "logging", dscr = "setup logging" }, fmt(

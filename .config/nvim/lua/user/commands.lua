@@ -79,10 +79,7 @@ vim.api.nvim_create_user_command(
         local path = file.join(vim.g.sync_commands_dir, vim.fn.trim(filename))
 
         if not path:match(".wiki$") then
-            local altpath = path .. ".wiki"
-            if file.exists(altpath) then
-                path = altpath
-            end
+            path = path .. ".wiki"
         end
 
         if opts.bang then

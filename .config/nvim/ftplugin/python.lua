@@ -58,24 +58,18 @@ end
 
 
 if vim.fn.executable('black') then
-    mp.nnoremap("<Leader>pf", black_format)
+    mp.nnoremap("<Leader>pf", black_format, mp.buffer)
     mp.vnoremap("<Leader>pf", function()
         black_format(true)
-    end)
+    end, mp.buffer)
 end
 
 if vim.fn.executable('ruff') then
-    -- temporary, until isort intergration
-    -- running on a valid file will empty the buffer
     mp.nnoremap("<Leader>rf", function()
-        local exec = ":%!ruff check --fix-only " .. vim.fn.expand("%")
-        vim.cmd(exec)
-    end)
-
-    mp.nnoremap("<Leader>rF", function()
-        local exec = ":%!ruff format " .. vim.fn.expand("%")
-        vim.cmd(exec)
-    end)
+        local exec = string.format(":!ruff check --fix-only -q %s && ruff format -q ", vim.fn.expand("%"))
+        vim.cmd(exec, { silent = true} )
+        vim.cmd(":edit")
+    end, mp.buffer)
 end
 
 local function pyinfo_find_symbol_clip(return_as)

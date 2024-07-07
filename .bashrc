@@ -27,6 +27,11 @@ else
 fi
 export VISUAL="$EDITOR"
 
+# nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+
 # activate python
 function activate() {
     if [[ -n "$1" ]]; then
