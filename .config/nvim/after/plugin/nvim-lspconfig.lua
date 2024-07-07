@@ -81,7 +81,7 @@ local function on_attach(client, bufnr)
     if client.supports_method("textDocument/hover") then
         -- K = hover signature (lsp)
         mp.nmap_b("K", vim.lsp.buf.hover)
-        mp.imap_b("<m-k>", vim.lsp.buf.hover)
+        mp.imap_b("<c-k>", vim.lsp.buf.hover)
     end
 
     if client.supports_method("textDocument/typeDefinition") then
@@ -130,6 +130,7 @@ local function on_attach(client, bufnr)
     if client.supports_method("textDocument/signatureHelp") then
         -- \sh = signature help (lsp)
         mp.nmap_b("<Leader>sh", vim.lsp.buf.signature_help)
+        mp.imap_b("<m-k>", vim.lsp.buf.signature_help)
     end
 
     if client.supports_method("textDocument/rangeFormatting") then
