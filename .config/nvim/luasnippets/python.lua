@@ -11,7 +11,11 @@ local u = require("user.snip")
 return {
     -- top of file
     s( { trig = "imp", dscr = "import mod" },
-        fmt('import {}', i(0))
+        fmt('import {}', i(1))
+    ),
+
+    s( { trig = "from", dscr = "from import mod" },
+        fmt('from {} import {}', { i(1), i{2} } )
     ),
 
     s( { trig = "#!", dscr = "shebang", snippetType = "autosnippet" },
@@ -50,7 +54,7 @@ if argv.verbose:
     logger.setLevel(logging.DEBUG)
     {}
 ]],
-        i(0))
+        i(1))
     ),
 
     s( { trig = "logger", dscr = "get the logger" }, t{"_logger = logging.getLogger(__name__)"} ),
@@ -58,7 +62,7 @@ if argv.verbose:
     -- constructs
     s( { trig = "with", dscr = "with" }, fmt(
 [[with {}:
-    {}]], { i(1), i(0) })
+    {}]], { i(1), i(2) })
     ),
 
     s( { trig = "for", dscr = "for loop" }, fmt(
@@ -143,7 +147,7 @@ finally:
     s( { trig = '"""', dscr = "long comment", snippetType = "autosnippet" }, fmt(
 [["""
 {}
-"""]], i(0))
+"""]], i(1))
     ),
 
     -- main func / argparse
@@ -198,12 +202,13 @@ def parse_args():
 
 def main():
     argv = parse_args()
+    {}
 
 
 if __name__ == '__main__':
     main()
 ]],
-        i(0) )
+        { i(1), i(0) } )
     ),
 
     -- argparse
@@ -217,7 +222,7 @@ if __name__ == '__main__':
         logger.setLevel(logging.DEBUG)
     return argv
 ]],
-        i(0) )
+        i(1) )
     ),
 
     s( { trig = "addarg", dscr = "argparse.add_argument" }, fmt(
@@ -272,7 +277,7 @@ def main():
 if __name__ == '__main__':
     main()
 ]],
-        i(0))
+        i(1))
     ),
 
     -- misc
