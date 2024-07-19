@@ -93,8 +93,13 @@ end, mp.buffer)
 -- pytest <filename> -k func
 mp.nnoremap("<Leader>ct", function()
     local filepath = git.relative_from_buffer(buffer.full())
-    local func = util.expand("<cword>")
-    local result = string.format("pytest %s -k %s", filepath, func)
+    local func = util.expand("<cword>", true)
+    local result
+    if func == '' then
+        result = string.format("pytest %s", filepath)
+    else
+        result = string.format("pytest %s -k %s", filepath, func)
+    end
     clipboard.copy(result)
     vim.notify("copied", vim.log.levels.INFO)
 end, mp.buffer)
