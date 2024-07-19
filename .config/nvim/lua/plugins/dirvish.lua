@@ -7,6 +7,11 @@ return {
 
     lazy = false,
 
+    config = function()
+        -- sort dirs first, .dirs before
+        vim.g.dirvish_mode = ":sort | :sort ,^.*/,"
+    end,
+
     keys = {
         -- <F4> = dirvish current dir
         { "<F4>", "<Plug>(dirvish_up):echo(expand('%'))<cr>", mode = "n", noremap = true },
