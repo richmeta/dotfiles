@@ -8,8 +8,8 @@ return {
     lazy = false,
 
     config = function()
-        -- sort dirs first, .dirs before
-        vim.g.dirvish_mode = ":sort | :sort ,^.*/,"
+        -- sort dirs first
+        vim.g.dirvish_mode = ":sort ,^.*/,"
     end,
 
     keys = {

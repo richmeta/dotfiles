@@ -23,15 +23,16 @@ return {
     ),
 
     -- common imports
-    s( "Path", t{'from pathlib import Path', ''} ),
-    s( "datetime", t{'from datetime import datetime, timedelta', ''} ),
-    s( "timedelta", t{'from datetime import timedelta', ''} ),
-    s( "pprint", t{'from pprint import pprint', ''} ),
-    s( "dataclass", t{'from dataclasses import dataclass', ''} ),
-    s( "StringIO", t{'from io import StringIO', ''} ),
-    s( "contextmanager", t{'from contextlib import contextmanager', ''} ),
-    s( "cache", t{'from functools import cache', ''} ),
-    s( "mock", t{'import unittest.mock', ''} ),
+    s( "Path", t{'from pathlib import Path'} ),
+    s( "datetime", t{'from datetime import datetime, timedelta'} ),
+    s( "timedelta", t{'from datetime import timedelta'} ),
+    s( "pprint", t{'from pprint import pprint'} ),
+    s( "dataclass", t{'from dataclasses import dataclass'} ),
+    s( "StringIO", t{'from io import StringIO'} ),
+    s( "contextmanager", t{'from contextlib import contextmanager'} ),
+    s( "cache", t{'from functools import cache'} ),
+    s( "mock", t{'import unittest.mock'} ),
+    s( "defaultdict", t{'from collections import defaultdict'} ),
 
     s( { trig = "pdb", dscr = "pdb trace" },
         t{'__import__("pdb").set_trace()'}
@@ -122,7 +123,22 @@ else:
         { i(1), i(0, "pass") })
     ),
 
-    s( { trig = "try", dscr = "try catch/finally" }, fmt(
+    s( { trig = "try", dscr = "try catch" }, fmt(
+[[try:
+    {}{}
+except {} as {}:
+    {}
+]],
+        {
+            u.visual(1),
+            i(0),
+            i(2, "Exception"),
+            i(3, "ex"),
+            i(4, "pass"),
+        })
+    ),
+
+    s( { trig = "tryf", dscr = "try catch/finally" }, fmt(
 [[try:
     {}{}
 except {} as {}:

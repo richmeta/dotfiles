@@ -82,6 +82,17 @@ function M.prompt_rename(source)
     )
 end
 
+function M.prompt_copy(source)
+    vim.ui.input({ prompt = 'copy to: '},
+        function(newfilename)
+            if newfilename and newfilename ~= source then
+                local cmd = string.format('!cp "%s" "%s"', source, newfilename)
+                util.execute(cmd)
+            end
+        end
+    )
+end
+
 function M.path_equal(a, b)
     local p1 = tostring(as_path(a))
     local p2 = tostring(as_path(b))

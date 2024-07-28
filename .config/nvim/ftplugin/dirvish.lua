@@ -135,6 +135,12 @@ mp.nmap_b("cw", function()
     file.prompt_rename(cfile())
 end)
 
+-- cp = copy current file
+mp.nmap_b("cp", function()
+    file.prompt_copy(cfile())
+end)
+
+
 -- ne = new file
 mp.nmap_b("ne", [[:e %/]])
 
