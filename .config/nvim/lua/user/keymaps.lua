@@ -43,7 +43,7 @@ cmap("<C-V>", "<C-R>+")
 nnoremap("<m-v>", "^vg_")
 
 -- alt-c = select line (without nl) and copy
-nnoremap("<m-c>", [[^vg_"+y]])
+nnoremap("<m-c>", [[vg_"+y]])
 vnoremap("<m-c>", function()
     local start_pos = vim.api.nvim_buf_get_mark(0, '<')
     local end_pos = vim.api.nvim_buf_get_mark(0, '>')
@@ -52,7 +52,7 @@ vnoremap("<m-c>", function()
         return [["+y]]
     else
         -- without nl
-        return [[^vg_"+y]]
+        return [[vg_"+y]]
     end
 end, { expr = true })
 

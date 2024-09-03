@@ -157,7 +157,7 @@ function! s:check_copy_mc()
         " multiline
         return '"+y'
     else
-        return '^vg_"+y'
+        return 'vg_"+y'
     endif
 endfunction
 
@@ -170,7 +170,7 @@ silent! execute "set <M-c>=\<Esc>c"
 nnoremap <m-v> ^vg_
 
 " alt-c = select line (without nl)
-nnoremap <m-c> ^vg_"+y
+nnoremap <m-c> vg_"+y
 vnoremap <expr> <m-c> <SID>check_copy_mc()
 
 " override blockwise Put without overwriting
@@ -829,7 +829,7 @@ function! s:nopen_window_or_tab(dir, filename, bang)
     let cmd = a:bang == "!" ? 'edit' : 'tabedit'
     let path = a:dir . "/" . a:filename
     if a:filename !~ "\.wiki$"
-        let path = a:dir . "/" . a:filename . ".wiki"
+        let path = a:dir . "/" . trim(a:filename) . ".wiki"
     endif
     execute cmd path
 endfunction

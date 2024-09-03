@@ -61,8 +61,6 @@ local plugins = {
     -- markdown
     { "preservim/vim-markdown" },
 
-    -- tmux
-    { "christoomey/vim-tmux-navigator" },                       -- yes
 
     -- TEXT OBJECTS
 
@@ -102,6 +100,16 @@ local plugins = {
     -- https://github.com/bps/vim-textobj-python?tab=readme-ov-file#configuration
     { "bps/vim-textobj-python", dependencies = { "kana/vim-textobj-user" } },
 }
+
+
+local los = require("user.os")
+if los.tmux_enabled then
+    -- tmux (yes)
+    table.insert(plugins, { "christoomey/vim-tmux-navigator" })
+else
+    -- kitty (yes)
+    table.insert(plugins, { "knubie/vim-kitty-navigator" })
+end
 
 -- load any local plugins, from user/localplugins.lua
 -- eg return {   { "another-plugin", config = {..} } }

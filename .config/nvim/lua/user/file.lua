@@ -164,8 +164,7 @@ function M.clip(opts)
         if not expand then
             error("expecting `expand` or `typ` option when `path` is omitted")
         end
-        path = M.full(expand)
-        -- path = tostring(Path:new(util.expand(expand)))   -- fullpath
+        path = tostring(Path:new(util.expand(expand)))   -- fullpath
     end
 
     clipboard.copy(path)
