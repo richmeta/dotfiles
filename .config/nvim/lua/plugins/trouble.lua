@@ -1,8 +1,10 @@
 return {
     "folke/trouble.nvim",
 
+    opts = {}, -- required to setup commands
+
      keys = {
         -- \tg = TroubleToggle
-        { "<leader>tg", ":TroubleToggle document_diagnostics<cr>", mode = "n", noremap = true },
+        { "<leader>tg", ":Trouble diagnostics toggle<cr>", mode = "n", noremap = true },
     }
 }

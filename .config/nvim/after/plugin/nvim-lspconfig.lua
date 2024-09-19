@@ -191,7 +191,7 @@ lsp.rust_analyzer.setup({
     }
 })
 
-lsp.tsserver.setup({
+lsp.ts_ls.setup({
     capabilities = capabilities,
     handlers = handlers,
     on_attach = on_attach,

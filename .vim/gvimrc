@@ -20,7 +20,7 @@ endif
 
 if !has('linux')
     set columns=150
-    set lines=50
+    set lines=45
 endif
 
 set guicursor=n:blinkon0
