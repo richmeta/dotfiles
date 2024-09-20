@@ -47,6 +47,8 @@ set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,
 " This is how many directories to store in the directory history.
 set history=100
 
+set ignorecase
+
 " Automatically resolve symbolic links on l or Enter.
 set nofollowlinks
 
@@ -508,3 +510,4 @@ filetype *.mp3,*.flac, vlc %f &
 filetype *.jpg,*.png, geeqie %c &
 cabbrev md mkdir
 
+cabbrev find find -iname "%u
