@@ -11,6 +11,7 @@ return {
             "rust_analyzer",
             "ts_ls",
             "yamlls",
+            "zls",
         }
     }
 }

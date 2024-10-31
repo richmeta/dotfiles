@@ -5,4 +5,4 @@ if [ -f "$HOME/.cargo/env" ]; then
 fi
 
 # non-interactive login scripts
-[ -f ~/.zshenv_local ] && source ~/.zshenv_local 
+[ -f ~/.zshenv_local ] && source ~/.zshenv_local

@@ -168,6 +168,11 @@ lsp.gopls.setup({
     on_attach = on_attach,
 })
 
+lsp.zls.setup({
+    capabilities = capabilities,
+    on_attach = on_attach,
+})
+
 lsp.rust_analyzer.setup({
     on_attach = on_attach,
     handlers = handlers,
