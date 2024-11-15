@@ -47,6 +47,7 @@ alias d='deactivate'
 alias py=ipython3
 alias crontab="EDITOR=vim crontab"
 alias yt=yt-dlp
+alias jt="python3 -m json.tool"
 
 # git aliases
 alias gcl='git clone'

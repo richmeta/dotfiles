@@ -1082,6 +1082,7 @@ let g:switch_custom_definitions =
 let g:switch_custom_definitions += [
 \   switch#NormalizedCase(['true', 'false']),
 \   switch#NormalizedCase(['yes', 'no']),
+\   switch#NormalizedCase(['on', 'off']),
 \   switch#NormalizedCase(['enabled', 'disabled'])
 \ ]
 
