@@ -149,6 +149,7 @@ end
 
 if executable("base64") then
     -- \bf = format base64
+    noremap("<Leader>bf", ":%!base64 -d - <cr><cr>")
     vnoremap("<Leader>bf", [[y:let @"=system('base64 -d', @")<cr>gvP]])
 end
 
@@ -509,6 +510,19 @@ nnoremap("<Leader>kd", tg.toggle({
         return { dot, "" }
     end,
 }))
+
+-- nnoremap("<Leader>kp", tg.toggle({
+--     setting = "iskeyword",
+--     handler = function()
+--         local keyword
+--         vim.ui.input({ prompt = "iskeyword: " }, function(value)
+--             if string.len(value) == 1 then
+--                 keyword = value
+--             end
+--         end)
+--         return keyword
+--     end,
+-- }))
 
 nnoremap("<Leader><C-]>", function()
     local word = util.expand("<cWORD>")

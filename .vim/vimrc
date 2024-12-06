@@ -374,6 +374,7 @@ endif
 
 if executable('base64')
     " \bf = format base64
+    noremap <Leader>bf :%!base64 -d - <cr><cr>
     vmap <Leader>bf y:let @"=system('base64 -d', @")<cr>gvP
 endif
 
@@ -782,7 +783,7 @@ map <Leader>sl :let &selection=toggle#let_from(&selection, ['inclusive', 'exclus
 map <Leader>kd :call toggle#option_list('iskeyword', '.')<cr>
 
 " \kp = prompt for char to toggle in `iskeyword`
-map <Leader>kp :call toggle#option_list('iskeyword')<cr>
+map <silent><Leader>kp :call toggle#option_list_prompt('iskeyword')<cr>
 
 """ tags
 function! s:tagtab(tag)
