@@ -31,6 +31,13 @@ vim.b.switch_custom_definitions =
 
           -- _something => something
           [ [["\@<!\<_\(\w*\)\>]] ] = '\1',
+
+          -- "string" to f"string"
+          [ [[f\(".\{-}"\)]] ] = [[\1]],
+
+          -- "string" to f"string"
+          [ [[\(".\{-}"\)]] ] = [[f\1]],
+
       }
     }
 
