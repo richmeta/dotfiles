@@ -96,6 +96,18 @@ local function set_list_next(opts, next_value, old_value)
     end
 end
 
+
+-- TODO: redesign
+--   does not support toggling options of iskeyword
+--   because handler isn't called at right point
+--   build in option to prompt for value, 
+--      also means validate func too
+
+--  go through use cases 
+--  doc all functions, and optional args
+--  see other lua docs for examples
+--  
+
 function M.toggle(arg)
     -- create a toggle function that will
     -- toggle a setting over list of available values
