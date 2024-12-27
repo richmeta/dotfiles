@@ -258,6 +258,12 @@ lsp.clangd.setup({
     on_attach = on_attach,
 })
 
+lsp.zls.setup({
+    capabilities = capabilities,
+    handlers = handlers,
+    on_attach = on_attach,
+})
+
 -- Ctrl-F5 - toggle LSP errors
 local toggle_diagnostics = tg.toggle({
     source = function()

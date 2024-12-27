@@ -68,7 +68,7 @@ function hgrep() {
     history | grep -iP -- "$*";
 }
 
-function mdc() {
+function mkcd() {
     mkdir -p -v "$1" && cd "$1"
 }
 

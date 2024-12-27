@@ -108,7 +108,11 @@ if los.tmux_enabled then
     table.insert(plugins, { "christoomey/vim-tmux-navigator" })
 else
     -- kitty (yes)
-    table.insert(plugins, { "knubie/vim-kitty-navigator" })
+    table.insert(plugins, {
+        "knubie/vim-kitty-navigator",
+
+        build = "cp *.py ~/.config/kitty",
+    })
 end
 
 -- load any local plugins, from user/localplugins.lua

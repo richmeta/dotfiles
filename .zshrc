@@ -85,7 +85,7 @@ function hgrep() {
     grep -iP ~/.zsh_history -- "$*";
 }
 
-function mdc() {
+function mkcd() {
     mkdir -p -v "$1" && cd "$1"
 }
 
