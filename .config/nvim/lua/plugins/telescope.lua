@@ -20,8 +20,6 @@ return {
                 sorting_strategy = "descending",
                 dynamic_preview_title = true,
                 border = true,
-                color_devicons = true,
-                -- file_ignore_patterns = {},
                 mappings = {
                     i = {
                         -- tab = Toggle selection and move to next selection (telescope)
@@ -70,12 +68,19 @@ return {
             },
             extensions = {
                 ["ui-select"] = {
-                    require("telescope.themes").get_cursor(),
+                    require("telescope.themes").get_dropdown(),
+                },
+                frecency = {
+                    auto_validate = true,
+                    db_safe_mode = false,
+                    hide_current_buffer = true,
+                    ignore_patterns = { "*/.git", "*/.git/*", "*/.DS_Store", "fugitive:*" },
                 },
             }
         }
 
         telescope.load_extension("ui-select")
+        telescope.load_extension("frecency")
 
         -- workaround purple
         -- https://github.com/nvim-telescope/telescope.nvim/issues/2145
@@ -86,7 +91,10 @@ return {
         -- see also: after/plugin/telescope.lua
 
         -- \f = mru files (telescope)
-        { "<leader>f", "<cmd>Telescope oldfiles<cr>", desc = "mru files" },
+        { "<leader>f", "<cmd>Telescope frecency<cr>", desc = "mru files" },
+
+        -- \F = mru files CWD (telescope)
+        { "<leader>F", "<cmd>Telescope frecency workspace=CWD<cr>", desc = "mru files from cwd" },
 
         -- \z = buffers (telescope)
         { "<leader>z", "<cmd>Telescope buffers<cr>", desc = "buffers" },

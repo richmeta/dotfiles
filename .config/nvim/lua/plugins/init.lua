@@ -26,9 +26,6 @@ local plugins = {
     -- linters
     { "mfussenegger/nvim-lint" },                               -- yes
 
-    -- TODO: configure
-    -- { "ThePrimeagen/harpoon" },
-
     -- git
     { "tpope/vim-fugitive" },                                   -- yes
 
@@ -38,7 +35,12 @@ local plugins = {
     -- files, buffers
     { "justinmk/vim-dirvish" },                                 -- yes
     { "nvim-telescope/telescope.nvim" },                        -- yes
-    { "nvim-telescope/telescope-ui-select.nvim" },
+    { "nvim-telescope/telescope-ui-select.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim" }
+    },
+    { "nvim-telescope/telescope-frecency.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim" }
+    },
     { "tpope/vim-projectionist" },                              -- yes
 
     -- highlighting
