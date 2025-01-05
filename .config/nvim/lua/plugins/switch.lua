@@ -1,19 +1,20 @@
 return {
-	"AndrewRadev/switch.vim",
+    "AndrewRadev/switch.vim",
 
-	config = function()
-		vim.g.switch_custom_definitions = {
-			{
-				-- dd/mm/yyyy to isodate
-				[ [[\(\d\+\)[/.-]\(\d\+\)[/.-]\(\d\+\)]] ] = [[\3-\2-\1]],
+    config = function()
+        vim.g.switch_find_smallest_match = 0
+        vim.g.switch_custom_definitions = {
+            {
+                -- dd/mm/yyyy to isodate
+                [ [[\(\d\+\)[/.-]\(\d\+\)[/.-]\(\d\+\)]] ] = [[\3-\2-\1]],
 
-				-- 'X \w+ Y' to 'Y \w+ X'
-				[ [[\(\w\+\)\(\s\+\w\+\s\+\)\(\w\+\)]] ] = [[\3\2\1]],
-			},
-			vim.fn["switch#NormalizedCase"]({ "true", "false" }),
-			vim.fn["switch#NormalizedCase"]({ "yes", "no" }),
-			vim.fn["switch#NormalizedCase"]({ "on", "off" }),
-			vim.fn["switch#NormalizedCase"]({ "enabled", "disabled" }),
-		}
-	end,
+                -- 'X \w+ Y' to 'Y \w+ X'
+                [ [[\(\w\+\)\(\s\+\w\+\s\+\)\(\w\+\)]] ] = [[\3\2\1]],
+            },
+            vim.fn["switch#NormalizedCase"]({ "true", "false" }),
+            vim.fn["switch#NormalizedCase"]({ "yes", "no" }),
+            vim.fn["switch#NormalizedCase"]({ "on", "off" }),
+            vim.fn["switch#NormalizedCase"]({ "enabled", "disabled" }),
+        }
+    end,
 }

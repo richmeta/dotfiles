@@ -1,37 +1,38 @@
+
+local function lint_enabled()
+    local lint = 0
+    if vim.b.lint_enabled == true then
+        local linters = require("lint").get_running()
+        if #linters ~= 0 then
+            return "…"
+        else
+            lint = 1
+        end
+    end
+
+    if vim.diagnostic.is_disabled() == false then
+        lint = lint + 1
+    end
+
+    if lint == 1 then
+        return "†"
+    elseif lint == 2 then
+        return "‡"
+    end
+    return ""
+end
+
 return {
-	"nvim-lualine/lualine.nvim",
+    "nvim-lualine/lualine.nvim",
 
-	dependencies = { "kyazdani42/nvim-web-devicons" },
+    dependencies = { "kyazdani42/nvim-web-devicons" },
 
-    opts = {}
-
+    config = function()
+        local lualine = require('lualine')
+        local opts = lualine.get_config()
+        opts.options.theme = 'iceberg'
+        table.insert(opts.sections.lualine_z, lint_enabled)
+        lualine.setup(opts)
+    end
 }
-
--- TODO:  lightline OR lualine OR galaxyline?
---  glepnir/galaxyline.nvim
--- OR 'itchyny/lightline.vim'
-
-
--- TODO:  from lightline 
--- let g:lightline = {
---     \   'active': {
---     \       'left': [ [ 'mode', 'paste' ],
---     \               [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
---     \       'right': [ [ 'percent', 'lineinfo' ],
---     \                  [ 'fileformat', 'filetype', 'ALEenabled' ] ]
---     \   },
---     \   'component_function': {
---     \       'gitbranch': 'FugitiveHead',
---     \       'ALEenabled': 'LightLineALEEnabled',
---     \   },
---     \ }
-
--- function! LightLineALEEnabled() abort
---     if getbufvar('', 'ale_enabled', get(g:, 'ale_enabled', 0))
---         return 'lint'
---     else
---         return ''
---     endif
--- endfunction
-
 

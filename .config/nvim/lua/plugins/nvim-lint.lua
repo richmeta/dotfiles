@@ -106,7 +106,7 @@ return {
         vim.api.nvim_create_autocmd(events, {
             group = lint_augroup,
             callback = function(ev)
-                if vim.b.lint_enabled ~= false then
+                if vim.b.lint_enabled == true then
                     lint.try_lint()
                 end
             end,
@@ -117,7 +117,7 @@ return {
         -- \lt = lint toggle
         { "<leader>lt", function()
             if vim.b.lint_enabled == nil then
-                vim.b.lint_enabled = false
+                vim.b.lint_enabled = true
             else
                 vim.b.lint_enabled = not vim.b.lint_enabled
             end

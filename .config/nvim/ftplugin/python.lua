@@ -21,10 +21,10 @@ vim.b.switch_custom_definitions =
           [ [[[''"]\(\k\+\)[''"]\s*:\s*\([^},]\+\)]] ] = [[\1=\2]],
 
           -- import \k+ => from \k import
-          [ [[import\s\+\(\k\+\)]] ] = [[from \1 import ]],
+          [ [[^import\s\+\(\k\+\)]] ] = [[from \1 import ]],
 
           -- from \k import => import \k+
-          [ [[from\s\+\(\k\+\)\s\+import\s.*$]] ] = [[import \1]],
+          [ [[^from\s\+\(\k\+\)\s\+import\s.*$]] ] = [[import \1]],
 
           -- something => _something
           [ [["\@<!\<\(\w*\)\>]] ] = '_\1',
