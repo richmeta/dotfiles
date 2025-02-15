@@ -176,7 +176,7 @@ function M.toggle(arg)
 
         local choices = type(opts.choices) == "function" and opts.choices() or opts.choices
 
-        if vim.tbl_islist(current) then     -- list-style settings
+        if vim.islist(current) then     -- list-style settings
             -- find the current item from choices
             local found = vim.tbl_filter(function(item)
                 for _, v in ipairs(choices) do

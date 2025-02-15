@@ -57,7 +57,7 @@ end
 
 local function on_attach(client, bufnr)
     -- by default disable diagnostics
-    vim.diagnostic.disable(0)
+    vim.diagnostic.enable(false)
 
     if client.supports_method("textDocument/inlayHint") then
         require("lsp-inlayhints").on_attach(client, bufnr)
@@ -270,13 +270,13 @@ lsp.zls.setup({
 -- Ctrl-F5 - toggle LSP errors
 local toggle_diagnostics = tg.toggle({
     source = function()
-        return vim.diagnostic.is_disabled()
+        return vim.diagnostic.is_enabled()
     end,
-    handler = function(is_disabled)
-        if is_disabled then
-            vim.diagnostic.enable(0)
+    handler = function(is_enabled)
+        if is_enabled then
+            vim.diagnostic.enable(false)
         else
-            vim.diagnostic.disable(0)
+            vim.diagnostic.enable(true)
         end
     end
 })

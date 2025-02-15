@@ -10,7 +10,7 @@ local function lint_enabled()
         end
     end
 
-    if vim.diagnostic.is_disabled() == false then
+    if vim.diagnostic.is_enabled() then
         lint = lint + 1
     end
 

@@ -4,6 +4,7 @@ import os
 import re
 import sys
 import logging
+import pprint
 from pathlib import Path
 from typing import Iterable
 try:
@@ -151,6 +152,7 @@ def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str)
     if symbol == "":
         # just return the info to this buffer
         mod_name = _find_current_pypath(buffer_path, project_root)
+        logger.info(f"import_module({mod_name})")
         mod = importlib.import_module(mod_name)
     else:
         import_stmt = _find_import(symbol)
@@ -188,10 +190,12 @@ def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str)
                 else:
                     symbol = ""  # there's no symbol in this case
                     mod_name = m.group(1)
+                    logger.info(f"import_module({mod_name})")
                     mod = importlib.import_module(mod_name)
         else:
             # try for current module.symbol
             mod_name = _find_current_pypath(buffer_path, project_root)
+            logger.info(f"import_module({mod_name})")
             mod = importlib.import_module(mod_name)
 
     if symbol:
