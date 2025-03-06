@@ -134,7 +134,6 @@ def _add_to_path(project_root: str | Path) -> None:
     virtual_env = os.environ.get("VIRTUAL_ENV")
     if virtual_env:
         _set_path_from_virtualenv(Path(virtual_env))
-        # return
 
     proj_root = str(project_root)
     if proj_root not in sys.path:
@@ -142,15 +141,22 @@ def _add_to_path(project_root: str | Path) -> None:
         sys.path.insert(0, str(project_root))
 
 
-def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str) -> dict:
+def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, extra_imports: str) -> dict:
     logger.info(f"_find_symbol: {project_root}, {buffer_path}, {symbol}")
     project_root = Path(project_root).resolve()
     buffer_path = Path(buffer_path).resolve()
     _add_to_path(project_root)
 
+    if extra_imports:
+        imports = extra_imports.split(",")
+        for imp in imports:
+            logger.info(f"importing extra: {imp}")
+            importlib.import_module(imp)
+
     if symbol == "":
         # just return the info to this buffer
         mod_name = _find_current_pypath(buffer_path, project_root)
+        logger.info(f"import_module({mod_name})")
         mod = importlib.import_module(mod_name)
     else:
         import_stmt = _find_import(symbol)
@@ -188,10 +194,12 @@ def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str)
                 else:
                     symbol = ""  # there's no symbol in this case
                     mod_name = m.group(1)
+                    logger.info(f"import_module({mod_name})")
                     mod = importlib.import_module(mod_name)
         else:
             # try for current module.symbol
             mod_name = _find_current_pypath(buffer_path, project_root)
+            logger.info(f"import_module({mod_name})")
             mod = importlib.import_module(mod_name)
 
     if symbol:
@@ -217,7 +225,7 @@ def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str)
     return ret
 
 
-def find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, return_as: str) -> None:
+def find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, return_as: str, extra_imports: str) -> None:
     """
     finds the fullpath and the python path of term using "from import" statement
     when term is empty, just return module info ( applicable to "import xyz" )
@@ -232,7 +240,7 @@ def find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, 
     """
 
     try:
-        result = _find_symbol(project_root, buffer_path, symbol)
+        result = _find_symbol(project_root, buffer_path, symbol, extra_imports)
         vim_command(f"let pyinfo_result = '{result[return_as]}'")
     except KeyError:
         _handle_exception("pypath: return_as should be \"path\" or \"pypath\"")

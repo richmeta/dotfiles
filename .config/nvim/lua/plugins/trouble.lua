@@ -5,6 +5,6 @@ return {
 
      keys = {
         -- \tg = TroubleToggle
-        { "<leader>tg", ":Trouble diagnostics toggle<cr>", mode = "n", noremap = true },
+        { "<leader>tg", ":Trouble diagnostics toggle filter.buf=0<cr>", mode = "n", noremap = true },
     }
 }
