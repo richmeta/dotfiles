@@ -111,6 +111,27 @@ mp.nnoremap("<Leader>ct", function()
     vim.notify("copied", vim.log.levels.INFO)
 end, mp.buffer)
 
+if vim.fn.executable('gh') then
+    -- \gl = copy url to current file (main)
+    mp.nnoremap("<Leader>gl", function()
+        local line = vim.fn.line(".")
+        local exec = string.format("gh browse -n %s:%d", vim.fn.expand("%"), line)
+        local result = vim.fn.system(exec)
+        clipboard.copy(result)
+        vim.notify("copied", vim.log.levels.INFO)
+    end, mp.buffer)
+
+    -- \gL = copy url to current file on branch
+    mp.nnoremap("<Leader>gL", function()
+        local line = vim.fn.line(".")
+        local branch = git.branch()
+        local exec = string.format("gh browse -n %s:%d -b %s", vim.fn.expand("%"), line, branch)
+        local result = vim.fn.system(exec)
+        clipboard.copy(result)
+        vim.notify("copied", vim.log.levels.INFO)
+    end, mp.buffer)
+end
+
 vim.cmd("abbr <buffer> true True")
 vim.cmd("abbr <buffer> false False")
 

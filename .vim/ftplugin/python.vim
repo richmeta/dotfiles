@@ -36,6 +36,14 @@ function s:pytest_for_function_clip()
     call file#clip(result, 1)
 endfunction
 
+function s:github_line(branch)
+    let li = line(".")
+    let cmd = "gh browse -n " . expand("%s") . ":" . li . " -b " . a:branch
+    let result = system(cmd)
+    call file#clip(result, 1)
+endfunction
+
+
 if executable('python3')
     " \pf = format black
     map <Leader>pf :%!black -q - <cr><cr>
@@ -55,6 +63,13 @@ nnoremap <buffer> <Leader>cp :call <SID>pyinfo_find_symbol_clip("path")<cr>
 " \ct = copy test spec of current symbol
 " pytest <filename> -k func
 nnoremap <buffer> <Leader>ct :call <SID>pytest_for_function_clip()<cr>
+
+if executable('gh')
+    map <Leader>gl :call <SID>github_line("main")<cr>
+    map <Leader>gL :call <SID>github_line(FugitiveHead())<cr>
+endif
+
+
 
 abbr <buffer> true True
 abbr <buffer> false False
