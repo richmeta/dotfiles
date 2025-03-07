@@ -132,6 +132,15 @@ if vim.fn.executable('gh') then
     end, mp.buffer)
 end
 
+mp.nnoremap("<Leader>cl", function()
+    -- \cl = copy filename:line format
+    local line = vim.fn.line(".")
+    local path = git.relative_from_buffer(buffer.expand("current"))
+    local result = string.format("%s:%d", path, line)
+    clipboard.copy(result)
+    vim.notify("copied", vim.log.levels.INFO)
+end, mp.buffer)
+
 vim.cmd("abbr <buffer> true True")
 vim.cmd("abbr <buffer> false False")
 

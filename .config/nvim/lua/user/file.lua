@@ -83,7 +83,7 @@ function M.prompt_rename(source)
 end
 
 function M.prompt_copy(source)
-    vim.ui.input({ prompt = 'copy to: '},
+    vim.ui.input({ prompt = 'copy to: ', default = '%/'},
         function(newfilename)
             if newfilename and newfilename ~= source then
                 local cmd = string.format('!cp "%s" "%s"', source, newfilename)
