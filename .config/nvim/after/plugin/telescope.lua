@@ -18,7 +18,7 @@ nnoremap("<leader>pp", function()
     if vim.o.filetype == "dirvish" then
         dir = util.expand("%")
     else
-        dir = vim.fn.getcwd()
+        dir = file.cwd()
     end
 
     if file.path_equal(dir, los.home_dir) then

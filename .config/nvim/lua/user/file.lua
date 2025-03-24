@@ -71,6 +71,10 @@ function M.strip_trailing(fn, ch)
     return fn
 end
 
+function M.cwd()
+    return vim.fn.getcwd()
+end
+
 function M.prompt_rename(source)
     vim.ui.input({ prompt = 'new filename: ', default = source},
         function(newfilename)

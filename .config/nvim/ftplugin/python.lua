@@ -2,6 +2,7 @@ local mp = require("user.map")
 local clipboard = require("user.clip")
 local git = require("user.git")
 local buffer = require("user.buffer")
+local file = require("user.file")
 local util = require("user.util")
 
 -- buffer local
@@ -99,7 +100,7 @@ end, mp.buffer)
 -- \ct = copy test spec of current symbol
 -- pytest <filename> -k func
 mp.nnoremap("<Leader>ct", function()
-    local filepath = git.relative_from_buffer(buffer.full())
+    local filepath = git.relative_from_buffer(buffer.expand("current"))
     local func = util.expand("<cword>", true)
     local result
     if func == '' then
@@ -114,8 +115,11 @@ end, mp.buffer)
 if vim.fn.executable('gh') then
     -- \gl = copy url to current file (main)
     mp.nnoremap("<Leader>gl", function()
+        -- gh runs relative to cwd
         local line = vim.fn.line(".")
-        local exec = string.format("gh browse -n %s:%d", vim.fn.expand("%"), line)
+        local full = buffer.expand("full")
+        local path = file.relative(full, file.cwd())
+        local exec = string.format("gh browse -n %s:%d", path, line)
         local result = vim.fn.system(exec)
         clipboard.copy(result)
         vim.notify("copied", vim.log.levels.INFO)
@@ -123,9 +127,12 @@ if vim.fn.executable('gh') then
 
     -- \gL = copy url to current file on branch
     mp.nnoremap("<Leader>gL", function()
+        -- gh runs relative to cwd
         local line = vim.fn.line(".")
         local branch = git.branch()
-        local exec = string.format("gh browse -n %s:%d -b %s", vim.fn.expand("%"), line, branch)
+        local full = buffer.expand("full")
+        local path = file.relative(full, file.cwd())
+        local exec = string.format("gh browse -n %s:%d -b %s", path, line, branch)
         local result = vim.fn.system(exec)
         clipboard.copy(result)
         vim.notify("copied", vim.log.levels.INFO)
