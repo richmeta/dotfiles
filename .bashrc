@@ -44,11 +44,8 @@ function activate() {
         fi
     elif [[ -L "./.env" && -d $(readlink .env) ]]; then
         source .env/bin/activate
-    elif [[ -f pyproject.toml ]] && [[ -x $(which poetry) ]]; then
-        env=$(poetry env info --path)
-        if [[ -n "$env" ]]; then
-            source "$env/bin/activate"
-        fi
+    elif [[ -d "./.venv" ]]; then
+        source .venv/bin/activate
     else
         # find the activate and do it
         file=$(find_activate)

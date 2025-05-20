@@ -1,7 +1,14 @@
 
 function! pyinfo#find_symbol(return_as)
+    " TODO: cWORD support
     let current = expand('<cword>')
-    let proj_root = FugitiveWorkTree()
+    if exists("g:pyinfo_project_root")
+        " override project root
+        " where python modules are not in git root
+        let proj_root = g:pyinfo_project_root
+    else
+        let proj_root = FugitiveWorkTree()
+    endif
     let buffer_path = expand("%:p")
     let pyinfo_result = ""
     let extra_imports = exists('g:pyinfo_extra_imports') ? g:pyinfo_extra_imports : ""

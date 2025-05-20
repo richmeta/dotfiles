@@ -4,6 +4,7 @@ import os
 import re
 import sys
 import logging
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 try:
@@ -141,8 +142,8 @@ def _add_to_path(project_root: str | Path) -> None:
         sys.path.insert(0, str(project_root))
 
 
-def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, extra_imports: str) -> dict:
-    logger.info(f"_find_symbol: {project_root}, {buffer_path}, {symbol}")
+def find_symbol_internal(project_root: str | Path, buffer_path: str | Path, symbol: str, extra_imports: str) -> dict:
+    logger.info(f"\n{datetime.now().isoformat()}: _find_symbol: {project_root}, {buffer_path}, {symbol}")
     project_root = Path(project_root).resolve()
     buffer_path = Path(buffer_path).resolve()
     _add_to_path(project_root)
@@ -156,7 +157,7 @@ def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str,
     if symbol == "":
         # just return the info to this buffer
         mod_name = _find_current_pypath(buffer_path, project_root)
-        logger.info(f"import_module({mod_name})")
+        logger.info(f"symbol is empty, importing this buffer -> import_module({mod_name})")
         mod = importlib.import_module(mod_name)
     else:
         import_stmt = _find_import(symbol)
@@ -173,39 +174,42 @@ def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str,
                         # first then the parent, so getattr will resolve
                         mod_name = f".{symbol}"
                         current_path = _find_parent_of_current_pypath(buffer_path, project_root)
-                        logger.info(f"import_module({mod_name}, {current_path})")
+                        logger.info(f"from . import X -> importing parent module -> import_module({mod_name}, {current_path})")
                         importlib.import_module(mod_name, current_path)
-                        logger.info(f"import_module({current_path})")
+                        logger.info(f"from . import X -> importing child module -> import_module({current_path})")
                         mod = importlib.import_module(current_path)
                     elif mod_name.startswith("."):
                         current_path = _find_parent_of_current_pypath(buffer_path, project_root)
-                        logger.info(f"import_module({mod_name}, {current_path})")
+                        logger.info(f"from .X import Y -> import_module({mod_name}, {current_path})")
                         mod = importlib.import_module(mod_name, current_path)
                     else:
-                        logger.info(f"import_module({mod_name})")
+                        logger.info(f"from X import Y -> import_module({mod_name})")
                         mod = importlib.import_module(mod_name)
                 except ModuleNotFoundError as ex:
+                    logger.error(f"pyinfo: module not found \"{mod_name}\" using {mod_name} . {current_path}: {ex}")
                     raise PyInfoError(f"pyinfo: module not found \"{mod_name}\" using {mod_name} . {current_path}: {ex}")
             else:
                 # import X
                 m = re_import.match(import_stmt)
                 if m is None:
+                    logger.error("pyinfo: not an import statement")
                     raise PyInfoError("pyinfo: not an import statement")
                 else:
                     symbol = ""  # there's no symbol in this case
                     mod_name = m.group(1)
-                    logger.info(f"import_module({mod_name})")
+                    logger.info(f"import X -> import_module({mod_name})")
                     mod = importlib.import_module(mod_name)
         else:
             # try for current module.symbol
             mod_name = _find_current_pypath(buffer_path, project_root)
-            logger.info(f"import_module({mod_name})")
+            logger.info(f"import from current -> import_module({mod_name})")
             mod = importlib.import_module(mod_name)
 
     if symbol:
         try:
             getattr(mod, symbol)
         except AttributeError:
+            logger.error(f"pyinfo: '{symbol}' not found in \"{mod_name}\"")
             raise PyInfoError(f"pyinfo: '{symbol}' not found in \"{mod_name}\"")
 
     ret = {}
@@ -215,6 +219,7 @@ def _find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str,
     else:
         ret["pypath"] = f"{mod.__name__}"
         ret["import"] = f"import {mod.__name__}"
+    logger.info(f"{ret=}")
 
     if mod.__file__:
         path = Path(mod.__file__)
@@ -240,7 +245,7 @@ def find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, 
     """
 
     try:
-        result = _find_symbol(project_root, buffer_path, symbol, extra_imports)
+        result = find_symbol_internal(project_root, buffer_path, symbol, extra_imports)
         vim_command(f"let pyinfo_result = '{result[return_as]}'")
     except KeyError:
         _handle_exception("pypath: return_as should be \"path\" or \"pypath\"")
