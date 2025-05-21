@@ -12,6 +12,7 @@ return {
             "ts_ls",
             "yamlls",
             "zls",
+            "postgres_lsp",
         }
     }
 }

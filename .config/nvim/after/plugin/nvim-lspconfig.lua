@@ -59,11 +59,11 @@ local function on_attach(client, bufnr)
     -- by default disable diagnostics
     vim.diagnostic.enable(false)
 
-    if client.supports_method("textDocument/inlayHint") then
+    if client:supports_method("textDocument/inlayHint") then
         require("lsp-inlayhints").on_attach(client, bufnr)
     end
 
-    if client.supports_method("textDocument/definition") then
+    if client:supports_method("textDocument/definition") then
         -- gd = goto definition (lsp)
         mp.nmap_b("gd", vim.lsp.buf.definition)
         mp.vmap_b("gd", vim.lsp.buf.definition)
@@ -72,7 +72,7 @@ local function on_attach(client, bufnr)
         with_view('s', mp.nmap_b, "sgd", vim.lsp.buf.definition)
     end
 
-    if client.supports_method("textDocument/declaration") then
+    if client:supports_method("textDocument/declaration") then
         -- gD = goto declaration (lsp)
         mp.nmap_b("gD", vim.lsp.buf.declaration)
         mp.vmap_b("gD", vim.lsp.buf.declaration)
@@ -81,13 +81,13 @@ local function on_attach(client, bufnr)
         with_view('s', mp.nmap_b, "sgD", vim.lsp.buf.declaration)
     end
 
-    if client.supports_method("textDocument/hover") then
+    if client:supports_method("textDocument/hover") then
         -- K = hover signature (lsp)
         mp.nmap_b("K", vim.lsp.buf.hover)
         mp.imap_b("<c-k>", vim.lsp.buf.hover)
     end
 
-    if client.supports_method("textDocument/typeDefinition") then
+    if client:supports_method("textDocument/typeDefinition") then
         -- td = goto type declaration (lsp)
         mp.nmap_b("td", vim.lsp.buf.type_definition)
         mp.vmap_b("td", vim.lsp.buf.type_definition)
@@ -96,7 +96,7 @@ local function on_attach(client, bufnr)
         with_view('s', mp.nmap_b, "std", vim.lsp.buf.type_definition)
     end
 
-    if client.supports_method("textDocument/implementation") then
+    if client:supports_method("textDocument/implementation") then
         -- gi = goto implementation (lsp)
         mp.nmap_b("gi", vim.lsp.buf.implementation)
         mp.vmap_b("gi", vim.lsp.buf.implementation)
@@ -105,17 +105,17 @@ local function on_attach(client, bufnr)
         with_view('s', mp.nmap_b, "sgi", vim.lsp.buf.implementation)
     end
 
-    if client.supports_method("textDocument/references") then
+    if client:supports_method("textDocument/references") then
         -- gr = show references (lsp)
         mp.nmap_b("gr", vim.lsp.buf.references)
     end
 
-    if client.supports_method("textDocument/rename") then
+    if client:supports_method("textDocument/rename") then
         -- \rn = goto declaration (lsp)
         mp.nmap_b("<leader>rn", vim.lsp.buf.rename)
     end
 
-    if client.supports_method("textDocument/codeLens") then
+    if client:supports_method("textDocument/codeLens") then
         -- \ca = run code action (lsp)
         mp.nmap_b("<leader>ca", function()
             vim.lsp.codelens.run()
@@ -130,18 +130,18 @@ local function on_attach(client, bufnr)
         })
     end
 
-    if client.supports_method("textDocument/signatureHelp") then
+    if client:supports_method("textDocument/signatureHelp") then
         -- \sh = signature help (lsp)
         mp.nmap_b("<Leader>sh", vim.lsp.buf.signature_help)
         mp.imap_b("<m-k>", vim.lsp.buf.signature_help)
     end
 
-    if client.supports_method("textDocument/rangeFormatting") then
+    if client:supports_method("textDocument/rangeFormatting") then
         -- ctrl-F5 = format code (lsp)
         mp.vmap_b(fn("<C-f5>"), vim.lsp.buf.format)
     end
 
-    if client.supports_method("textDocument/formatting") then
+    if client:supports_method("textDocument/formatting") then
         -- ctrl-F5 = format code (lsp)
         mp.nmap_b(fn("<C-f5>"), vim.lsp.buf.format)
     end
