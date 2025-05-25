@@ -1,4 +1,4 @@
-" vim: filetype=vifm :
+" vim: filetype=vim :
 
 " ------------------------------------------------------------------------------
 " Main settings
@@ -14,6 +14,8 @@ elseif $EDITOR != ''
     let &vicmd = $EDITOR
 endif
 
+let $OSTYPE = system('uname')
+
 set syscalls
 set trash
 set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,phistory,fhistory,dirstack,registers,bookmarks,bmarks
@@ -25,7 +27,7 @@ set sortnumbers
 set undolevels=100
 set vimhelp
 set norunexec
-colorscheme Default-256 Default
+colorscheme Default-256
 set timefmt='%Y/%m/%d %H:%M'
 set wildmenu
 set wildstyle=popup
@@ -35,13 +37,13 @@ set incsearch
 set scrolloff=4
 set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
 
+
 " ------------------------------------------------------------------------------
 " Bookmarks
 " ------------------------------------------------------------------------------
 
 " :mark mark /full/directory/path [filename]
 
-mark b ~/bin/
 mark h ~/
 
 " ------------------------------------------------------------------------------
@@ -302,94 +304,42 @@ vnoremap w :view<cr>gv
 nnoremap o :!gvim %f<cr>
 
 " Open file in the background using its default program
-" todo: cross-platform
-nnoremap O :!open -g %f<cr>
+if $OSTYPE == "Linux"
+    nnoremap O :!xdg-open %f<cr>
+else
+    nnoremap O :!open -g %f<cr>
+endif
 
 " Open editor to edit vifmrc and apply settings after returning to vifm
-nnoremap ,c :write | edit $MYVIFMRC | restart full<cr>
-" Open MacVim to edit vifmrc
-nnoremap ,C :!gvim $MYVIFMRC &<cr>
+nnoremap \vrc :write | edit $MYVIFMRC | restart full<cr>
+nnoremap \vso :source $MYVIFMRC<cr>:echo expand("sourced $MYVIFMRC")<cr>
 
-" Toggle wrap setting on ,w key
-nnoremap ,w :set wrap!<cr>
-
-" Example of standard two-panel file managers mappings
-nnoremap <f3> :!less %f<cr>
-
-" TODO: mapping for put/move &
-" nnoremap <f4> :edit<cr>
-" nnoremap <f5> :copy<cr>
-" nnoremap <f6> :move<cr>
-" nnoremap <f7> :mkdir<space>
-" nnoremap <f8> :delete<cr>
-
-" Midnight commander alike mappings
 " Open current directory in the other pane
 nnoremap <a-i> :sync<cr>
+
 " Open directory under cursor in the other pane
 nnoremap <a-o> :sync %c<cr>
+
 " Swap panes
 nnoremap <c-u> <c-w>x
 
-" open other pane with selected (directories only)
-" todo - same as <a-o>
-nnoremap zo :sync %c<CR><Tab>
+" copy parent of current path
+if executable("clip")
+    nnoremap \cd :!echo -n %d | clip<cr>:echo expand('%"d') "is yanked to clipboard"<cr>
 
-" todo: make as vim eg \cf
-" Yank current directory path into the clipboard
-nnoremap yd :!clip -p %d
+    " copy full path
+    nnoremap \cf :!echo -n %c:p | clip<cr>:echo expand('%"c:p') "is yanked to clipboard"<cr>
 
-" Yank current file path into the clipboard (escape spaces)
-nnoremap yf :!clip -p %f
+    " copy current filename only
+    nnoremap \cv :!echo -n %c | clip<cr>:echo expand('%"c') "is yanked to clipboard"<cr>
 
-" yank current directory path into the clipboard
-nnoremap yd :!echo -n %d | clip<cr>:echo expand('%"d') "is yanked to clipboard"<cr>
+    " copy stem of current file
+    nnoremap \cs :!echo -n %c:r | clip<cr>:echo expand('%"c:r') "is yanked to clipboard"<cr>
+endif
 
-" yank current file path into the clipboard
-nnoremap yf :!echo -n %c:p | clip<cr>:echo expand('%"c:p') "is yanked to clipboard"<cr>
-
-" yank current filename without path into the clipboard
-nnoremap yn :!echo -n %c | clip<cr>:echo expand('%"c') "is yanked to clipboard"<cr>
-
-" yank root of current file's name into the clipboard
-nnoremap yr :!echo -n %c:r | clip<cr>:echo expand('%"c:r') "is yanked to clipboard"<cr>
-
-
-" ------------------------------------------------------------------------------
-" Various customization examples
-" ------------------------------------------------------------------------------
-
-" Use ag (the silver searcher) instead of grep
-" set grepprg='ag --line-numbers %i %a %s'
-
-" Add additional place to look for executables
-" let $PATH = $HOME.'/bin/fuse:'.$PATH
-
-" Block particular shortcut
-" nnoremap <left> <nop>
-
-" Export IPC name of current instance as environment variable and use it to
-" communicate with the instance later.
-"
-" It can be used in some shell script that gets run from inside vifm, for
-" example, like this:
-"     vifm --server-name "$VIFM_SERVER_NAME" --remote +"cd '$PWD'"
-"
-" let $VIFM_SERVER_NAME = v:servername
-
-" Activate screen/tmux support
-" screen!
-
-" ------------------------------------------------------------------------------
-" Icon decorations example
-" ------------------------------------------------------------------------------
-
-" https://github.com/cirala/vifm_devicons
 
 
 nnoremap \tt :tabnew<cr>
-" noremap <Leader>t :tabnew<cr>
-
 
 " mvup
 if executable("mvup")
@@ -401,33 +351,23 @@ if executable("7z")
     nnoremap \z :!7z x %c<CR>
 endif
 
-" copypath
-if executable("clip")
-    nnoremap \c :!clip -p %f<CR>
-endif
-
 " bcompare
 if executable("bcompare")
-    " todo: cross platform
-    nnoremap \d :!bcompare %d %D<CR>
+    nnoremap \d :!bcompare %d %D &<CR>
 endif
 
 " vlc
 if executable("vlc")
-    " todo: cross platform
+    " macos - requires symlink in path
     nnoremap \v :!vlc %f &<CR>
 endif
 
-" generic open
-" todo: dedeup with above
-nnoremap \o :!xdg-open %c<CR>
-
-" M = move to other view
-" todo: background mapping
-nnoremap M :move<cr>
-vnoremap M :move<cr>
+" M = background move to other view
+nnoremap M :move &<cr>
+vnoremap M :move &<cr>
 
 filetype *.mp3,*.flac, vlc %f &
 filetype *.jpg,*.png, geeqie %c &
+
 cabbrev md mkdir
-cabbrev find find -iname "%u
+
