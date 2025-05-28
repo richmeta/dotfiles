@@ -53,6 +53,7 @@ alias jt="python3 -m json.tool"
 alias gcl='git clone'
 alias gs='git status'
 alias gl='git log'
+alias glno='git log --name-only'
 alias gd='git diff'
 alias gp='git pull -p'
 alias gu='git push'
