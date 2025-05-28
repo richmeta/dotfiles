@@ -1,6 +1,5 @@
 local lsp = require("lspconfig")
 local mp = require("user.map")
-local buffer = require("user.buffer")
 local tg = require("user.toggler")
 local fn = mp.fn_term
 

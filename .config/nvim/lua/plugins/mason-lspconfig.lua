@@ -13,6 +13,7 @@ return {
             "yamlls",
             "zls",
             "postgres_lsp",
-        }
+        },
+        automatic_enable = false,
     }
 }
