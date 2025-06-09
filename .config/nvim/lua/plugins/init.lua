@@ -78,6 +78,10 @@ local plugins = {
     -- ie = whole file without leading/trailing ws (motion)
     { "kana/vim-textobj-entire", dependencies = { "kana/vim-textobj-user" } },
 
+    -- i_ = underscores (motion)
+    -- a_ = underscores (motion)
+    { "lucapette/vim-textobj-underscore", dependencies = { "kana/vim-textobj-user" } },
+
     -- ac = column on word (motion)
     -- aC = column on WORD (motion)
     -- ic = inner column on word (motion)
