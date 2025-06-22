@@ -216,6 +216,9 @@ bindsym $mod+r mode "resize"
 for_window [title=".*Firefox"] move to workspace $ws1
 bindsym $mod+Shift+f exec --no-startup-id "jumpapp firefox"
 
+# brave
+bindsym $mod+Shift+b exec --no-startup-id "jumpapp brave"
+
 # vlc
 bindsym $mod+Shift+v exec --no-startup-id "jumpapp vlc"
 

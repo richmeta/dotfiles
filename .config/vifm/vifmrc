@@ -337,9 +337,12 @@ if executable("clip")
     nnoremap \cs :!echo -n %c:r | clip<cr>:echo expand('%"c:r') "is yanked to clipboard"<cr>
 endif
 
-
-
 nnoremap \tt :tabnew<cr>
+
+command! TogglePaneSplit :if layoutis("only") == 1 | vsplit | else | only | endif
+
+" Toggle between :only and :vsplit
+nnoremap <F2> :TogglePaneSplit<CR>
 
 " mvup
 if executable("mvup")
