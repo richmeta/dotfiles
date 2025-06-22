@@ -160,9 +160,14 @@ end
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lsp.pyright.setup({
+lsp.jedi_language_server.setup({
     capabilities = capabilities,
     on_attach = on_attach,
+    init_options = {
+        completion = {
+            disableSnippets = true,
+        },
+    }
 })
 
 lsp.gopls.setup({
