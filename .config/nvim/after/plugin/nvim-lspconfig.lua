@@ -1,4 +1,5 @@
 local lsp = require("lspconfig")
+local ts = require("telescope.builtin")
 local mp = require("user.map")
 local tg = require("user.toggler")
 local fn = mp.fn_term
@@ -64,11 +65,11 @@ local function on_attach(client, bufnr)
 
     if client:supports_method("textDocument/definition") then
         -- gd = goto definition (lsp)
-        mp.nmap_b("gd", vim.lsp.buf.definition)
-        mp.vmap_b("gd", vim.lsp.buf.definition)
-        with_view('t', mp.nmap_b, "tgd", vim.lsp.buf.definition)
-        with_view('v', mp.nmap_b, "vgd", vim.lsp.buf.definition)
-        with_view('s', mp.nmap_b, "sgd", vim.lsp.buf.definition)
+        mp.nmap_b("gd", ts.lsp_definitions)
+        mp.vmap_b("gd", ts.lsp_definitions)
+        with_view('t', mp.nmap_b, "tgd", ts.lsp_definitions)
+        with_view('v', mp.nmap_b, "vgd", ts.lsp_definitions)
+        with_view('s', mp.nmap_b, "sgd", ts.lsp_definitions)
     end
 
     if client:supports_method("textDocument/declaration") then
@@ -88,25 +89,25 @@ local function on_attach(client, bufnr)
 
     if client:supports_method("textDocument/typeDefinition") then
         -- td = goto type declaration (lsp)
-        mp.nmap_b("td", vim.lsp.buf.type_definition)
-        mp.vmap_b("td", vim.lsp.buf.type_definition)
-        with_view('t', mp.nmap_b, "ttd", vim.lsp.buf.type_definition)
-        with_view('v', mp.nmap_b, "vtd", vim.lsp.buf.type_definition)
-        with_view('s', mp.nmap_b, "std", vim.lsp.buf.type_definition)
+        mp.nmap_b("td", ts.lsp_type_definitions)
+        mp.vmap_b("td", ts.lsp_type_definitions)
+        with_view('t', mp.nmap_b, "ttd", ts.lsp_type_definitions)
+        with_view('v', mp.nmap_b, "vtd", ts.lsp_type_definitions)
+        with_view('s', mp.nmap_b, "std", ts.lsp_type_definitions)
     end
 
     if client:supports_method("textDocument/implementation") then
         -- gi = goto implementation (lsp)
-        mp.nmap_b("gi", vim.lsp.buf.implementation)
-        mp.vmap_b("gi", vim.lsp.buf.implementation)
-        with_view('t', mp.nmap_b, "tgi", vim.lsp.buf.implementation)
-        with_view('v', mp.nmap_b, "vgi", vim.lsp.buf.implementation)
-        with_view('s', mp.nmap_b, "sgi", vim.lsp.buf.implementation)
+        mp.nmap_b("gi", ts.lsp_implementations)
+        mp.vmap_b("gi", ts.lsp_implementations)
+        with_view('t', mp.nmap_b, "tgi", ts.lsp_implementations)
+        with_view('v', mp.nmap_b, "vgi", ts.lsp_implementations)
+        with_view('s', mp.nmap_b, "sgi", ts.lsp_implementations)
     end
 
     if client:supports_method("textDocument/references") then
         -- gr = show references (lsp)
-        mp.nmap_b("gr", vim.lsp.buf.references)
+        mp.nmap_b("gr", ts.lsp_references)
     end
 
     if client:supports_method("textDocument/rename") then
@@ -131,7 +132,7 @@ local function on_attach(client, bufnr)
 
     if client:supports_method("textDocument/signatureHelp") then
         -- \sh = signature help (lsp)
-        mp.nmap_b("<Leader>sh", vim.lsp.buf.signature_help)
+        mp.nmap_b("<m-k>", vim.lsp.buf.signature_help)
         mp.imap_b("<m-k>", vim.lsp.buf.signature_help)
     end
 
@@ -144,6 +145,23 @@ local function on_attach(client, bufnr)
         -- ctrl-F5 = format code (lsp)
         mp.nmap_b(fn("<C-f5>"), vim.lsp.buf.format)
     end
+
+    if client:supports_method("textDocument/prepareCallHierarchy") then
+        -- \lic = lsp incoming references (telescope)
+        mp.nmap("<Leader>lic", "<cmd>Telescope lsp_incoming_calls<CR>")
+
+        -- \loc = lsp outgoing references (telescope)
+        mp.nmap("<Leader>loc", "<cmd>Telescope lsp_outgoing_calls<CR>")
+    end
+
+    -- \lrf = lsp references (telescope)
+    mp.nmap("<Leader>lrf", "<cmd>Telescope lsp_references<CR>")
+
+    -- \ds = document symbols (buffer)
+    mp.nmap("<leader>ds", ts.lsp_document_symbols)
+
+    -- \dS = document symbols (global)
+    mp.nmap("<leader>dS", ts.lsp_dynamic_workspace_symbols)
 
     -- gF = diagnostics float (lsp)
     mp.nmap_b("gF", vim.diagnostic.open_float)

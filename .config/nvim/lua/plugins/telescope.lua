@@ -99,14 +99,6 @@ return {
         -- \z = buffers (telescope)
         { "<leader>z", "<cmd>Telescope buffers<cr>", desc = "buffers" },
 
-        -- \lrf = lsp references (telescope)
-        { "<Leader>lrf", "<cmd>Telescope lsp_references<CR>", desc = "Lsp references" },
-
-        -- \lic = lsp incoming references (telescope)
-        { "<Leader>lic", "<cmd>Telescope lsp_incoming_calls<CR>", desc = "Lsp Incoming references" },
-
-        -- \loc = lsp outgoing references (telescope)
-        { "<Leader>loc", "<cmd>Telescope lsp_outgoing_calls<CR>", desc = "Lsp Outgoing references" },
 
         -- \dg = diagnostics
         { "<Leader>dg", "<cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
