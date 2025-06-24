@@ -11,11 +11,11 @@ local ensure_installed = {
     "gopls",
     "jedi_language_server",
     "lua_ls",
+    "ruff",
     "rust_analyzer",
     "ts_ls",
     "yamlls",
     "zls",
-    -- "postgres_lsp", # TODO: add to local
 }
 vim.list_extend(ensure_installed, local_extra_installed)
 

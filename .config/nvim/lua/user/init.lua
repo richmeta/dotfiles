@@ -8,4 +8,4 @@ require('user.abbrev')
 require('user.gui')
 
 -- local configs
-pcall(require, 'user.local')
+pcall(require, 'local.local')
