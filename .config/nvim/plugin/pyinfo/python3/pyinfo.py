@@ -216,9 +216,11 @@ def find_symbol_internal(project_root: str | Path, buffer_path: str | Path, symb
     if symbol:
         ret["pypath"] = f"{mod.__name__}.{symbol}"
         ret["import"] = f"from {mod.__name__} import {symbol}"
+        ret["starimport"] = f"from {mod.__name__} import *"
     else:
         ret["pypath"] = f"{mod.__name__}"
         ret["import"] = f"import {mod.__name__}"
+        ret["starimport"] = f"from {mod.__name__} import *"
     logger.info(f"{ret=}")
 
     if mod.__file__:
@@ -242,6 +244,8 @@ def find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, 
     return_as can be either "pypath" or "path"
     ->  path: "project_root/path/to/module.py"
     ->  pypath: "path.to.module.SomeObject"
+    ->  import: "from X import Y" or "import X"
+    ->  starimport: "from X import *"
     """
 
     try:

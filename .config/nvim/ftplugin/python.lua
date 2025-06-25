@@ -86,9 +86,14 @@ local function pyinfo_find_symbol_clip(return_as)
     vim.notify("copied", vim.log.levels.INFO)
 end
 
--- \cy = copy python path of current symbol
+-- \cy = copy python import of current symbol
 mp.nnoremap("<Leader>cy", function()
     pyinfo_find_symbol_clip("import")
+end, mp.buffer)
+
+-- \cY = copy python star import of current symbol
+mp.nnoremap("<Leader>cY", function()
+    pyinfo_find_symbol_clip("starimport")
 end, mp.buffer)
 
 -- \cp = copy file path of current symbol

@@ -28,3 +28,8 @@ function! pyinfo#find_symbol_as_import()
     return pyinfo#find_symbol("import")
 endfunction
 
+function! pyinfo#find_symbol_as_starimport()
+    return pyinfo#find_symbol("starimport")
+endfunction
+
+

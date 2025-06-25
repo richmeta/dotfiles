@@ -299,6 +299,10 @@ vnoremap([[<leader>,']], [[:normal yss'A,<Esc>]])
 nnoremap([[<leader>,"]], [[:normal yss"A,<Esc>]])
 vnoremap([[<leader>,"]], [[:normal yss"A,<Esc>]])
 
+-- \,, = append comma
+nnoremap([[<leader>,,]], [[:normal A,<Esc>]])
+vnoremap([[<leader>,,]], [[:normal A,<Esc>]])
+
 -- forward/back to space
 nmap("gw", "f<space>")
 nmap("gb", "F<space>")

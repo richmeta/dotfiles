@@ -50,6 +50,7 @@ class PyInfoDraTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "apps.commission_delivery.routes")
             self.assertEqual(res["import"], "import apps.commission_delivery.routes")
+            self.assertEqual(res["starimport"], "from apps.commission_delivery.routes import *")
             self.assertEqual(res["path"], filename)
 
     def test_symbol_from_x_import_y(self):
@@ -62,6 +63,7 @@ class PyInfoDraTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "shared.utils.make_download")
             self.assertEqual(res["import"], "from shared.utils import make_download")
+            self.assertEqual(res["starimport"], "from shared.utils import *")
             self.assertEqual(res["path"], "shared/utils.py")
 
     def test_symbol_from_dot_import_y(self):
@@ -74,6 +76,7 @@ class PyInfoDraTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "apps.commission_delivery.controller")
             self.assertEqual(res["import"], "from apps.commission_delivery import controller")
+            self.assertEqual(res["starimport"], "from apps.commission_delivery import *")
             self.assertEqual(res["path"], "apps/commission_delivery/__init__.py")
 
     def test_symbol_from_dot_mod_import_y(self):
@@ -86,6 +89,7 @@ class PyInfoDraTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "apps.commission_delivery.blueprint.api")
             self.assertEqual(res["import"], "from apps.commission_delivery.blueprint import api")
+            self.assertEqual(res["starimport"], "from apps.commission_delivery.blueprint import *")
             self.assertEqual(res["path"], "apps/commission_delivery/blueprint.py")
 
     def test_symbol_import_x(self):
@@ -98,6 +102,7 @@ class PyInfoDraTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "logging")
             self.assertEqual(res["import"], "import logging")
+            self.assertEqual(res["starimport"], "from logging import *")
             self.assertTrue(res["path"].endswith("logging/__init__.py"))
 
     def test_symbol_mod_level_attr(self):
@@ -108,6 +113,7 @@ class PyInfoDraTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], f"apps.commission_delivery.controller.{symbol}")
             self.assertEqual(res["import"], f"from apps.commission_delivery.controller import {symbol}")
+            self.assertEqual(res["starimport"], "from apps.commission_delivery.controller import *")
             self.assertEqual(res["path"], filename)
 
 
@@ -130,6 +136,7 @@ class PyInfoCPTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "app.api.routes")
             self.assertEqual(res["import"], "import app.api.routes")
+            self.assertEqual(res["starimport"], "from app.api.routes import *")
             self.assertEqual(res["path"], filename)
 
     def test_symbol_from_x_import_y(self):
@@ -142,6 +149,7 @@ class PyInfoCPTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "app.api.deps.RequestContext")
             self.assertEqual(res["import"], "from app.api.deps import RequestContext")
+            self.assertEqual(res["starimport"], "from app.api.deps import *")
             self.assertEqual(res["path"], "app/api/deps.py")
 
     def test_symbol_from_x_import_y_with_child(self):
@@ -154,6 +162,7 @@ class PyInfoCPTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "app.api.deps.RequestContext")
             self.assertEqual(res["import"], "from app.api.deps import RequestContext")
+            self.assertEqual(res["starimport"], "from app.api.deps import *")
             self.assertEqual(res["path"], "app/api/deps.py")
 
     def test_symbol_from_dot_import_y(self):
@@ -166,6 +175,7 @@ class PyInfoCPTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "app.api.modules.risk")
             self.assertEqual(res["import"], "from app.api.modules import risk")
+            self.assertEqual(res["starimport"], "from app.api.modules import *")
             self.assertEqual(res["path"], "app/api/modules/__init__.py")
 
     def test_symbol_from_dot_mod_import_y(self):
@@ -178,6 +188,7 @@ class PyInfoCPTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "app.api.ingest_schemas.IngestField")
             self.assertEqual(res["import"], "from app.api.ingest_schemas import IngestField")
+            self.assertEqual(res["starimport"], "from app.api.ingest_schemas import *")
             self.assertEqual(res["path"], "app/api/ingest_schemas.py")
 
     def test_symbol_import_x(self):
@@ -190,6 +201,7 @@ class PyInfoCPTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "pycountry")
             self.assertEqual(res["import"], "import pycountry")
+            self.assertEqual(res["starimport"], "from pycountry import *")
             self.assertIn("pycountry", res["path"])
 
     def test_symbol_import_x_with_child(self):
@@ -202,6 +214,7 @@ class PyInfoCPTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], "sqlalchemy.exc")
             self.assertEqual(res["import"], "import sqlalchemy.exc")
+            self.assertEqual(res["starimport"], "from sqlalchemy.exc import *")
             self.assertIn("sqlalchemy/exc", res["path"])
 
     def test_symbol_mod_level_attr(self):
@@ -212,13 +225,14 @@ class PyInfoCPTests(unittest.TestCase):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
             self.assertEqual(res["pypath"], f"app.api.routes.{symbol}")
             self.assertEqual(res["import"], f"from app.api.routes import {symbol}")
+            self.assertEqual(res["starimport"], "from app.api.routes import *")
             self.assertEqual(res["path"], filename)
 
     # TODO:
 # ERROR:pyinfo:pyinfo: 'id_token' not found in "google.oauth2"
 # portal_global_service/app/auth.py
 #         claims = id_token.verify_token(id_token_str, request)
-                   ^
+#                  ^
 
 
 
