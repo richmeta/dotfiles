@@ -39,10 +39,11 @@ o.statusline = '%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]'
 o.winminheight = 0
 o.shiftround = true
 o.showcmd = true
+o.lazyredraw = true
 opt.matchpairs:append("<:>")
 opt.iskeyword:append("-")
 o.wildmenu = true
-opt.wildignore:append { "*.sw*", "*.pyc", "node_modules", "tags", "__pycache__", ".DS_Store", ".git" }
+opt.wildignore:append { "*.sw*", "*.pyc", "node_modules", "tags", "__pycache__", ".DS_Store", ".git", ".pytest_cache", ".mypy_cache" }
 o.laststatus = 2
 o.keymodel = "startsel"
 opt.listchars = {

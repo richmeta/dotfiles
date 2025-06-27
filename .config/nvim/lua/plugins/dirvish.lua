@@ -9,6 +9,7 @@ return {
 
     config = function()
         -- sort dirs first
+        -- unfortunately this ignores wildignore
         vim.g.dirvish_mode = ":sort ,^.*/,"
     end,
 

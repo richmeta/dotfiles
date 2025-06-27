@@ -237,6 +237,7 @@ set nofixendofline
 set mouse=a
 set selection=inclusive
 set splitright
+set lazyredraw
 
 if (!(has('mac') && $VIM == '/usr/share/vim'))
     " not supported on apple vim
