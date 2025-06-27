@@ -1,11 +1,9 @@
 
 function! pyinfo#find_symbol(return_as)
-    " TODO: cWORD support
+    " TODO: cWORD dotted symbols, some_module.some_func
     let current = expand('<cword>')
-    if exists("g:pyinfo_project_root")
-        " override project root
-        " where python modules are not in git root
-        let proj_root = g:pyinfo_project_root
+    if exists("g:project_root")
+        let proj_root = g:project_root
     else
         let proj_root = FugitiveWorkTree()
     endif
