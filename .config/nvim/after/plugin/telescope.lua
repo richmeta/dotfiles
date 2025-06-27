@@ -34,18 +34,18 @@ nnoremap("<leader>gr", function()
         prompt = true,
         word = vim.g.grep_word_boundary,
         glob = vim.g.grep_glob,
-        ftype = vim.g.grep_filetype,
+        filetype = vim.g.grep_filetype,
     })
 end)
 
--- \br = buffer grep prompt (telescope) in buffer dir
-nnoremap("<leader>br", function()
+-- \gD = buffer directory grep prompt (telescope)
+nnoremap("<leader>gD", function()
     grep.grep(ts_builtin.grep_string, {
         prompt = true,
         dir = "#",
         word = vim.g.grep_word_boundary,
         glob = vim.g.grep_glob,
-        ftype = vim.g.grep_filetype,
+        filetype = vim.g.grep_filetype,
     })
 end)
 
@@ -57,17 +57,17 @@ nnoremap("<leader>gw", function()
     grep.grep(ts_builtin.grep_string, {
         word = vim.g.grep_word_boundary,
         glob = vim.g.grep_glob,
-        ftype = vim.g.grep_filetype,
+        filetype = vim.g.grep_filetype,
     })
 end)
 
--- \bw = buffer grep current word (telescope) in buffer dir
-nnoremap("<leader>bw", function()
+-- \gW = buffer grep current word (telescope) in buffer dir
+nnoremap("<leader>gW", function()
     grep.grep(ts_builtin.grep_string, {
         dir = "#",
         word = vim.g.grep_word_boundary,
         glob = vim.g.grep_glob,
-        ftype = vim.g.grep_filetype,
+        filetype = vim.g.grep_filetype,
     })
 end)
 
@@ -76,7 +76,7 @@ nnoremap("<leader>lg", function()
     grep.grep(ts_builtin.live_grep, {
         word = vim.g.grep_word_boundary,
         glob = vim.g.grep_glob,
-        ftype = vim.g.grep_filetype,
+        filetype = vim.g.grep_filetype,
     })
 end)
 

@@ -22,7 +22,7 @@ local function grep_opts(opts)
     -- opts {
     --   dir   - starting directory, leave nil to use cwd, use "#" to use current buffer dir
     --   glob  - file pattern, eg *.py, or !*.py
-    --   ftype - rg filetype eg py, vim filetypes are converted to rg equiv
+    --   filetype - rg filetype eg py, vim filetypes are converted to rg equiv
     --   word  - bool, use word boundary in search, default false
     --   regex - bool, use regex in search, default false
     --   term  - search for this term, use nil for current word
@@ -42,8 +42,8 @@ local function grep_opts(opts)
         table.insert(ret.additional_args, "--glob=" .. opts.glob)
     end
 
-    if type(opts.ftype) == "string" and #opts.ftype > 0 then
-        local type_filter = ft_to_rg(opts.ftype)
+    if type(opts.filetype) == "string" and #opts.filetype > 0 then
+        local type_filter = ft_to_rg(opts.filetype)
         table.insert(ret.additional_args, "--type=" .. type_filter)
     end
 

@@ -103,7 +103,7 @@ vim.api.nvim_create_user_command(
             term = opts.args,
             word = vim.g.grep_word_boundary,
             glob = vim.g.grep_glob,
-            ftype = vim.g.grep_filetype,
+            filetype = vim.g.grep_filetype,
             regex = vim.g.grep_regex,
         })
     end,
