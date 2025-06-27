@@ -11,6 +11,12 @@ cabbrev("cs", "colorscheme")
 -- T = tabedit[c]
 cabbrev("T", "tabedit")
 
+-- S = split[c]
+cabbrev("S", "split")
+
+-- V = vsplit[c]
+cabbrev("V", "vsplit")
+
 -- some common path abbreviations
 cabbrev("_config", "~/.config")
 cabbrev("_sshconfig", "~/.ssh/config")

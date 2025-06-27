@@ -322,15 +322,6 @@ noremap <Leader>td :tab split<cr>
 " \T = new scratch
 noremap <Leader>T :tabnew<bar>setlocal buftype=nofile<cr>
 
-" alt-t = tabopen from buffer dir
-" alt-h = h split from buffer dir
-" alt-v = v split from buffer dir
-" alt-o = open from buffer dir
-nnoremap <m-t> :call buff#open_relative('t')<cr>
-nnoremap <m-h> :call buff#open_relative('h')<cr>
-nnoremap <m-v> :call buff#open_relative('v')<cr>
-nnoremap <m-o> :call buff#open_relative('o')<cr>
-
 " \tc = tabclose
 noremap <Leader>tc :tabclose<cr>
 
@@ -530,6 +521,11 @@ cabbrev cs colorscheme
 " T = tabedit[c]
 cabbrev T tabedit
 
+" S = split[c]
+cabbrev S split
+
+" V = vsplit[c]
+cabbrev V vsplit
 
 cabbrev _config ~/.config
 cabbrev _sshconfig ~/.ssh/config
