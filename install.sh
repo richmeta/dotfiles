@@ -81,4 +81,8 @@ fi
 # kitty
 if [ ! -e ~/.config/kitty/kitty.conf ]; then
     ln -sv $(readlink -f .config/kitty/kitty.conf) ~/.config/kitty/kitty.conf
+    ln -sv $(readlink -f .config/kitty/kitty-themes) ~/.config/kitty/kitty-themes
+
+    # to install the theme
+    ln -sv $(readlink -f .config/kitty/theme.conf) ~/.config/kitty/theme.conf
 fi
