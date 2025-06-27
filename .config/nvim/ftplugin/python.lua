@@ -96,8 +96,13 @@ mp.nnoremap("<Leader>cY", function()
     pyinfo_find_symbol_clip("starimport")
 end, mp.buffer)
 
--- \cp = copy file path of current symbol
+-- \cp = copy python path of current symbol
 mp.nnoremap("<Leader>cp", function()
+    pyinfo_find_symbol_clip("pypath")
+end, mp.buffer)
+
+-- \cP = copy file path of current symbol
+mp.nnoremap("<Leader>cP", function()
     pyinfo_find_symbol_clip("path")
 end, mp.buffer)
 

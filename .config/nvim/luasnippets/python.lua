@@ -14,10 +14,6 @@ return {
         fmt('import {}', i(1))
     ),
 
-    s( { trig = "from", dscr = "from import mod" },
-        fmt('from {} import {}', { i(1), i{2} } )
-    ),
-
     s( { trig = "#!", dscr = "shebang", snippetType = "autosnippet" },
         t{'#!/usr/bin/env python3', ''}
     ),

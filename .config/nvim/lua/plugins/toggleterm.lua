@@ -9,7 +9,7 @@ return {
         direction = "vertical",
         persist_size = false,
         size = function()
-            return vim.o.columns * 0.4
+            return vim.o.columns * 0.5
         end,
     },
 }

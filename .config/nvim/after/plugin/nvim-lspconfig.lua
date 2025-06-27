@@ -76,8 +76,14 @@ local function on_attach(client, bufnr)
         -- gd = goto definition (lsp)
         mp.nmap_b("gd", ts.lsp_definitions)
         mp.vmap_b("gd", ts.lsp_definitions)
+
+        -- tgd = tab goto definition (lsp)
         with_view('t', mp.nmap_b, "tgd", ts.lsp_definitions)
+
+        -- vgd = vsplit goto definition (lsp)
         with_view('v', mp.nmap_b, "vgd", ts.lsp_definitions)
+
+        -- sgd = split goto definition (lsp)
         with_view('s', mp.nmap_b, "sgd", ts.lsp_definitions)
     end
 
@@ -85,8 +91,14 @@ local function on_attach(client, bufnr)
         -- gD = goto declaration (lsp)
         mp.nmap_b("gD", vim.lsp.buf.declaration)
         mp.vmap_b("gD", vim.lsp.buf.declaration)
+
+        -- tgD = tab goto declaration (lsp)
         with_view('t', mp.nmap_b, "tgD", vim.lsp.buf.declaration)
+
+        -- vgD = vsplit goto declaration (lsp)
         with_view('v', mp.nmap_b, "vgD", vim.lsp.buf.declaration)
+
+        -- sgD = split goto declaration (lsp)
         with_view('s', mp.nmap_b, "sgD", vim.lsp.buf.declaration)
     end
 
@@ -100,8 +112,14 @@ local function on_attach(client, bufnr)
         -- td = goto type declaration (lsp)
         mp.nmap_b("td", ts.lsp_type_definitions)
         mp.vmap_b("td", ts.lsp_type_definitions)
+
+        -- ttd = tab type declaration (lsp)
         with_view('t', mp.nmap_b, "ttd", ts.lsp_type_definitions)
+
+        -- vtd = vsplit type declaration (lsp)
         with_view('v', mp.nmap_b, "vtd", ts.lsp_type_definitions)
+
+        -- std = split type declaration (lsp)
         with_view('s', mp.nmap_b, "std", ts.lsp_type_definitions)
     end
 
@@ -109,8 +127,14 @@ local function on_attach(client, bufnr)
         -- gi = goto implementation (lsp)
         mp.nmap_b("gi", ts.lsp_implementations)
         mp.vmap_b("gi", ts.lsp_implementations)
+
+        -- tgi = tab goto implementation (lsp)
         with_view('t', mp.nmap_b, "tgi", ts.lsp_implementations)
+
+        -- vgi = vsplit goto implementation (lsp)
         with_view('v', mp.nmap_b, "vgi", ts.lsp_implementations)
+
+        -- sgi = split goto implementation (lsp)
         with_view('s', mp.nmap_b, "sgi", ts.lsp_implementations)
     end
 

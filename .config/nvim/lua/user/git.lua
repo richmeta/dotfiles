@@ -6,7 +6,7 @@ local function git_root()
         return vim.g.project_root
     else
         return vim.fn.FugitiveWorkTree()
-    fi
+    end
 end
 
 local function git_branch()
