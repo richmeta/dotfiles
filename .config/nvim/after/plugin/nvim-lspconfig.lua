@@ -164,7 +164,7 @@ local function on_attach(client, bufnr)
     end
 
     if client:supports_method("textDocument/signatureHelp") then
-        -- \sh = signature help (lsp)
+        -- \m-k = signature help (lsp)
         mp.nmap_b("<m-k>", vim.lsp.buf.signature_help)
         mp.imap_b("<m-k>", vim.lsp.buf.signature_help)
     end

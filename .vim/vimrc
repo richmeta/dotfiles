@@ -708,9 +708,9 @@ elseif has('win32')
 endif
 
 function! s:check_sync_dir()
-    if strlen($MYSYNC)
+    if strlen($WIKIDIR)
         let buff_dir = fnamemodify(expand('%:p:h'), ":p") " with trailing slash
-        let dirs = map(split($MYSYNC, "[,:]"), {_, fnam -> fnamemodify(fnam, ":p")})
+        let dirs = map(split($WIKIDIR, "[,:]"), {_, fnam -> fnamemodify(fnam, ":p")})
         for d in dirs
             if match(buff_dir, d) > -1
                 setlocal noswapfile
