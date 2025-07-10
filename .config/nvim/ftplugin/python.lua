@@ -82,8 +82,12 @@ end
 local function pyinfo_find_symbol_clip(return_as)
     local pyinfo_find_symbol = vim.fn["pyinfo#find_symbol"]
     local result = pyinfo_find_symbol(return_as)
-    clipboard.copy(result)
-    vim.notify("copied", vim.log.levels.INFO)
+    if len(result) > 0 then
+        clipboard.copy(result)
+        vim.notify("copied", vim.log.levels.INFO)
+    else
+        vim.notify("not found", vim.log.levels.WARN)
+    end
 end
 
 -- \cy = copy python import of current symbol
