@@ -22,7 +22,6 @@ local plugins = {
     { "saadparwaiz1/cmp_luasnip" },
     { "lvimuser/lsp-inlayhints.nvim" },                         -- yes
     { "folke/trouble.nvim" },                                   -- yes
-    { "nvimtools/none-ls.nvim" },                               -- yes
 
     -- linters
     { "mfussenegger/nvim-lint" },                               -- yes

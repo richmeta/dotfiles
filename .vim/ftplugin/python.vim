@@ -23,7 +23,7 @@ nnoremap <buffer> <Leader>dp :%g/set_trace\(\)/d<cr>
 
 function s:pyinfo_find_symbol_clip(return_as)
     let result = pyinfo#find_symbol(a:return_as)
-    if len(result) > 0 then
+    if len(result) > 0
         call file#clip(result, 1)
     endif
 endfunction
