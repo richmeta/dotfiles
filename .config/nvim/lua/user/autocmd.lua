@@ -38,3 +38,18 @@ vim.api.nvim_create_autocmd({"ModeChanged"}, {
     end,
 })
 
+-- TODO: noswap for WIKI
+
+        -- autocmd BufWinEnter,BufRead * :call <SID>check_sync_dir()
+-- function! s:check_sync_dir()
+--     if strlen($WIKIDIR)
+--         let buff_dir = fnamemodify(expand('%:p:h'), ":p") " with trailing slash
+--         let dirs = map(split($WIKIDIR, "[,:]"), {_, fnam -> fnamemodify(fnam, ":p")})
+--         for d in dirs
+--             if match(buff_dir, d) > -1
+--                 setlocal noswapfile
+--             endif
+--         endfor
+--     endif
+-- endfunction
+--

@@ -24,7 +24,9 @@ local plugins = {
     { "folke/trouble.nvim" },                                   -- yes
 
     -- linters
+    -- TODO: remove nvim-lint
     { "mfussenegger/nvim-lint" },                               -- yes
+    { "feakuru/mypy.nvim" },                                    -- yes
 
     -- git
     { "tpope/vim-fugitive" },                                   -- yes
