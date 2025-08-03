@@ -29,6 +29,7 @@ return {
     s( "cache", t{'from functools import cache'} ),
     s( "mock", t{'import unittest.mock'} ),
     s( "defaultdict", t{'from collections import defaultdict'} ),
+    s( "Any", t{'from typing import Any'} ),
 
     s( { trig = "pdb", dscr = "pdb trace" },
         t{'__import__("pdb").set_trace()'}
@@ -60,11 +61,6 @@ if argv.verbose:
     s( { trig = "with", dscr = "with" }, fmt(
 [[with {}:
     {}]], { i(1), i(2) })
-    ),
-
-    s( { trig = "for", dscr = "for loop" }, fmt(
-[[for {} in {}:
-    {}]], { i(1, "i"), i(2, "range(10)"), i(3, "pass") })
     ),
 
     s( { trig = "class", dscr = "simple class" }, fmt(

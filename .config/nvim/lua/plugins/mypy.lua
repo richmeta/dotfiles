@@ -8,7 +8,7 @@ return {
     'feakuru/mypy.nvim',
     config = function()
         require('mypy').setup({
-            extra_args = {'--config-file', 'pyproject.toml' }
+            extra_args = {'--strict'},
         })
     end,
 }
