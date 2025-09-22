@@ -30,8 +30,8 @@ mp.nnoremap("<Leader>cg", function()
 end)
 
 if vim.fn.executable('gh') then
-    -- \gl = copy url to current file (main)
-    mp.nnoremap("<Leader>gl", function()
+    -- \gL = copy url to current file on main
+    mp.nnoremap("<Leader>gL", function()
         -- gh runs relative to cwd
         local line = vim.fn.line(".")
         local full = buffer.expand("full")
@@ -42,8 +42,8 @@ if vim.fn.executable('gh') then
         vim.notify("copied", vim.log.levels.INFO)
     end, mp.buffer)
 
-    -- \gL = copy url to current file on branch
-    mp.nnoremap("<Leader>gL", function()
+    -- \gl = copy url to current file on branch
+    mp.nnoremap("<Leader>gl", function()
         -- gh runs relative to cwd
         local line = vim.fn.line(".")
         local branch = git.branch()

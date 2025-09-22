@@ -38,20 +38,12 @@ function s:pytest_for_function_clip()
     call file#clip(result, 1)
 endfunction
 
-function s:github_line(branch)
-    let li = line(".")
-    let cmd = "gh browse -n " . expand("%s") . ":" . li . " -b " . a:branch
-    let result = system(cmd)
-    call file#clip(result, 1)
-endfunction
-
 function s:copy_filename_line()
     let li = line(".")
     let filepath = FugitivePath(@%, '')
     let result = filepath . ":" . li
     call file#clip(result, 1)
 endfunction
-
 
 if executable('python3')
     " \pf = format black
@@ -73,13 +65,6 @@ nnoremap <buffer> <Leader>cp :call <SID>pyinfo_find_symbol_clip("path")<cr>
 " pytest <filename> -k func
 nnoremap <buffer> <Leader>ct :call <SID>pytest_for_function_clip()<cr>
 
-if executable('gh')
-    " \gl = copy url to current file (main)
-    map <Leader>gl :call <SID>github_line("main")<cr>
-
-    " \gL = copy url to current file on branch
-    map <Leader>gL :call <SID>github_line(FugitiveHead())<cr>
-endif
 
 " \cl = copy filename:line format
 map <Leader>cl :call <SID>copy_filename_line()<cr>

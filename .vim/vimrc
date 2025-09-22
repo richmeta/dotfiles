@@ -946,6 +946,22 @@ nnoremap <Leader>nv :vnew<cr>
 " \ns = new buffer split
 nnoremap <Leader>ns :new<cr>
 
+if executable('gh')
+    function s:github_line(branch)
+        let li = line(".")
+        let cmd = "gh browse -n " . expand("%s") . ":" . li . " -b " . a:branch
+        let result = system(cmd)
+        call file#clip(result, 1)
+    endfunction
+
+    " \gL = copy url to current file on main
+    map <Leader>gL :call <SID>github_line("main")<cr>
+
+    " \gl = copy url to current file on branch
+    map <Leader>gL :call <SID>github_line(FugitiveHead())<cr>
+endif
+
+
 " Dirvish
 " -------
 
