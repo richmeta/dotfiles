@@ -44,35 +44,9 @@ vim.b.switch_custom_definitions =
 -- \dp = remove pdb
 mp.nnoremap("<Leader>dp", [[:%g/set_trace\(\)/d<cr>]], mp.buffer)
 
-local function black_format(visual)
-    local pos = vim.api.nvim_win_get_cursor(0)
-    local cmd = 'black -q'
-    if vim.g.black_options ~= nil then
-        cmd = string.format("%s %s", cmd, vim.g.black_options)
-    end
-
-    local exec
-    if visual then
-        exec = string.format(":'<,'>!%s - ", cmd)
-    else
-        exec = string.format(":%%!%s - ", cmd)
-    end
-    vim.cmd(exec)
-
-    -- reset position
-    vim.api.nvim_win_set_cursor(0, pos)
-end
-
-
-if vim.fn.executable('black') then
-    mp.nnoremap("<Leader>pf", black_format, mp.buffer)
-    mp.vnoremap("<Leader>pf", function()
-        black_format(true)
-    end, mp.buffer)
-end
 
 if vim.fn.executable('ruff') then
-    mp.nnoremap("<Leader>rf", function()
+    mp.nnoremap("<Leader>rF", function()
         local exec = string.format(":!ruff check --fix-only -q %s && ruff format -q ", vim.fn.expand("%"))
         vim.cmd(exec, { silent = true} )
         vim.cmd(":edit")
