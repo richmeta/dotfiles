@@ -14,3 +14,8 @@ serializable
 lua
 Timesheets
 auditable
+precalculated
+frontend
+backend
+precalculate
+everytime
