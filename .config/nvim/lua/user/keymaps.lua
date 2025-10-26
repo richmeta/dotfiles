@@ -112,20 +112,20 @@ nnoremap("<Leader>sw", [[:%s/<c-r><c-w>/]])
 vnoremap("P", [[I<c-r>"]])
 
 -- \xf = format xml
-if executable("xml_pp") then
+if executable("xml_pp") == 1 then
     -- xml_pp = xml pretty print from XML::Twig
     nnoremap("<Leader>xf", ":silent %!xml_pp - <cr>")
     vnoremap("<Leader>xf", ":!xml_pp - <cr>")
 end
 
 -- \hf = format html
-if executable("html_pp") then
+if executable("html_pp") == 1 then
     -- html_pp = html pretty print using Beautiful Soup
     nnoremap("<Leader>hf", ":silent %!html_pp - <cr>")
     vnoremap("<Leader>hf", ":!html_pp - <cr>")
 end
 
-if executable("python3") then
+if executable("python3") == 1 then
     -- \jf = format json
     nnoremap(
         "<Leader>jf",
@@ -147,16 +147,10 @@ if executable("python3") then
     )
 end
 
-if executable("base64") then
+if executable("base64") == 1 then
     -- \bf = format base64
     noremap("<Leader>bf", ":%!base64 -d - <cr><cr>")
     vnoremap("<Leader>bf", [[y:let @"=system('base64 -d', @")<cr>gvP]])
-end
-
-if executable("black") then
-    -- \pf = format black
-    nnoremap("<Leader>pf", ":%!black -q - <cr><cr>")
-    vnoremap("<Leader>pf", ":!black -q - <cr><cr!")
 end
 
 -- shift-F1 - help current word

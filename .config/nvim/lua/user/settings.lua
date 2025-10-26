@@ -73,7 +73,7 @@ o.dictionary = los.nvim_config_dir .. "/dict/dict.txt"
 o.autoread = false
 opt.diffopt:append("algorithm:patience")
 
-if vim.fn.executable('rg') then
+if vim.fn.executable('rg') == 1 then
     o.grepprg = "rg --vimgrep --no-heading"
 end
 
