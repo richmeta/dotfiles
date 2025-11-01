@@ -8,7 +8,14 @@ export PATH=~/bin:$PATH
 export GOPATH=~/workspace/go
 export MYSYNC=$HOME/sync
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
-export PAGER=less
+
+if [[ -x $(which less) ]]; then
+    export PAGER=less
+    export LESS='-R'
+fi
+if [[ -x $(which lesspipe) ]]; then
+    export LESSOPEN="|lesspipe %s"
+fi
 
 if [[ $OSTYPE == darwin* ]]; then
     export CLICOLOR=1
