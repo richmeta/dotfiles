@@ -1,4 +1,3 @@
-local lsp = require("lspconfig")
 local ts = require("telescope.builtin")
 local mp = require("user.map")
 local tg = require("user.toggler")
@@ -238,18 +237,18 @@ local toggle_diagnostics = tg.toggle({
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-lsp.clangd.setup({
+vim.lsp.config('clangd', {
     capabilities = capabilities,
     handlers = handlers,
     on_attach = on_attach,
 })
 
-lsp.gopls.setup({
+vim.lsp.config('gopls', {
     capabilities = capabilities,
     on_attach = on_attach,
 })
 
-lsp.jedi_language_server.setup({
+vim.lsp.config('jedi_language_server', {
     capabilities = capabilities,
     on_attach = on_attach,
     init_options = {
@@ -258,8 +257,9 @@ lsp.jedi_language_server.setup({
         },
     }
 })
+vim.lsp.enable('jedi_language_server')
 
-lsp.lua_ls.setup({
+vim.lsp.config('lua_ls', {
     capabilities = capabilities,
     handlers = handlers,
     on_attach = on_attach,
@@ -274,8 +274,9 @@ lsp.lua_ls.setup({
         },
     },
 })
+vim.lsp.enable('lua_ls')
 
-lsp.ruff.setup({
+vim.lsp.config('ruff', {
     capabilities = capabilities,
     on_attach = on_attach,
     handlers = handlers,
@@ -309,8 +310,9 @@ lsp.ruff.setup({
         },
     }
 })
+vim.lsp.enable('ruff')
 
-lsp.rust_analyzer.setup({
+vim.lsp.config('rust_analyzer', {
     on_attach = on_attach,
     handlers = handlers,
     settings = {
@@ -333,7 +335,7 @@ lsp.rust_analyzer.setup({
     }
 })
 
-lsp.ts_ls.setup({
+vim.lsp.config('ts_ls', {
     capabilities = capabilities,
     handlers = handlers,
     on_attach = on_attach,
@@ -373,7 +375,7 @@ lsp.ts_ls.setup({
     },
 })
 
-lsp.zls.setup({
+vim.lsp.config('zls', {
     capabilities = capabilities,
     handlers = handlers,
     on_attach = on_attach,
