@@ -23,13 +23,11 @@ _gitsafe/
 
 # vim 
 .local.vimrc
+.vimrc
 
 # project overrides with direnv/nix
 .envrc
 shell.nix
-
-# pyright
-pyrightconfig.json
 
 # pre-commit
 .pre-commit-config.yaml
@@ -37,8 +35,6 @@ pyrightconfig.json
 # tmp scripts
 go.sh
 
-# .vimrc local
-.vimrc
-
 # lib links
 .lib
+
