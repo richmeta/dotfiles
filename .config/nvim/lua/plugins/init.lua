@@ -11,7 +11,7 @@ local plugins = {
     -- lsp
     { "williamboman/mason.nvim", opts = {}, build = ":MasonUpdate" },
     { "williamboman/mason-lspconfig.nvim" },                    -- yes
-    { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },    -- yes
+    { "L3MON4D3/LuaSnip" },                                     -- yes
     { "neovim/nvim-lspconfig" },
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-cmdline" },
@@ -132,3 +132,4 @@ end
 
 vim.list_extend(plugins, localplugins)
 return plugins
+
