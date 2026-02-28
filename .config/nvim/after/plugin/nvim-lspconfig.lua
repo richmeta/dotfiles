@@ -32,8 +32,8 @@ local fn = mp.fn_term
 --------------------------------------------------------------------------------
 local group = vim.api.nvim_create_augroup("LSPAutoCmd", {})
 local handlers =  {
-  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = "single"}),
-  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = "single" }),
+  ["textDocument/hover"] =  vim.lsp.buf.hover({border = "single"}),
+  ["textDocument/signatureHelp"] =  vim.lsp.buf.signature_help({border = "single" }),
 }
 
 local function with_view(view, mapfn, mapping, action)
