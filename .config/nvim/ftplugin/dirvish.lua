@@ -145,13 +145,13 @@ end)
 mp.nmap_b("ne", [[:e %/]])
 
 -- v = vertical split (dirvish)
-mp.nmap_b("v", "a", { remap = true})
+mp.nmap_b("v", "a", { remap = true })
 
 -- s = horiz split (dirvish)
-mp.nmap_b("s", "o", { remap = true})
+mp.nmap_b("s", "o", { remap = true })
 
 -- ctrl-t = open in tab (dirvish)
-mp.nmap_b("<C-t>", "t", { remap = true})
+mp.nmap_b("<C-t>", "t", { remap = true })
 
 -- open file under cursor in new tab (dirvish)
 mp.nnoremap_b("t", ":call dirvish#open('tabedit', 0)<cr>", silent)
