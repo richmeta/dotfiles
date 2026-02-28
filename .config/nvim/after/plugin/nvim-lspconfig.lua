@@ -30,7 +30,7 @@ local fn = mp.fn_term
 -- ['textDocument/semanticTokens/full/delta'] = { 'semanticTokensProvider' },
 
 --------------------------------------------------------------------------------
-local group = vim.api.nvim_create_augroup("LSPAutoCmd", {})
+local lspgroup = vim.api.nvim_create_augroup("LSPAutoCmd", { clear = true })
 local handlers =  {
   ["textDocument/hover"] =  vim.lsp.buf.hover({border = "single"}),
   ["textDocument/signatureHelp"] =  vim.lsp.buf.signature_help({border = "single" }),
@@ -53,23 +53,12 @@ local function with_view(view, mapfn, mapping, action)
     end)
 end
 
-local function get_client_by_name(name)
-    local found = vim.lsp.get_clients({ name = name })
-    if #found == 1 then
-        return found[1]
-    else
-        return nil
-    end
-end
-
-
+-- called from LspAttach below
 local function on_attach(client, bufnr)
     -- by default disable diagnostics
     vim.diagnostic.enable(false)
-
-    if client:supports_method("textDocument/inlayHint") then
-        require("lsp-inlayhints").on_attach(client, bufnr)
-    end
+    vim.lsp.inlay_hint.enable(false) --, {bufnr = bufnr})
+    vim.lsp.codelens.enable(false)
 
     if client:supports_method("textDocument/definition") then
         -- gd = goto definition (lsp)
@@ -147,21 +136,6 @@ local function on_attach(client, bufnr)
         mp.nmap_b("<leader>rn", vim.lsp.buf.rename)
     end
 
-    if client:supports_method("textDocument/codeLens") then
-        -- \ca = run code action (lsp)
-        mp.nmap_b("<leader>ca", function()
-            vim.lsp.codelens.run()
-        end)
-
-        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "CursorHold", "InsertLeave" }, {
-            group = group,
-            pattern = "<buffer>",
-            callback = function()
-                vim.lsp.codelens.refresh()
-            end,
-        })
-    end
-
     if client:supports_method("textDocument/signatureHelp") then
         -- \m-k = signature help (lsp)
         mp.nmap_b("<m-k>", vim.lsp.buf.signature_help)
@@ -201,24 +175,6 @@ local function on_attach(client, bufnr)
     -- \gq = errors to quickfix (lsp)
     mp.nmap_b("<leader>gq", vim.diagnostic.setqflist)
 
-    -- [g = prev error (lsp)
-    mp.nmap_b("[g", vim.diagnostic.goto_prev)
-
-    -- ]g = next error (lsp)
-    mp.nmap_b("]g", vim.diagnostic.goto_next)
-end
-
-local function attach_post_setup(client)
-    -- setup extra mappings for commands etc
-    if client.name == "ruff" then
-        if client.commands["RuffAutoFix"] then
-            mp.nmap("<leader>rf", ":RuffAutoFix<cr>")
-        end
-        if client.commands["RuffOrganizeImports"] then
-            mp.nmap("<leader>ro", ":RuffOrganizeImports<cr>")
-        end
-
-    end
 end
 
 local toggle_diagnostics = tg.toggle({
@@ -226,31 +182,17 @@ local toggle_diagnostics = tg.toggle({
         return vim.diagnostic.is_enabled()
     end,
     handler = function(is_enabled)
-        if is_enabled then
-            vim.diagnostic.enable(false)
-        else
-            vim.diagnostic.enable(true)
-        end
+        vim.diagnostic.enable(not is_enabled)
     end
 })
 
+vim.lsp.config('clangd', {handlers = handlers})
+vim.lsp.enable('clangd')
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-vim.lsp.config('clangd', {
-    capabilities = capabilities,
-    handlers = handlers,
-    on_attach = on_attach,
-})
-
-vim.lsp.config('gopls', {
-    capabilities = capabilities,
-    on_attach = on_attach,
-})
+vim.lsp.config('gopls', {handlers = handlers})
+vim.lsp.enable('gopls')
 
 vim.lsp.config('jedi_language_server', {
-    capabilities = capabilities,
-    on_attach = on_attach,
     init_options = {
         completion = {
             disableSnippets = true,
@@ -260,9 +202,7 @@ vim.lsp.config('jedi_language_server', {
 vim.lsp.enable('jedi_language_server')
 
 vim.lsp.config('lua_ls', {
-    capabilities = capabilities,
     handlers = handlers,
-    on_attach = on_attach,
     settings = {
         Lua = {
             diagnostics = {
@@ -277,43 +217,18 @@ vim.lsp.config('lua_ls', {
 vim.lsp.enable('lua_ls')
 
 vim.lsp.config('ruff', {
-    capabilities = capabilities,
-    on_attach = on_attach,
     handlers = handlers,
-    commands = {
-        RuffAutoFix = {
-            function()
-                local client = get_client_by_name("ruff")
-                if client then
-                    client:exec_cmd({
-                        command = 'ruff.applyAutofix',
-                        arguments = {
-                            { uri = vim.uri_from_bufnr(0), version = 1 },
-                        },
-                    })
-                end
-            end
+    init_options = {
+        settings = {
+            lint = {enable = true},
+            format = {enable = true},
+            logLevel = "info",
         },
-        RuffOrganizeImports = {
-            function()
-                local client = get_client_by_name("ruff")
-                if client then
-                    client:exec_cmd({
-                        command = 'ruff.applyOrganizeImports',
-                        arguments = {
-                            { uri = vim.uri_from_bufnr(0), version = 1 },
-                        },
-                    })
-                end
-            end,
-            description = 'Ruff: Format imports',
-        },
-    }
+    },
 })
 vim.lsp.enable('ruff')
 
 vim.lsp.config('rust_analyzer', {
-    on_attach = on_attach,
     handlers = handlers,
     settings = {
         ["rust-analyzer"] = {
@@ -334,11 +249,11 @@ vim.lsp.config('rust_analyzer', {
         }
     }
 })
+vim.lsp.enable('rust_analyzer')
+
 
 vim.lsp.config('ts_ls', {
-    capabilities = capabilities,
     handlers = handlers,
-    on_attach = on_attach,
     single_file_support = true,
     init_options = {
         preferences = {
@@ -374,32 +289,25 @@ vim.lsp.config('ts_ls', {
         },
     },
 })
+vim.lsp.enable('ts_ls')
 
 vim.lsp.config('zls', {
-    capabilities = capabilities,
     handlers = handlers,
-    on_attach = on_attach,
 })
+vim.lsp.enable('zls')
 
--- Ctrl-F5 = toggle LSP errors
+-- F5 = toggle LSP errors
 mp.nnoremap("<F5>", toggle_diagnostics)
 mp.inoremap("<F5>", toggle_diagnostics)
 
 -- lsp uses tagfunc (see vim.lsp.tagfunc)
 vim.o.tags = ""
 
-vim.api.nvim_create_augroup("LspAttach_inlayhints", {})
 vim.api.nvim_create_autocmd("LspAttach", {
-    group = "LspAttach_inlayhints",
+    group = lspgroup,
     callback = function(args)
-        if not (args.data and args.data.client_id) then
-            return
-        end
-
         local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        require("lsp-inlayhints").on_attach(client, bufnr)
-
-        attach_post_setup(client)
+        on_attach(client, bufnr)
     end,
 })
