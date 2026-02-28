@@ -20,13 +20,14 @@ local plugins = {
     { "hrsh7th/cmp-nvim-lsp-signature-help" },
     { "hrsh7th/nvim-cmp" },                                     -- yes
     { "saadparwaiz1/cmp_luasnip" },
-    { "lvimuser/lsp-inlayhints.nvim" },                         -- yes
+    -- { "lvimuser/lsp-inlayhints.nvim" },                         -- yes
     { "folke/trouble.nvim" },                                   -- yes
 
     -- linters
     -- TODO: remove nvim-lint
     { "mfussenegger/nvim-lint" },                               -- yes
     { "feakuru/mypy.nvim" },                                    -- yes
+    { 'stevearc/conform.nvim' },                                -- yes
 
     -- git
     { "tpope/vim-fugitive" },                                   -- yes
