@@ -44,6 +44,10 @@ function M.debug(...)
     end
 end
 
+function M.debug_table(msg, tbl)
+    M.debug(msg, table.concat(tbl, ", "))
+end
+
 function M.execute(...)
     local arg={...}
     local cmd = ""

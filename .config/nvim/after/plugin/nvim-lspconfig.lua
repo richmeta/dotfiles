@@ -57,8 +57,12 @@ end
 local function on_attach(client, bufnr)
     -- by default disable diagnostics
     vim.diagnostic.enable(false)
-    vim.lsp.inlay_hint.enable(false) --, {bufnr = bufnr})
-    vim.lsp.codelens.enable(false)
+    vim.lsp.inlay_hint.enable(false)
+
+    if vim.lsp.codelens.enable then
+        -- comes in v12
+        vim.lsp.codelens.enable(false)
+    end
 
     if client:supports_method("textDocument/definition") then
         -- gd = goto definition (lsp)
