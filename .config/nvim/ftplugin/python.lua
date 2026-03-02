@@ -44,15 +44,6 @@ vim.b.switch_custom_definitions =
 -- \dp = remove pdb
 mp.nnoremap("<Leader>dp", [[:%g/set_trace\(\)/d<cr>]], mp.buffer)
 
-
-if vim.fn.executable('ruff') then
-    mp.nnoremap("<Leader>rF", function()
-        local exec = string.format(":!ruff check --fix-only -q %s && ruff format -q ", vim.fn.expand("%"))
-        vim.cmd(exec, { silent = true} )
-        vim.cmd(":edit")
-    end, mp.buffer)
-end
-
 local function pyinfo_find_symbol_clip(return_as)
     local pyinfo_find_symbol = vim.fn["pyinfo#find_symbol"]
     local result = pyinfo_find_symbol(return_as)
