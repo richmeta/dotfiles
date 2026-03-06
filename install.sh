@@ -68,16 +68,6 @@ if [ ! -e ~/.config/git/ignore ]; then
     git config --global core.excludesFile $HOME/.config/git/ignore
 fi
 
-# black
-if [ ! -e ~/.config/black ]; then
-    ln -sv $(readlink -f .config/black) ~/.config/black
-fi
-
-# pycodestyle
-if [ ! -e ~/.config/pycodestyle ]; then
-    ln -sv $(readlink -f .config/pycodestyle) ~/.config/pycodestyle
-fi
-
 # kitty
 if [ ! -e ~/.config/kitty/kitty.conf ]; then
     ln -sv $(readlink -f .config/kitty/kitty.conf) ~/.config/kitty/kitty.conf
