@@ -99,15 +99,17 @@ return {
         -- \z = buffers (telescope)
         { "<leader>z", "<cmd>Telescope buffers<cr>", desc = "buffers" },
 
+        -- \gB = git branches
+        { "<leader>gB", "<cmd>Telescope git_branches<cr>", desc = "git branches" },
 
         -- \dg = diagnostics
-        { "<Leader>dg", "<cmd>Telescope diagnostics<CR>", desc = "Diagnostics" },
+        { "<Leader>dg", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
 
         -- \cs = colorscheme (telescope)
-        { "<Leader>cs", "<cmd>Telescope colorscheme<CR>", desc = "Switch colorscheme", },
+        { "<Leader>cs", "<cmd>Telescope colorscheme<cr>", desc = "Switch colorscheme", },
 
         -- \hl = help tags (telescope)
-        { "<Leader>hl", "<cmd>Telescope help_tags<CR>", desc = "Search help", },
+        { "<Leader>hl", "<cmd>Telescope help_tags<cr>", desc = "Search help", },
     },
 }
 
