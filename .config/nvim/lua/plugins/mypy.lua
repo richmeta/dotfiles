@@ -5,10 +5,15 @@
 -- dmypy status 
 
 return {
-    'feakuru/mypy.nvim',
+    -- 'feakuru/mypy.nvim',
+    'mypy.nvim',
+    dir = "/Users/richard.french/Software/mypy.nvim",
+
     config = function()
         require('mypy').setup({
-            extra_args = {'--strict'},
+            -- '--strict', 
+            extra_args = {'--config-file', 'pyproject.toml'},
+            enabled = false,
         })
     end,
 }

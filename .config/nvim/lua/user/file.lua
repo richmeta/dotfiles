@@ -60,6 +60,7 @@ function M.stem(fn)
 end
 
 function M.relative(fn, base_dir)
+    -- make_relative will return `fn` if not relative
     local p1 = as_path(fn)
     return p1:make_relative(base_dir)
 end
@@ -161,7 +162,7 @@ function M.clip(opts)
     if not path then
         local expand = opts.expand
         if opts.typ == "git" then
-            expand = git.relative_from_buffer(buffer.expand("current"))
+            expand = git.relative_from_root(buffer.expand("current"))
         elseif opts.typ then
             expand = buffer.expand(opts.typ)
         end

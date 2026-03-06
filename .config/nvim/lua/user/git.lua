@@ -1,11 +1,17 @@
 local M = {}
 
 local function git_root()
+    local git_root = vim.fn.FugitiveWorkTree()
+    if git_root == "" then
+        -- not a git dir
+        return ""
+    end
+
     if vim.g.project_root then
         -- allow overriding for projects where root != git
         return vim.g.project_root
     else
-        return vim.fn.FugitiveWorkTree()
+        return git_root
     end
 end
 
@@ -21,12 +27,27 @@ function M.root(silent)
     return dir
 end
 
-function M.relative_from_buffer(filename)
+function M.absolute(filename)
+    local dir = git_root()
+    if dir == "" then
+        return vim.fn.expand("%:p")
+    end
+    
+    return vim.fn.FugitivePath(filename, dir)
+end
+
+function M.relative_from_root(filename)
     local dir = git_root()
     if dir == "" then
         return vim.fn.expand("%")
     end
-    return vim.fn.FugitivePath(filename, "")
+
+    if vim.g.project_root then
+        local file = require("user.file")
+        return file.relative(filename, vim.g.project_root)
+    else
+        return vim.fn.FugitivePath(filename, "")
+    end
 end
 
 function M.branch(silent)

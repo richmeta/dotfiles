@@ -83,7 +83,7 @@ end, mp.buffer)
 -- pytest <filename> -k func
 mp.nnoremap("<Leader>ct", function()
     -- TODO: apply with project_root
-    local filepath = git.relative_from_buffer(buffer.expand("current"))
+    local filepath = git.relative_from_root(buffer.expand("current"))
     local func = util.expand("<cword>", true)
     local result
     if func == '' then
@@ -98,7 +98,7 @@ end, mp.buffer)
 -- \cl = copy filename and linenumber (filename:line format)
 mp.nnoremap("<Leader>cl", function()
     local line = vim.fn.line(".")
-    local path = git.relative_from_buffer(buffer.expand("current"))
+    local path = git.relative_from_root(buffer.expand("current"))
     local result = string.format("%s:%d", path, line)
     clipboard.copy(result)
     vim.notify("copied", vim.log.levels.INFO)
