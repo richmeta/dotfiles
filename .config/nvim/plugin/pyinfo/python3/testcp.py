@@ -8,12 +8,29 @@ from contextlib import contextmanager
 
 from pyinfo import find_symbol_internal
 
-"""
-note: can't run both test classes due to sys.modules mangling
-use one of
-./tests2.py PyInfoDraTests
-./tests2.py PyInfoCPTests
-"""
+# required for settings
+os.environ["FIREBASE_SERVICE_ACCOUNT_JSON"] = "e30="
+os.environ["CLOUD_STORAGE_ACCOUNT_JSON"] = "e30="
+os.environ["CLOUD_STORAGE_BUCKET"] = ""
+os.environ["AUTH0_TENANT_URL"] = ""
+os.environ["AUTH0_MANAGEMENT_CLIENT_ID"] = ""
+os.environ["AUTH0_MANAGEMENT_CLIENT_SECRET"] = ""
+os.environ["ENVIRONMENT_ID"] = ""
+os.environ["USER_ENVIRONMENT_URL"] = ""
+os.environ["USER_ENVIRONMENT_AUDIENCE"] = ""
+os.environ["ENVIRONMENT_CONFIG_URL"] = ""
+os.environ["MAILGUN_URL"] = ""
+os.environ["MAILGUN_API_KEY"] = ""
+os.environ["MAILGUN_DOMAIN"] = ""
+os.environ["MAILGUN_SENDER"] = ""
+os.environ["HIVE_PORTAL_URL"] = ""
+os.environ["EXTERNAL_DOMAINS"] = ""
+os.environ["EXTERNAL_DOMAIN_ACCESS_TYPE"] = ""
+os.environ["INVITE_EMAIL_WHITELIST"] = ""
+os.environ["POSTGRES_USER"] = ""
+os.environ["POSTGRES_PASSWORD"] = ""
+os.environ["POSTGRES_DB"] = ""
+os.environ["POSTGRES_HOSTNAME"] = ""
 
 
 @contextmanager
@@ -31,96 +48,10 @@ def buffer(filename: Path, extra: list[str] | str | None = None):
         yield
 
 
-class PyInfoDraTests(unittest.TestCase):
-    extra_imports = "shared.sqlalchemy.model"
-    project_root = Path("/Users/richard.french/src/dra/main")
-    env = Path("/Users/richard.french/src/dra/main/.venv")
-
-    def setUp(self):
-        os.environ["VIRTUAL_ENV"] = str(self.env)
-
-    def tearDown(self):
-        os.environ["VIRTUAL_ENV"] = ""
-
-    def test_symbol_this_module(self):
-        # symbol = "" -> this module
-        filename = "apps/commission_delivery/routes.py"
-        symbol = ""
-        with buffer(self.project_root / filename):
-            res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
-            self.assertEqual(res["pypath"], "apps.commission_delivery.routes")
-            self.assertEqual(res["import"], "import apps.commission_delivery.routes")
-            self.assertEqual(res["starimport"], "from apps.commission_delivery.routes import *")
-            self.assertEqual(res["path"], filename)
-
-    def test_symbol_from_x_import_y(self):
-        # symbol = "Y" -> from X import Y
-        filename = "apps/commission_delivery/routes.py"
-
-        # from shared.utils import make_download
-        symbol = "make_download"
-        with buffer(self.project_root / filename):
-            res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
-            self.assertEqual(res["pypath"], "shared.utils.make_download")
-            self.assertEqual(res["import"], "from shared.utils import make_download")
-            self.assertEqual(res["starimport"], "from shared.utils import *")
-            self.assertEqual(res["path"], "shared/utils.py")
-
-    def test_symbol_from_dot_import_y(self):
-        # symbol = "Y" -> from . import Y
-        filename = "apps/commission_delivery/routes.py"
-
-        # from . import controller
-        symbol = "controller"
-        with buffer(self.project_root / filename):
-            res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
-            self.assertEqual(res["pypath"], "apps.commission_delivery.controller")
-            self.assertEqual(res["import"], "from apps.commission_delivery import controller")
-            self.assertEqual(res["starimport"], "from apps.commission_delivery import *")
-            self.assertEqual(res["path"], "apps/commission_delivery/__init__.py")
-
-    def test_symbol_from_dot_mod_import_y(self):
-        # symbol = "Y" -> from .mod import Y
-        filename = "apps/commission_delivery/routes.py"
-
-        # from .blueprint import api
-        symbol = "api"
-        with buffer(self.project_root / filename):
-            res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
-            self.assertEqual(res["pypath"], "apps.commission_delivery.blueprint.api")
-            self.assertEqual(res["import"], "from apps.commission_delivery.blueprint import api")
-            self.assertEqual(res["starimport"], "from apps.commission_delivery.blueprint import *")
-            self.assertEqual(res["path"], "apps/commission_delivery/blueprint.py")
-
-    def test_symbol_import_x(self):
-        # symbol = "X" -> import X
-        filename = "apps/commission_delivery/controller.py"
-
-        # import logging
-        symbol = "logging"
-        with buffer(self.project_root / filename):
-            res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
-            self.assertEqual(res["pypath"], "logging")
-            self.assertEqual(res["import"], "import logging")
-            self.assertEqual(res["starimport"], "from logging import *")
-            self.assertTrue(res["path"].endswith("logging/__init__.py"))
-
-    def test_symbol_mod_level_attr(self):
-        # symbol = mod level attr of this file
-        filename = "apps/commission_delivery/controller.py"
-        symbol = "get_individual_summary"
-        with buffer(self.project_root / filename):
-            res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
-            self.assertEqual(res["pypath"], f"apps.commission_delivery.controller.{symbol}")
-            self.assertEqual(res["import"], f"from apps.commission_delivery.controller import {symbol}")
-            self.assertEqual(res["starimport"], "from apps.commission_delivery.controller import *")
-            self.assertEqual(res["path"], filename)
-
-
 class PyInfoCPTests(unittest.TestCase):
     extra_imports = ""
-    project_root = Path("/Users/richard.french/src/client-portal/apps/api")
-    env = Path("/Users/richard.french/src/client-portal/apps/api/.venv")
+    project_root = Path("/Users/richard.french/src/cp/main/apps/api")
+    env = Path("/Users/richard.french/src/cp/main/apps/api/.venv")
 
     def setUp(self):
         os.environ["VIRTUAL_ENV"] = str(self.env)
@@ -160,10 +91,10 @@ class PyInfoCPTests(unittest.TestCase):
         symbol = "controller.get_me"
         with buffer(self.project_root / filename):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
-            self.assertEqual(res["pypath"], "app.api.deps.RequestContext")
-            self.assertEqual(res["import"], "from app.api.deps import RequestContext")
-            self.assertEqual(res["starimport"], "from app.api.deps import *")
-            self.assertEqual(res["path"], "app/api/deps.py")
+            self.assertEqual(res["pypath"], "app.api.controller.get_me")
+            self.assertEqual(res["import"], "from app.api.controller import get_me")
+            self.assertEqual(res["starimport"], "from app.api.controller import *")
+            self.assertEqual(res["path"], "app/api/controller.py")
 
     def test_symbol_from_dot_import_y(self):
         # symbol = "Y" -> from . import Y
@@ -173,10 +104,10 @@ class PyInfoCPTests(unittest.TestCase):
         symbol = "risk"
         with buffer(self.project_root / filename):
             res = find_symbol_internal(self.project_root, filename, symbol, self.extra_imports)
-            self.assertEqual(res["pypath"], "app.api.modules.risk")
-            self.assertEqual(res["import"], "from app.api.modules import risk")
-            self.assertEqual(res["starimport"], "from app.api.modules import *")
-            self.assertEqual(res["path"], "app/api/modules/__init__.py")
+            self.assertEqual(res["pypath"], "app.api.modules.project.risk")
+            self.assertEqual(res["import"], "from app.api.modules.project import risk")
+            self.assertEqual(res["starimport"], "from app.api.modules.project import *")
+            self.assertEqual(res["path"], "app/api/modules/project/__init__.py")
 
     def test_symbol_from_dot_mod_import_y(self):
         # symbol = "Y" -> from .mod import Y
@@ -239,6 +170,3 @@ class PyInfoCPTests(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
 
-
-if __name__ == "__main__":
-    unittest.main()

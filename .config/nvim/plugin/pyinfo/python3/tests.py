@@ -21,6 +21,8 @@ def relpath(path: Path) -> str:
 
 
 class PyInfoTests(unittest.TestCase):
+    extra_imports = ""
+
     @contextmanager
     def buffer(self, filename: Path, extra: list[str] | str | None = None):
         d = {}
@@ -48,70 +50,70 @@ class PyInfoTests(unittest.TestCase):
 
     def test_abs_import(self):
         with self.buffer(MAIN_PY) as d:
-            find_symbol(PROJECT_ROOT, MAIN_PY, "some_func", "pypath")
+            find_symbol(PROJECT_ROOT, MAIN_PY, "some_func", "pypath", self.extra_imports)
             self.assertEqual(d["result"], "somemodule.mod.some_func")
 
-            find_symbol(PROJECT_ROOT, MAIN_PY, "some_func", "path")
+            find_symbol(PROJECT_ROOT, MAIN_PY, "some_func", "path", self.extra_imports)
             self.assertEqual(d["result"], relpath(SM_PY))
 
     def test_rel_import(self):
         with self.buffer(SM_PY) as d:
-            find_symbol(PROJECT_ROOT, SM_PY, "VAR1", "pypath")
+            find_symbol(PROJECT_ROOT, SM_PY, "VAR1", "pypath", self.extra_imports)
             self.assertEqual(d["result"], "somemodule.config.VAR1")
 
-            find_symbol(PROJECT_ROOT, SM_PY, "VAR1", "path")
+            find_symbol(PROJECT_ROOT, SM_PY, "VAR1", "path", self.extra_imports)
             self.assertEqual(d["result"], relpath(CFG_PY))
 
     def test_abs_import_nested(self):
         with self.buffer(MAIN_PY) as d:
-            find_symbol(PROJECT_ROOT, MAIN_PY, "some_child_func", "pypath")
+            find_symbol(PROJECT_ROOT, MAIN_PY, "some_child_func", "pypath", self.extra_imports)
             self.assertEqual(d["result"], "somemodule.submodule.child.some_child_func")
 
-            find_symbol(PROJECT_ROOT, MAIN_PY, "some_child_func", "path")
+            find_symbol(PROJECT_ROOT, MAIN_PY, "some_child_func", "path", self.extra_imports)
             self.assertEqual(d["result"], relpath(SC_PY))
 
     def test_rel_import_nested(self):
         with self.buffer(SC_PY) as d:
-            find_symbol(PROJECT_ROOT, SC_PY, "VAR1", "pypath")
+            find_symbol(PROJECT_ROOT, SC_PY, "VAR1", "pypath", self.extra_imports)
             self.assertEqual(d["result"], "somemodule.config.VAR1")
 
-            find_symbol(PROJECT_ROOT, SC_PY, "VAR1", "path")
+            find_symbol(PROJECT_ROOT, SC_PY, "VAR1", "path", self.extra_imports)
             self.assertEqual(d["result"], relpath(CFG_PY))
 
     def test_symbol_not_found(self):
         # symb not found in current module
         with self.buffer(MAIN_PY):
             with self.assertRaises(PyInfoError) as ex:
-                find_symbol(PROJECT_ROOT, MAIN_PY, "missing_symbol", "pypath")
+                find_symbol(PROJECT_ROOT, MAIN_PY, "missing_symbol", "pypath", self.extra_imports)
                 self.assertIn("'missing_symbol' not found", ex.exception.args[0])
 
     def test_abs_module_not_found(self):
         # symb not found in current module
         with self.buffer(MAIN_PY, extra="from missing_module import missing_func"):
             with self.assertRaises(PyInfoError) as ex:
-                find_symbol(PROJECT_ROOT, MAIN_PY, "missing_func", "pypath")
+                find_symbol(PROJECT_ROOT, MAIN_PY, "missing_func", "pypath", self.extra_imports)
                 self.assertIn("module not found", ex.exception.args[0])
 
     def test_rel_symbol_not_found(self):
         # import line found, but var doesn't exist
         with self.buffer(SM_PY, extra="from .config import MISSING"):
             with self.assertRaises(PyInfoError) as ex:
-                find_symbol(PROJECT_ROOT, SM_PY, "MISSING", "pypath")
+                find_symbol(PROJECT_ROOT, SM_PY, "MISSING", "pypath", self.extra_imports)
                 self.assertIn("'missing_symbol' not found", ex.exception.args[0])
 
     def test_rel_mod_not_found(self):
         # symb not found in current module
         with self.buffer(SM_PY, extra="from .missing_module import missing_func"):
             with self.assertRaises(PyInfoError) as ex:
-                find_symbol(PROJECT_ROOT, MAIN_PY, "missing_func", "pypath")
+                find_symbol(PROJECT_ROOT, MAIN_PY, "missing_func", "pypath", self.extra_imports)
                 self.assertIn("'missing_func' not found", ex.exception.args[0])
 
     def test_normal_import(self):
         with self.buffer(MAIN_PY, extra="import re") as d:
-            find_symbol(PROJECT_ROOT, MAIN_PY, "re", "pypath")
+            find_symbol(PROJECT_ROOT, MAIN_PY, "re", "pypath", self.extra_imports)
             self.assertEqual(d["result"], "re")
 
-            find_symbol(PROJECT_ROOT, MAIN_PY, "re", "path")
+            find_symbol(PROJECT_ROOT, MAIN_PY, "re", "path", self.extra_imports)
             self.assertEqual(d["result"], re.__file__)
 
 

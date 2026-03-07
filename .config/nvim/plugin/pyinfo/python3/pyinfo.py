@@ -5,8 +5,10 @@ import re
 import sys
 import logging
 from datetime import datetime
+from functools import reduce
 from pathlib import Path
 from typing import Iterable
+from types import ModuleType
 try:
     import vim      # type: ignore
 except ImportError:
@@ -142,6 +144,26 @@ def _add_to_path(project_root: str | Path) -> None:
         sys.path.insert(0, str(project_root))
 
 
+def getattr_dotted(mod: ModuleType, symbol: str) -> tuple[ModuleType, str]:
+    # returns module + symbol name from a given module
+    # resolving dotted path if supplied
+    # eg:
+    # in "somemodule" or
+    # "somemodule.somevar" or
+    # "somemodule.childmodule.somevar" etc
+    # raises AttributeError if not present
+    paths = symbol.split(".")
+    if len(paths) > 1:
+        # resolve dotted path
+        [*modpaths, symbol] = paths
+        for modname in modpaths:
+            mod = getattr(mod, modname)
+
+    # check resolved module + symbol exist
+    getattr(mod, symbol)
+    return mod, symbol
+
+
 def find_symbol_internal(project_root: str | Path, buffer_path: str | Path, symbol: str, extra_imports: str) -> dict:
     logger.info(f"\n{datetime.now().isoformat()}: _find_symbol: {project_root}, {buffer_path}, {symbol}")
     project_root = Path(project_root).resolve()
@@ -207,7 +229,7 @@ def find_symbol_internal(project_root: str | Path, buffer_path: str | Path, symb
 
     if symbol:
         try:
-            getattr(mod, symbol)
+            mod, symbol = getattr_dotted(mod, symbol)
         except AttributeError:
             logger.error(f"pyinfo: '{symbol}' not found in \"{mod_name}\"")
             raise PyInfoError(f"pyinfo: '{symbol}' not found in \"{mod_name}\"")
