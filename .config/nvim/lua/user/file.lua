@@ -59,6 +59,13 @@ function M.stem(fn)
     return M.expand(fn, "stem")
 end
 
+function M.is_child_of(file, dir)
+  local fn = Path:new(file):absolute()
+  local d = Path:new(dir):absolute()
+  d = dir:gsub(Path.path.sep .. "$", "") -- remove trailing slash
+  return vim.startswith(fn, d .. Path.path.sep)
+end
+
 function M.relative(fn, base_dir)
     -- make_relative will return `fn` if not relative
     local p1 = as_path(fn)

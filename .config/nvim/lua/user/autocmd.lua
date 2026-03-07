@@ -6,6 +6,9 @@
 --     group = highlightListChars
 -- })
 
+local buffer = require("user.buffer")
+local file = require("user.file")
+local os = require("user.os")
 
 -- set default formatoptions for all buffers
 --    -ro = dont insert comment leader for newlines
@@ -33,23 +36,22 @@ end
 vim.api.nvim_create_autocmd({"ModeChanged"}, {
     pattern = "*",
     group = group,
-    callback = function()
-        check_leave_snippet()
-    end,
+    callback = check_leave_snippet,
 })
 
--- TODO: noswap for WIKI
+local function check_wiki_dir()
+    -- disable swapfiles in .wiki files
+    local buffer_fn = buffer.full()
+    if os.wiki_dir then
+        if file.is_child_of(buffer_fn, os.wiki_dir) then
+            vim.bo.swapfile = false
+        end
+    end
+end
 
-        -- autocmd BufWinEnter,BufRead * :call <SID>check_sync_dir()
--- function! s:check_sync_dir()
---     if strlen($WIKIDIR)
---         let buff_dir = fnamemodify(expand('%:p:h'), ":p") " with trailing slash
---         let dirs = map(split($WIKIDIR, "[,:]"), {_, fnam -> fnamemodify(fnam, ":p")})
---         for d in dirs
---             if match(buff_dir, d) > -1
---                 setlocal noswapfile
---             endif
---         endfor
---     endif
--- endfunction
---
+vim.api.nvim_create_autocmd({"BufWinEnter", "BufRead"}, {
+    pattern = "*",
+    group = group,
+    callback = check_wiki_dir,
+})
+

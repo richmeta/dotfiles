@@ -40,6 +40,7 @@ o.winminheight = 0
 o.shiftround = true
 o.showcmd = true
 o.lazyredraw = true
+o.foldenable = false
 opt.matchpairs:append("<:>")
 opt.iskeyword:append("-")
 o.wildmenu = true
