@@ -278,28 +278,33 @@ if has('autocmd')
             \ endif
 
         autocmd BufWinEnter,BufRead * :call <SID>check_sync_dir()
-    augroup END
+    augroup end
 
     augroup HighlightListChars
         " must be before any calls to colorscheme
         autocmd!
         autocmd ColorScheme * highlight Specialkey guibg=lightgreen
-    augroup END
+    augroup end
 
-    augroup vimrc     " Source vim configuration upon save
+    augroup vimrc     
+        " Source vim configuration upon save
         autocmd!
         autocmd! BufWritePost vimrc,.vimrc source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
         autocmd! BufWritePost gvimrc,.gvimrc if has('gui_running') | source $MYGVIMRC | echom "Reloaded " . $MYGVIMRC | endif | redraw
-    augroup END
+    augroup end
 
     augroup formatopts
         autocmd!
+        " override settings set from certain filetypes
         " -ro dont insert comment leader for newlines
         " +j  Delete comment character when joining commented lines
         autocmd BufNewFile,BufReadPost * setlocal formatoptions-=ro | setlocal formatoptions+=j
-    augroup END
+    augroup end
 
-
+    augroup diff
+        autocmd!
+        autocmd OptionSet diff setlocal nofoldenable
+    augroup end
 endif
 
 " colorscheme
