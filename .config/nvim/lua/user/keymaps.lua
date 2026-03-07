@@ -31,6 +31,11 @@ local executable = vim.fn.executable
 
 -- ctrl-c = clipboard copy
 vnoremap("<C-C>", [["+y]])
+if los.is_mac then
+    -- note: not supported on kitty
+    -- cmd-c = clipboard copy
+    vnoremap("<D-C>", [["+y]])
+end
 
 -- ctrl-x = clipboard cut
 vnoremap("<C-X>", [["+x]])

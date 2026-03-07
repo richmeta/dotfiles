@@ -6,9 +6,6 @@
 --     group = highlightListChars
 -- })
 
-local buffer = require("user.buffer")
-local file = require("user.file")
-local os = require("user.os")
 
 -- set default formatoptions for all buffers
 --    -ro = dont insert comment leader for newlines
@@ -21,37 +18,42 @@ vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
     end,
 })
 
-local function check_leave_snippet()
-    -- Check if the mode changed from insert to normal or vice versa
-    if (vim.v.event.old_mode == 'i' and vim.v.event.new_mode == 'n') or (vim.v.event.old_mode == 'n' and vim.v.event.new_mode == 'i') then
-        local ls = require("luasnip")
-        -- Check if LuaSnip is currently active in a jump session
-        if ls.session.current_nodes[vim.api.nvim_get_current_buf()] and not ls.session.jump_active then
-            -- Unlink the current snippet
-            ls.unlink_current()
-        end
-    end
-end
-
+-- Snippets: check if the mode changed from insert to normal or vice versa
 vim.api.nvim_create_autocmd({"ModeChanged"}, {
     pattern = "*",
     group = group,
-    callback = check_leave_snippet,
-})
-
-local function check_wiki_dir()
-    -- disable swapfiles in .wiki files
-    local buffer_fn = buffer.full()
-    if os.wiki_dir then
-        if file.is_child_of(buffer_fn, os.wiki_dir) then
-            vim.bo.swapfile = false
+    callback = function()
+        if (vim.v.event.old_mode == 'i' and vim.v.event.new_mode == 'n') or (vim.v.event.old_mode == 'n' and vim.v.event.new_mode == 'i') then
+            local ls = require("luasnip")
+            -- Check if LuaSnip is currently active in a jump session
+            if ls.session.current_nodes[vim.api.nvim_get_current_buf()] and not ls.session.jump_active then
+                -- Unlink the current snippet
+                ls.unlink_current()
+            end
         end
     end
-end
+})
 
+-- disable swapfiles in .wiki files
 vim.api.nvim_create_autocmd({"BufWinEnter", "BufRead"}, {
     pattern = "*",
     group = group,
-    callback = check_wiki_dir,
+    callback = function()
+        local file = require("user.file")
+        local los = require("user.os")
+        local buffer_fn = vim.fn.expand("%")
+        if file.is_child_of(buffer_fn, los.wiki_dir) then
+            vim.bo.swapfile = false
+        end
+    end
+})
+
+-- disable folding in diffs
+vim.api.nvim_create_autocmd({"OptionSet"}, {
+    pattern = "diff",
+    group = group,
+    callback = function()
+        vim.wo.foldenable = false
+    end
 })
 
