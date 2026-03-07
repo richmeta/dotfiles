@@ -1,21 +1,20 @@
 import ast
 import importlib
+import logging
 import os
 import re
 import sys
-import logging
 from datetime import datetime
-from functools import reduce
 from pathlib import Path
-from typing import Iterable
 from types import ModuleType
+from typing import Any, Iterable
+
 try:
-    import vim      # type: ignore
+    import vim  # type: ignore
 except ImportError:
     vim = None
 
-# TODO: if debug logging is on
-# TODO: advanced finds from variables, or class instances, class symbols
+# TODO: maybe dont raise PyInfoError, its just in logs now
 
 """
 Plugin module to give
@@ -23,6 +22,7 @@ Plugin module to give
     the filepath of a symbol
 """
 
+# always log to file
 logging.basicConfig(filename="/tmp/pyinfo.log", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -124,14 +124,14 @@ def _set_path_from_virtualenv(virtual_env: Path) -> None:
     # find the max pythonX dir
     pyx = max([p.name for p in lib.iterdir()])
     site_packages = lib / pyx / "site-packages"
-    logger.info(f"injecting site path: {site_packages}")
+    logger.debug(f"injecting virtual env to sys.path: {site_packages}")
     sys.path.insert(0, str(site_packages))
 
 
 def _add_to_path(project_root: str | Path) -> None:
     pythonpath = os.environ.get("PYTHONPATH")
     if pythonpath:
-        # assume path is already setup
+        # path already setup
         return
 
     virtual_env = os.environ.get("VIRTUAL_ENV")
@@ -140,26 +140,27 @@ def _add_to_path(project_root: str | Path) -> None:
 
     proj_root = str(project_root)
     if proj_root not in sys.path:
-        logger.info(f"injecting path: {proj_root}")
+        logger.debug(f"injecting project_root to sys.path: {proj_root}")
         sys.path.insert(0, str(project_root))
 
 
 def getattr_dotted(mod: ModuleType, symbol: str) -> tuple[ModuleType, str]:
     # returns module + symbol name from a given module
-    # resolving dotted path if supplied
-    # eg:
-    # in "somemodule" or
-    # "somemodule.somevar" or
-    # "somemodule.childmodule.somevar" etc
+    # resolving dotted path if supplied eg:
+    #   "somemodule"
+    #   "somemodule.somevar"
+    #   "somemodule.childmodule.somevar"
     # raises AttributeError if not present
     paths = symbol.split(".")
     if len(paths) > 1:
         # resolve dotted path
         [*modpaths, symbol] = paths
-        for modname in modpaths:
-            mod = getattr(mod, modname)
+        for childmod in modpaths:
+            logger.debug(f"checking module {mod.__name__}{childmod}")
+            mod = getattr(mod, childmod)
 
     # check resolved module + symbol exist
+    logger.debug(f"checking symbol {mod.__name__}{symbol}")
     getattr(mod, symbol)
     return mod, symbol
 
@@ -173,13 +174,13 @@ def find_symbol_internal(project_root: str | Path, buffer_path: str | Path, symb
     if extra_imports:
         imports = extra_imports.split(",")
         for imp in imports:
-            logger.info(f"importing extra: {imp}")
+            logger.debug(f"importing extra: {imp}")
             importlib.import_module(imp)
 
     if symbol == "":
         # just return the info to this buffer
         mod_name = _find_current_pypath(buffer_path, project_root)
-        logger.info(f"symbol is empty, importing this buffer -> import_module({mod_name})")
+        logger.debug(f"symbol not given, importing whole module -> import_module({mod_name})")
         mod = importlib.import_module(mod_name)
     else:
         import_stmt = _find_import(symbol)
@@ -196,16 +197,16 @@ def find_symbol_internal(project_root: str | Path, buffer_path: str | Path, symb
                         # first then the parent, so getattr will resolve
                         mod_name = f".{symbol}"
                         current_path = _find_parent_of_current_pypath(buffer_path, project_root)
-                        logger.info(f"from . import X -> importing parent module -> import_module({mod_name}, {current_path})")
+                        logger.debug(f"from . import X -> importing parent module -> import_module({mod_name}, {current_path})")
                         importlib.import_module(mod_name, current_path)
-                        logger.info(f"from . import X -> importing child module -> import_module({current_path})")
+                        logger.debug(f"from . import X -> importing child module -> import_module({current_path})")
                         mod = importlib.import_module(current_path)
                     elif mod_name.startswith("."):
                         current_path = _find_parent_of_current_pypath(buffer_path, project_root)
-                        logger.info(f"from .X import Y -> import_module({mod_name}, {current_path})")
+                        logger.debug(f"from .X import Y -> import_module({mod_name}, {current_path})")
                         mod = importlib.import_module(mod_name, current_path)
                     else:
-                        logger.info(f"from X import Y -> import_module({mod_name})")
+                        logger.debug(f"from X import Y -> import_module({mod_name})")
                         mod = importlib.import_module(mod_name)
                 except ModuleNotFoundError as ex:
                     logger.error(f"pyinfo: module not found \"{mod_name}\" using {mod_name} . {current_path}: {ex}")
@@ -219,12 +220,12 @@ def find_symbol_internal(project_root: str | Path, buffer_path: str | Path, symb
                 else:
                     symbol = ""  # there's no symbol in this case
                     mod_name = m.group(1)
-                    logger.info(f"import X -> import_module({mod_name})")
+                    logger.debug(f"import X -> import_module({mod_name})")
                     mod = importlib.import_module(mod_name)
         else:
             # try for current module.symbol
             mod_name = _find_current_pypath(buffer_path, project_root)
-            logger.info(f"import from current -> import_module({mod_name})")
+            logger.debug(f"import from current -> import_module({mod_name})")
             mod = importlib.import_module(mod_name)
 
     if symbol:
@@ -277,4 +278,12 @@ def find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, 
         _handle_exception("pypath: return_as should be \"path\" or \"pypath\"")
     except PyInfoError as ex:
         _handle_exception(ex)
+
+
+def enable_debug_logging(arg: Any) -> None:
+    if arg:
+        logger.setLevel(logging.DEBUG)
+    else:
+        logger.setLevel(logging.INFO)
+
 
