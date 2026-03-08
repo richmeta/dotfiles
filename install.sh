@@ -2,6 +2,7 @@
 
 set -e
 
+# note: must be run from this directory
 # install shell/scripts for bash/zsh
 
 rcfile() {
@@ -9,11 +10,13 @@ rcfile() {
     local src="$PWD/$1"
     if [[ -f $fn ]]; then
         echo "moving $fn to $fn.old"
-        mv $fn "$fn.old"
+        mv -v $fn "$fn.old"
     fi
 
     if [[ ! -L $fn ]]; then
         ln -sv $src $fn
+    else
+        echo "$fn : link exists not overwriting"
     fi
 }
 
@@ -69,13 +72,9 @@ if [ ! -e ~/.config/git/ignore ]; then
 fi
 
 # kitty
+mkdir -p ~/.config/kitty
 if [ ! -e ~/.config/kitty/kitty.conf ]; then
     ln -sv $(readlink -f .config/kitty/kitty.conf) ~/.config/kitty/kitty.conf
-fi
-
-# kitty-themes
-if [ ! -e ~/.config/kitty/kitty-themes ]; then
-    ln -sv $(readlink -f .config/kitty/kitty-themes) ~/.config/kitty/kitty-themes
 fi
 
 if [ ! -e ~/.config/kitty/current-theme.conf ]; then
