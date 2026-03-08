@@ -212,6 +212,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+## App Shortcuts
+
 # firefox
 for_window [title=".*Firefox"] move to workspace $ws1
 bindsym $mod+Shift+f exec --no-startup-id "jumpapp firefox"
@@ -225,7 +227,11 @@ bindsym $mod+Shift+v exec --no-startup-id "jumpapp vlc"
 # gvim
 bindsym $mod+Shift+e exec --no-startup-id gvim
 
-bindsym $mod+I exec --no-startup-id "i3-nagbar -m $PATH"
+# obsidian
+bindsym $mod+Shift+o exec --no-startup-id obsidian
+
+# debug to show PATH
+# bindsym $mod+I exec --no-startup-id "i3-nagbar -m $PATH"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
