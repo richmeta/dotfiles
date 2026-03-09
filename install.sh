@@ -77,6 +77,13 @@ if [ ! -e ~/.config/kitty/kitty.conf ]; then
     ln -sv $(readlink -f .config/kitty/kitty.conf) ~/.config/kitty/kitty.conf
 fi
 
+if [[ $OSTYPE == darwin* ]]; then
+    if [ ! -e ~/.config/kitty/macos.conf ]; then
+        ln -sv $(readlink -f .config/kitty/macos.conf) ~/.config/kitty/macos.conf
+        ln -sv $(readlink -f .config/kitty/smart_copy.py) ~/.config/kitty/smart_copy.py
+    fi
+fi
+
 if [ ! -e ~/.config/kitty/current-theme.conf ]; then
     # to install the theme
     ln -sv $(readlink -f .config/kitty/current-theme.conf) ~/.config/kitty/current-theme.conf
