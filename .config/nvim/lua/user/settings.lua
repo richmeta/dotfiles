@@ -41,6 +41,7 @@ o.shiftround = true
 o.showcmd = true
 o.lazyredraw = true
 o.foldenable = false
+o.winborder = 'rounded'
 opt.matchpairs:append("<:>")
 opt.iskeyword:append("-")
 o.wildmenu = true
