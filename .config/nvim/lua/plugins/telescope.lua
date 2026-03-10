@@ -43,7 +43,7 @@ return {
                         -- ctrl-w = send selected results to quick fix (telescope)
                         ["<C-w>"] = actions.send_selected_to_qflist,
 
-                        -- ctrl-q = send all results to quick fix (telescope)
+                        -- ctrl-q = send all results to quick fix and open (telescope)
                         ["<C-q>"] = function(...)
                             local args = {...}
                             actions.send_to_qflist(unpack(args))
@@ -105,8 +105,8 @@ return {
         -- \dg = diagnostics
         { "<Leader>dg", "<cmd>Telescope diagnostics<cr>", desc = "Diagnostics" },
 
-        -- \cs = colorscheme (telescope)
-        { "<Leader>cs", "<cmd>Telescope colorscheme<cr>", desc = "Switch colorscheme", },
+        -- \cS = colorscheme (telescope)
+        { "<Leader>cS", "<cmd>Telescope colorscheme<cr>", desc = "Switch colorscheme", },
 
         -- \hl = help tags (telescope)
         { "<Leader>hl", "<cmd>Telescope help_tags<cr>", desc = "Search help", },
