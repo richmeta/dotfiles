@@ -53,6 +53,6 @@ vim.api.nvim_create_autocmd({"OptionSet"}, {
 -- mark whitespace on `set list`
 vim.api.nvim_create_autocmd({"ColorScheme"}, {
     pattern = "*",
-    command = "highlight Whitespace guibg=lightgreen",
+    command = "highlight Whitespace guibg=green",
     group = group,
 })

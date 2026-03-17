@@ -86,7 +86,7 @@ vim.cmd.filetype("plugin indent on")
 vim.cmd.colorscheme("iceberg")
 
 -- mark whitespace on `set list`
-vim.cmd.highlight("Whitespace guibg=lightgreen")
+vim.cmd.highlight("Whitespace guibg=green")
 
 if los.is_neovide then
     vim.g.neovide_remember_window_size = true
