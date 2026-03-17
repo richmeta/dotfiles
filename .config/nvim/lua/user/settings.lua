@@ -85,6 +85,9 @@ vim.env.BASH_ENV = '~/.bash_aliases'
 vim.cmd.filetype("plugin indent on")
 vim.cmd.colorscheme("iceberg")
 
+-- mark whitespace on `set list`
+vim.cmd.highlight("Whitespace guibg=lightgreen")
+
 if los.is_neovide then
     vim.g.neovide_remember_window_size = true
 
