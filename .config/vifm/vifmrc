@@ -68,11 +68,24 @@ mark h ~/
 
 command! df df -h %m 2> /dev/null
 command! diff vim -d %f %F
-command! zip zip -r %c.zip %f
 command! run !! ./%f
 command! make !!make %a
 command! mkcd :mkdir %a | cd %a
+command! md :mkdir %a
 command! reload :write | restart full
+
+" create zip
+if executable("7z")
+    command! zip 7z a %c.zip -r %f
+else
+    command! zip zip -r %c.zip %f
+end
+
+" bcompare
+if executable("bcompare")
+    command! bcompare :!bcompare %f %F &
+endif
+
 
 " ------------------------------------------------------------------------------
 " File types association
@@ -201,11 +214,8 @@ filetype {*.torrent},<application/x-bittorrent> open -a Transmission.app
 fileviewer {*.torrent},<application/x-bittorrent> dumptorrent -v %c
 
 " Extract zip files
-filetype {*.zip},<application/zip,application/java-archive>
-       \ mkdir %f:r && tar -vxf %f --directory %f:r
-fileviewer {*.zip,*.jar,*.war,*.ear},
-          \<application/zip,application/java-archive>
-          \ tar -tf %f
+filetype {*.zip},<application/zip,application/java-archive>  mkdir %f:r && 7z x %f -o%f:r
+fileviewer {*.zip,*.jar,*.war,*.ear}, <application/zip,application/java-archive> tar -tf %f
 
 " Extract tar archives
 filetype {*.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,*.tar.zst,
@@ -292,6 +302,7 @@ filetype * open
 
 " Start shell in current directory
 nnoremap s :shell<cr>
+nnoremap md :mkdir<space>
 
 " Display sorting dialog
 nnoremap S :sort<cr>
@@ -305,9 +316,9 @@ nnoremap o :!gvim %f<cr>
 
 " Open file in the background using its default program
 if $OSTYPE == "Linux"
-    nnoremap O :!xdg-open %f<cr>
+    nnoremap O :!xdg-open %f &<cr>
 else
-    nnoremap O :!open -g %f<cr>
+    nnoremap O :!open -g %f &<cr>
 endif
 
 " Open editor to edit vifmrc and apply settings after returning to vifm
@@ -337,7 +348,10 @@ if executable("clip")
     nnoremap \cs :!echo -n %c:r | clip<cr>:echo expand('%"c:r') "is yanked to clipboard"<cr>
 endif
 
+nnoremap \to :tabopen<space>
 nnoremap \tt :tabnew<cr>
+nnoremap \tc :tabclose<cr>
+
 
 command! TogglePaneSplit :if layoutis("only") == 1 | vsplit | else | only | endif
 
@@ -347,16 +361,6 @@ nnoremap <F2> :TogglePaneSplit<CR>
 " mvup
 if executable("mvup")
     nnoremap \m :!cd %d && mvup && read<CR>
-endif
-
-" unzip
-if executable("7z")
-    nnoremap \z :!7z x %c<CR>
-endif
-
-" bcompare
-if executable("bcompare")
-    nnoremap \d :!bcompare %d %D &<CR>
 endif
 
 " vlc
@@ -372,5 +376,4 @@ vnoremap M :move &<cr>
 filetype *.mp3,*.flac, vlc %f &
 filetype *.jpg,*.png, geeqie %c &
 
-cabbrev md mkdir
 
