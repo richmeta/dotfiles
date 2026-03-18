@@ -330,6 +330,17 @@ noremap <Leader>T :tabnew<bar>setlocal buftype=nofile<cr>
 " \tc = tabclose
 noremap <Leader>tc :tabclose<cr>
 
+function! s:close_tabs_right()
+    let l:count = tabpagenr('$') - tabpagenr()
+    while l:count > 0
+        tabclose +1
+        let l:count -= 1
+    endwhile
+endfunction
+
+" \tC = close tabs to the right
+noremap <Leader>tC :call <SID>close_tabs_right()<cr>
+
 " \to = only this tab
 noremap <Leader>to :tabonly<cr>
 

@@ -97,8 +97,19 @@ nnoremap("<Leader>td", ":tab split<cr>")
 -- \T = new scratch
 nnoremap("<Leader>T", ":tabnew<bar>setlocal buftype=nofile<cr>")
 
--- alt-x = tabclose
+-- \tc = tabclose
 nnoremap("<Leader>tc", ":tabclose<cr>")
+
+-- \tC = close tabs to the right
+nnoremap("<Leader>tC", function()
+    local current = vim.api.nvim_tabpage_get_number(0)
+    local total = vim.fn.tabpagenr('$')
+    local count = total - current
+
+    for _ = 1, count do
+        vim.cmd('tabclose +1')
+    end
+end)
 
 -- \to = only this tab
 nnoremap("<Leader>to", ":tabonly<cr>")
