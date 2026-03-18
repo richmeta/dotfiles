@@ -21,6 +21,8 @@ local cmap = mp.cmap
 local imap = mp.imap
 local nmap = mp.nmap
 local tmap = mp.tmap
+local omap = mp.omap
+local xmap = mp.xmap
 
 -- is X os executable
 local executable = vim.fn.executable
@@ -434,12 +436,13 @@ nnoremap("<Leader>dt", tg.toggle({
 
 -- F2 = toggle spell
 nnoremap("<F2>", tg.toggle("spell"))
+inoremap("<F2>", tg.toggle("spell"))
 
 -- \ws = toggle wrapscan
 nnoremap("<Leader>ws", tg.toggle("wrapscan"))
 
 -- F6 = syntax on/off
-nnoremap("<F6>", tg.toggle({
+local syntax_toggler = tg.toggle({
     source = function()
         return vim.fn.exists("syntax_on") == 1
     end,
@@ -451,31 +454,40 @@ nnoremap("<F6>", tg.toggle({
             util.execute("syntax enable")
         end
     end
-}))
+})
+nnoremap("<F6>", syntax_toggler)
+inoremap("<F6>", syntax_toggler)
 
 -- F7 = toggle hlsearch
 nnoremap("<F7>", tg.toggle("hlsearch"))
+inoremap("<F7>", tg.toggle("hlsearch"))
 
 -- F8 = toggle wrap
 nnoremap("<F8>", tg.toggle("wrap"))
+inoremap("<F8>", tg.toggle("wrap"))
 
 -- F9 = toggle list
 nnoremap("<F9>", tg.toggle("list"))
+inoremap("<F9>", tg.toggle("list"))
 
 -- shift-F8 = toggle number
 nnoremap("<S-F8>", tg.toggle("number"))
+inoremap("<S-F8>", tg.toggle("number"))
 
 -- shift-F9 = toggle relativenumber
 nnoremap("<S-F9>", tg.toggle("relativenumber"))
+inoremap("<S-F9>", tg.toggle("relativenumber"))
 
 -- F10 = toggle scrollbind
 nnoremap("<F10>", tg.toggle("scrollbind"))
+inoremap("<F10>", tg.toggle("scrollbind"))
 
 -- F11 = toggle ignorecase
 nnoremap("<F11>", tg.toggle("ignorecase"))
+inoremap("<F11>", tg.toggle("ignorecase"))
 
 -- F12 = toggle quickfix
-nnoremap("<F12>", tg.toggle({
+local quickfix_toggler = tg.toggle({
     source = function()
         local ids = vim.fn.getqflist({ winid = 1 })
         return ids.winid
@@ -487,7 +499,9 @@ nnoremap("<F12>", tg.toggle({
             vim.cmd(":botright copen")
         end
     end
-}))
+})
+nnoremap("<F12>", quickfix_toggler)
+inoremap("<F12>", quickfix_toggler)
 
 -- \ps = toggle paste
 nnoremap("<Leader>ps", tg.toggle("paste"))
