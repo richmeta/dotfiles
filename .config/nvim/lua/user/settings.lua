@@ -92,7 +92,10 @@ if los.is_neovide then
     vim.g.neovide_remember_window_size = true
 
     -- enables <M-x> mappings
-    vim.g.neovide_input_macos_alt_is_meta = true
+    vim.g.neovide_input_macos_option_key_is_meta = 'only_left'
+
+    -- disable cursor animations
+    vim.g.neovide_cursor_animation_length = 0
 
     --  disable IME, eg <m-n>
     vim.g.neovide_input_ime = false
