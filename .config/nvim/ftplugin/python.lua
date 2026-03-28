@@ -47,7 +47,9 @@ mp.nnoremap("<Leader>dp", [[:%g/set_trace\(\)/d<cr>]], mp.buffer)
 local function pyinfo_find_symbol_clip(return_as)
     local pyinfo_find_symbol = vim.fn["pyinfo#find_symbol"]
     local result = pyinfo_find_symbol(return_as)
-    if string.len(result) > 0 then
+    if result == -1 then
+        vim.notify("not enabled", vim.log.levels.WARN)
+    elseif string.len(result) > 0 then
         clipboard.copy(result)
         vim.notify("copied", vim.log.levels.INFO)
     else

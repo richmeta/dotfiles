@@ -30,6 +30,10 @@ return {
     s( "mock", t{'import unittest.mock'} ),
     s( "defaultdict", t{'from collections import defaultdict'} ),
     s( "Any", t{'from typing import Any'} ),
+    s( "reveal_type", t{'from typing import reveal_type'} ),
+    s( "Iterator", t{'from collections.abc import Iterator'} ),
+    s( "Iterable", t{'from collections.abc import Iterable'} ),
+    s( "UUID", t{'from uuid import UUID'} ),
 
     s( { trig = "pdb", dscr = "pdb trace" },
         t{'__import__("pdb").set_trace()'}
@@ -152,7 +156,11 @@ finally:
         fmt('lambda {}: {}', { i(1), i(2) })
     ),
 
-    s( { trig = '"""', dscr = "long comment", snippetType = "autosnippet" }, fmt(
+    s( { trig = '"""', dscr = "inline long comment", snippetType = "autosnippet" }, fmt(
+[[""" {} """]], i(1))
+    ),
+
+    s( { trig = '!"', dscr = "long comment", snippetType = "autosnippet" }, fmt(
 [["""
 {}
 """]], i(1))

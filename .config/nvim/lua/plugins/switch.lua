@@ -15,6 +15,7 @@ return {
             vim.fn["switch#NormalizedCase"]({ "yes", "no" }),
             vim.fn["switch#NormalizedCase"]({ "on", "off" }),
             vim.fn["switch#NormalizedCase"]({ "enabled", "disabled" }),
+            vim.fn["switch#NormalizedCase"]({ "internal", "external" }),
         }
     end,
 }
