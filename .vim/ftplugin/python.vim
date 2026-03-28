@@ -23,8 +23,12 @@ nnoremap <buffer> <Leader>dp :%g/set_trace\(\)/d<cr>
 
 function s:pyinfo_find_symbol_clip(return_as)
     let result = pyinfo#find_symbol(a:return_as)
-    if len(result) > 0
+    if result == -1 then
+        echom "not enabled"
+    esleif len(result) > 0
         call file#clip(result, 1)
+    else
+        echom "not found"
     endif
 endfunction
 
@@ -44,12 +48,6 @@ function s:copy_filename_line()
     let result = filepath . ":" . li
     call file#clip(result, 1)
 endfunction
-
-if executable('python3')
-    " \pf = format black
-    map <Leader>pf :%!black -q - <cr><cr>
-    vmap <Leader>pf :!black -q - <cr><cr>
-endif
 
 if executable('ruff')
     map <Leader>rf :!ruff check --fix-only -q % && ruff format -q %<cr><bar>:edit<cr>
