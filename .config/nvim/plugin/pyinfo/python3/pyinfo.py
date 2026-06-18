@@ -103,6 +103,10 @@ def _find_in_ast(code: ast.Module, symbol: str) -> str | None:
 
                     # node.module=None when 'from . import X'
                     return f"from {level}{node.module or ''} import {alias.name}"
+        elif isinstance(node, (ast.AsyncFunctionDef, ast.FunctionDef)):
+            found_import = _find_in_ast(node, symbol)
+            if found_import:
+                return found_import
 
     return None
 
@@ -156,7 +160,7 @@ def getattr_dotted(mod: ModuleType, symbol: str) -> tuple[ModuleType, str]:
         # resolve dotted path
         [*modpaths, symbol] = paths
         for childmod in modpaths:
-            logger.debug(f"checking module {mod.__name__}{childmod}")
+            logger.debug(f"checking module {mod.__name__}.{childmod}")
             mod = getattr(mod, childmod)
 
     # check resolved module + symbol exist
@@ -246,8 +250,8 @@ def find_symbol_internal(project_root: str | Path, buffer_path: str | Path, symb
         ret["starimport"] = f"from {mod.__name__} import *"
     logger.info(f"{ret=}")
 
-    if mod.__file__:
-        path = Path(mod.__file__)
+    if modpath := getattr(mod, '__file__', None):
+        path = Path(modpath)
         if path.is_relative_to(project_root):
             path = path.relative_to(project_root)
         ret["path"] = str(path)
@@ -270,6 +274,8 @@ def find_symbol(project_root: str | Path, buffer_path: str | Path, symbol: str, 
     ->  import: "from X import Y" or "import X"
     ->  starimport: "from X import *"
     """
+
+    # TODO: iterate  Someclass.something where we want Someclass
 
     try:
         result = find_symbol_internal(project_root, buffer_path, symbol, extra_imports)

@@ -60,6 +60,7 @@ alias gdd='GIT_PAGER= git diff'   # without delta
 alias gdc='git diff --cached'
 alias gp='git pull -p'
 alias gu='git push'
+alias gU='git push --force-with-lease --force-if-includes'
 alias gb='git branch'
 alias cb='git symbolic-ref --short HEAD'
 alias branch_name='cb'
