@@ -13,7 +13,7 @@ return {
         require('mypy').setup({
             -- '--strict', 
             extra_args = {'--config-file', 'pyproject.toml'},
-            enabled = false,
+            enabled = true,
         })
     end,
 }

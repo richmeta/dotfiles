@@ -28,9 +28,6 @@ local plugins = {
     -- git
     { "tpope/vim-fugitive" },                                   -- yes
 
-    -- commenting
-    { "numToStr/Comment.nvim", opts = {} },
-
     -- files, buffers
     { "justinmk/vim-dirvish" },                                 -- yes
     { "nvim-telescope/telescope.nvim" },                        -- yes
