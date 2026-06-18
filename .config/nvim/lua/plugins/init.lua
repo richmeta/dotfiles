@@ -5,9 +5,6 @@ local plugins = {
     -- vim localrc
     { "marcweber/vim-addon-local-vimrc" },
 
-    -- treesitter
-    { "nvim-treesitter/nvim-treesitter" },                      -- yes
-
     -- lsp
     { "williamboman/mason.nvim", opts = {}, build = ":MasonUpdate" },
     { "williamboman/mason-lspconfig.nvim" },                    -- yes
@@ -20,7 +17,6 @@ local plugins = {
     { "hrsh7th/cmp-nvim-lsp-signature-help" },
     { "hrsh7th/nvim-cmp" },                                     -- yes
     { "saadparwaiz1/cmp_luasnip" },
-    -- { "lvimuser/lsp-inlayhints.nvim" },                         -- yes
     { "folke/trouble.nvim" },                                   -- yes
 
     -- linters
