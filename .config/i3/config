@@ -24,7 +24,8 @@ font pango:monospace 8
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -t -i ~/sync/images/wallpaper/archlinux.png
 
 # wallpaper
-exec feh --randomize --bg-fill /home/richard/sync/images/wallpaper
+# see also /home/richard/sync/images/wallpaper
+exec feh --randomize --bg-fill --no-xinerama /home/richard/sync/images/wallpaper/wide
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -50,7 +51,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+p exec --no-startup-id "loginctl lock-session"
 
 # wallpaper
-bindsym $mod+Shift+w exec feh --randomize --bg-fill /home/richard/sync/images/wallpaper
+bindsym $mod+Shift+w exec feh --randomize --bg-fill --no-xinerama /home/richard/sync/images/wallpaper/wide
 
 # start dmenu (a program launcher)
 bindsym $mod+space exec dmenu_run
@@ -119,15 +120,15 @@ set $ws9 "9"
 set $ws10 "10"
 
 workspace $ws1 output DP-0
-workspace $ws2 output DVI-D-0
+workspace $ws2 output HDMI-0
 workspace $ws3 output DP-0
-workspace $ws4 output DVI-D-0
+workspace $ws4 output HDMI-0
 workspace $ws5 output DP-0
-workspace $ws6 output DVI-D-0
+workspace $ws6 output HDMI-0
 workspace $ws7 output DP-0
-workspace $ws8 output DVI-D-0
+workspace $ws8 output HDMI-0
 workspace $ws9 output DP-0
-workspace $ws10 output DVI-D-0
+workspace $ws10 output HDMI-0
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
