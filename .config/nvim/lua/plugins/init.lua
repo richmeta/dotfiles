@@ -8,22 +8,24 @@ local plugins = {
     -- lsp
     { "williamboman/mason.nvim", opts = {}, build = ":MasonUpdate" },
     { "williamboman/mason-lspconfig.nvim" },                    -- yes
-    { "L3MON4D3/LuaSnip" },                                     -- yes
     { "neovim/nvim-lspconfig" },
+
+    -- snippets
+    { "L3MON4D3/LuaSnip" },                                     -- yes
+
+    -- completion
+    { "hrsh7th/nvim-cmp" },                                     -- yes
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-cmdline" },
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/cmp-path" },
     { "hrsh7th/cmp-nvim-lsp-signature-help" },
-    { "hrsh7th/nvim-cmp" },                                     -- yes
     { "saadparwaiz1/cmp_luasnip" },
     { "folke/trouble.nvim" },                                   -- yes
 
     -- linters
-    -- TODO: remove nvim-lint
-    { "mfussenegger/nvim-lint" },                               -- yes
-    { "richmeta/mypy.nvim" },                                   -- yes
-    { 'stevearc/conform.nvim' },                                -- yes
+    { "richmeta/mypy.nvim", ft = "python"  },                   -- yes
+    { "stevearc/conform.nvim", ft = "python"  },                -- yes
 
     -- git
     { "tpope/vim-fugitive" },                                   -- yes
@@ -58,7 +60,6 @@ local plugins = {
 
     -- markdown
     { "preservim/vim-markdown" },
-
 
     -- TEXT OBJECTS
 
