@@ -35,6 +35,10 @@ return {
     s( "Iterable", t{'from collections.abc import Iterable'} ),
     s( "UUID", t{'from uuid import UUID'} ),
 
+    s( { trig = "bp", dscr = "breakpoint" },
+        t{'breakpoint()'}
+    ),
+
     s( { trig = "pdb", dscr = "pdb trace" },
         t{'__import__("pdb").set_trace()'}
     ),
@@ -42,6 +46,8 @@ return {
     s( { trig = "ipdb", dscr = "ipdb trace" },
         t{'__import__("ipdb").set_trace()'}
     ),
+
+    s( "strftime", t{[[.strftime("%d-%m-%Y %H:%M:%S")]]} ),
 
     s( "ignore", t{" # type: ignore"} ),
 

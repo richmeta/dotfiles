@@ -56,3 +56,16 @@ vim.api.nvim_create_autocmd({"ColorScheme"}, {
     command = "highlight Whitespace guibg=green",
     group = group,
 })
+
+-- navigation in quickfix (older/newer)
+vim.api.nvim_create_autocmd({"FileType"}, {
+    pattern = "qf",
+    callback = function(e)
+        local opts = { buffer = e.buf, silent = true }
+
+        -- <c-n> - cnewer (quickfix)
+        -- <c-p> - colder (quickfix)
+        vim.keymap.set("n", "<c-n>", ":cnewer<cr>", opts)
+        vim.keymap.set("n", "<c-p>", ":colder<cr>", opts)
+    end
+})
