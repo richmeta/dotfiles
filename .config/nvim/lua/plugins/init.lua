@@ -22,7 +22,7 @@ local plugins = {
     -- linters
     -- TODO: remove nvim-lint
     { "mfussenegger/nvim-lint" },                               -- yes
-    { "feakuru/mypy.nvim" },                                    -- yes
+    { "richmeta/mypy.nvim" },                                   -- yes
     { 'stevearc/conform.nvim' },                                -- yes
 
     -- git
@@ -78,29 +78,9 @@ local plugins = {
     -- a_ = underscores (motion)
     { "lucapette/vim-textobj-underscore", dependencies = { "kana/vim-textobj-user" } },
 
-    -- ac = column on word (motion)
-    -- aC = column on WORD (motion)
-    -- ic = inner column on word (motion)
-    -- iC = inner column on WORD (motion)
-    { "coderifous/textobj-word-column.vim", dependencies = { "kana/vim-textobj-user" } },
-
-    -- ai = indentation level and line above  (motion)
-    -- ii = inner indentation level no line above (motion)
-    -- aI = indentation level and above/below lines (motion)
-    -- iI = inner indentation level no lines above/below (motion)
-    { "michaeljsmith/vim-indent-object", dependencies = { "kana/vim-textobj-user" } },
-
     -- iv = inner variable segment (motion)
     -- av = inner variable segment (motion)
     { "Julian/vim-textobj-variable-segment",  dependencies = { "kana/vim-textobj-user" } },
-
-    -- af = function including definition
-    -- if = function without definition
-    -- ac = A class
-    -- ic = inner class
-    -- TODO: clashes with vim-indent-object, see
-    -- https://github.com/bps/vim-textobj-python?tab=readme-ov-file#configuration
-    { "bps/vim-textobj-python", dependencies = { "kana/vim-textobj-user" } },
 }
 
 

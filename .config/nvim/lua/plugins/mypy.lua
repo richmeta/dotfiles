@@ -5,13 +5,12 @@
 -- dmypy status 
 
 return {
-    -- 'feakuru/mypy.nvim',
-    'mypy.nvim',
-    dir = "/Users/richard.french/Software/mypy.nvim",
+    'richmeta/mypy.nvim',
+
+    branch = 'dmypy',
 
     config = function()
         require('mypy').setup({
-            -- '--strict', 
             extra_args = {'--config-file', 'pyproject.toml'},
             enabled = true,
         })
