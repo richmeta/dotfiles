@@ -54,7 +54,8 @@ alias jt="python3 -m json.tool"
 alias gcl='git clone'
 alias gs='git status'
 alias gl='git log'
-alias glno='git log --name-only --relative'
+alias glno='git log --name-only'
+alias glnor='git log --name-only --relative'
 alias gd='git diff'
 alias gdd='GIT_PAGER= git diff'   # without delta
 alias gdc='git diff --cached'
