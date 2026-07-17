@@ -194,7 +194,16 @@ local function clip_start()
             local current = vim.fn.getreg("+")
             if current ~= clipvalue then
                 clipvalue = current
-                vim.api.nvim_buf_set_lines(bid, -1, -1, true, { clipvalue })
+                if clipvalue:find("\n") then
+                    -- multiline
+                    local data = vim.split(clipvalue, "\n", { plain = true})
+                    if data[#data] == "" then
+                        table.remove(data)
+                    end
+                    vim.api.nvim_buf_set_lines(bid, -1, -1, true, data )
+                else
+                    vim.api.nvim_buf_set_lines(bid, -1, -1, true, { clipvalue } )
+                end
             end
         end
     end))
