@@ -21,6 +21,9 @@ return {
             f(function()
                 -- get current comment prefix
                 local cs = vim.opt_local.commentstring:get()
+                if cs == nil or cs == "" then
+                    cs = "# %s"
+                end
                 local pos = string.find(cs, "%%s")
                 local prefix = string.sub(cs, 1, pos-1)
                 return vim.trim(prefix)
@@ -91,6 +94,14 @@ return {
                 return selection
             end
           end, {})
+    ),
+
+    s( { trig = "tick", desc = "unicode tick" }, 
+        t{'✔'}
+    ),
+
+    s( { trig = "cross", desc = "unicode cross" }, 
+        t{'✗'}
     ),
 
 

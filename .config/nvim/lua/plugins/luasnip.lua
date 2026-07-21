@@ -34,7 +34,7 @@ return {
         -- \sr = reload snippets
         { "<leader>sr", snippet_load, mode = "n" },
 
-        -- \se = reload snippets
+        -- \se = edit snippets
         { "<leader>se", snippet_edit, mode = "n" },
     },
 }
