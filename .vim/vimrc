@@ -543,8 +543,12 @@ cabbrev S split
 " V = vsplit[c]
 cabbrev V vsplit
 
+" common abbrevs
 cabbrev _config ~/.config
 cabbrev _sshconfig ~/.ssh/config
+
+" quit
+cabbrev Qa qa
 
 
 " OTHER MAPPINGS

@@ -21,6 +21,9 @@ cabbrev("V", "vsplit")
 cabbrev("_config", "~/.config")
 cabbrev("_sshconfig", "~/.ssh/config")
 
+-- quit
+cabbrev("Qa", "qa")
+
 if vim.fn.exists("$HOME/scripts") then
     cabbrev("_scripts", "~/scripts")
 end
