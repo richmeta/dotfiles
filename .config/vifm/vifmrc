@@ -258,6 +258,8 @@ fileviewer {*.docx},
            \vnd.openxmlformats-officedocument.wordprocessingml.document>
          \ docx2txt.pl %f -
 
+filetype *.txt,*.md,*.wiki,*.json,*.yaml,*.yml,*.xml,*.toml,*.ini,*.conf,*.html,*.css,*.py,*.js,*.ts,*.c,*.cpp,*.h,*.hpp,*.go,*.zig,*.lua nvim
+
 " Syntax highlighting in preview
 "
 " Explicitly set highlight type for some extensions
