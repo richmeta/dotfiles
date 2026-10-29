@@ -9,7 +9,7 @@ return {
     },
 
     keys = {
-        -- ruff organise imports
+        -- <leader>ri = ruff organise imports
         { "<leader>ri", function()
             require("conform").format({
                 formatters = { "ruff_organize_imports" }

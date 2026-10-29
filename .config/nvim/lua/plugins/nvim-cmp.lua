@@ -9,67 +9,84 @@ end
 return {
     "hrsh7th/nvim-cmp",
 
-    opts = {
-        completion = {
-            autocomplete = false,
-        },
-        snippet = {
-            expand = function(args)
-                local ls = require("luasnip")
-                ls.lsp_expand(args.body)
-            end,
-        },
-        window = {
-            -- completion = cmp.config.window.bordered(),
-            -- documentation = cmp.config.window.bordered(),
-        },
-        mapping = cmp.mapping.preset.insert({
-            ["<C-p>"] = cmp.mapping.scroll_docs(-4),
-            ["<C-n>"] = cmp.mapping.scroll_docs(4),
-            ["<C-Space>"] = cmp.mapping.complete(),
-            ["<C-e>"] = cmp.mapping.abort(),
-            ["<cr>"] = cmp.mapping.confirm({ select = false }),
+    config = function()
+        opts = {
+            completion = {
+                autocomplete = false,
+            },
+            snippet = {
+                expand = function(args)
+                    local ls = require("luasnip")
+                    ls.lsp_expand(args.body)
+                end,
+            },
+            window = {
+                -- completion = cmp.config.window.bordered(),
+                -- documentation = cmp.config.window.bordered(),
+            },
+            mapping = cmp.mapping.preset.insert({
+                ["<C-p>"] = cmp.mapping.scroll_docs(-4),
+                ["<C-n>"] = cmp.mapping.scroll_docs(4),
+                ["<C-Space>"] = cmp.mapping.complete(),
+                ["<C-e>"] = cmp.mapping.abort(),
+                ["<cr>"] = cmp.mapping.confirm({ select = false }),
 
-            ["<Tab>"] = cmp.mapping(function(fallback)
-                local ls = require("luasnip")
-                if ls.expand_or_jumpable() then
-                    ls.expand_or_jump()
-                elseif cmp.visible() then
-                    cmp.select_next_item()
-                elseif has_words_before() then
-                    cmp.complete()
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
-
-            ["<S-Tab>"] = cmp.mapping(function(fallback)
-                local ls = require("luasnip")
-                    if ls.jumpable(-1) then
-                        ls.jump(-1)
+                ["<Tab>"] = cmp.mapping(function(fallback)
+                    local ls = require("luasnip")
+                    if ls.expand_or_jumpable() then
+                        ls.expand_or_jump()
                     elseif cmp.visible() then
-                        cmp.select_prev_item()
+                        cmp.select_next_item()
+                    elseif has_words_before() then
+                        cmp.complete()
                     else
                         fallback()
                     end
-            end, { "i", "s" }),
+                end, { "i", "s" }),
 
-            ["<C-j>"] = cmp.mapping(function(fallback)
-                local ls = require("luasnip")
-                if ls.choice_active() then
-                    ls.change_choice(1)
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
-        }),
-        sources = cmp.config.sources({
-            { name = "nvim_lsp" },
-            { name = "luasnip" },
-            { name = 'nvim_lsp_signature_help' },
-        }, {
-            { name = "buffer" },
-        }),
-    },
+                ["<S-Tab>"] = cmp.mapping(function(fallback)
+                    local ls = require("luasnip")
+                        if ls.jumpable(-1) then
+                            ls.jump(-1)
+                        elseif cmp.visible() then
+                            cmp.select_prev_item()
+                        else
+                            fallback()
+                        end
+                end, { "i", "s" }),
+
+                ["<C-j>"] = cmp.mapping(function(fallback)
+                    local ls = require("luasnip")
+                    if ls.choice_active() then
+                        ls.change_choice(1)
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+            }),
+            sources = cmp.config.sources({
+                { name = "nvim_lsp" },
+                { name = "luasnip" },
+                { name = 'nvim_lsp_signature_help' },
+            }, {
+                { name = "buffer" },
+            }),
+        }
+
+        -- standard
+        cmp.setup(opts)
+
+        -- command line
+        cmp.setup.cmdline(":", {
+            mapping = cmp.mapping.preset.cmdline(),
+            sources = cmp.config.sources({
+                { name = "path" },
+            }, {
+                { name = "cmdline" },
+                { name = "buffer" },
+            }),
+            matching = { disallow_symbol_nonprefix_matching = false },
+        })
+    end
 }
 
