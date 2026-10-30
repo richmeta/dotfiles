@@ -89,9 +89,9 @@ mp.nnoremap("<Leader>ct", function()
     local func = util.expand("<cword>", true)
     local result
     if func == '' then
-        result = string.format("pytest %s", filepath)
+        result = string.format("pytest -vv %s", filepath)
     else
-        result = string.format("pytest %s -k %s", filepath, func)
+        result = string.format("pytest -vv %s -k %s", filepath, func)
     end
     clipboard.copy(result)
     vim.notify("copied", vim.log.levels.INFO)

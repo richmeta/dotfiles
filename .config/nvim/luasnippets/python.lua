@@ -33,6 +33,7 @@ return {
     s( "reveal_type", t{'from typing import reveal_type'} ),
     s( "Iterator", t{'from collections.abc import Iterator'} ),
     s( "Iterable", t{'from collections.abc import Iterable'} ),
+    s( "Decimal", t{'from decimal import Decimal'} ),
     s( "UUID", t{'from uuid import UUID'} ),
 
     s( { trig = "bp", dscr = "breakpoint" },
