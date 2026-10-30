@@ -18,18 +18,13 @@ export GOPATH=~/workspace/go
 export MYSYNC=$HOME/sync
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
-if [[ -x $(which less) ]]; then
+if (( $+commands[less] )); then
     export PAGER=less
     export LESS='-R'
 fi
-if [[ -x $(which lesspipe) ]]; then
+if (( $+commands[lesspipe] )); then
     export LESSOPEN="|lesspipe %s"
 fi
-
-zshaddhistory() {
-    emulate -L zsh
-    [[ $1 != ${~HISTORY_IGNORE} ]]
-}
 
 zshaddhistory() {
     emulate -L zsh
@@ -42,11 +37,11 @@ if [[ $OSTYPE == darwin* ]]; then
     export HOMEBREW_NO_AUTO_UPDATE=1
 fi
 
-if [[ $OSTYPE == darwin* ]] && [[ -x $(which nvim) ]]; then
+if [[ $OSTYPE == darwin* ]] && (( $+commands[nvim] ));then
     export EDITOR=nvim
-elif [[ -x $(which gvim) ]]; then
+elif (( $+commands[gvim] )); then
     export EDITOR=gvim
-elif [[ -x $(which vim) ]]; then
+elif (( $+commands[vim] )); then
     export EDITOR=vim
 else
     export EDITOR=vi
@@ -93,7 +88,7 @@ function mkcd() {
     mkdir -p -v "$1" && cd "$1"
 }
 
-if [[ -x $(which jump) ]]; then
+if (( $+commands[jump] )); then
     # add jump support
     # https://github.com/gsamokovarov/jump
     eval "$(jump shell)"
@@ -124,29 +119,37 @@ source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit installer's chunk
-#
 
 
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
-zinit light zdharma/fast-syntax-highlighting
-if [[ -x $(which nix) ]]; then
+zinit light zdharma-continuum/fast-syntax-highlighting
+if (( $+commands[nix] )); then
     # nix with zsh
     zinit light chisui/zsh-nix-shell
 fi
-zplugin ice depth=1
-zplugin light romkatv/powerlevel10k
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
 zinit light jeffreytse/zsh-vi-mode
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 ### End of Zinit's installer chunk
 
-autoload -Uz compinit && compinit
+# include path for cached completions
+fpath=(~/.zsh/completions $fpath)
+
+# load completions, regen daily
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+else
+    compinit -C
+fi
 
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
 
 # direnv
-if [[ -x $(which direnv) ]]; then
+if (( $+commands[direnv] )); then
     eval "$(direnv hook zsh)"
 fi
