@@ -9,11 +9,11 @@ export GOPATH=~/workspace/go
 export MYSYNC=$HOME/sync
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
-if [[ -x $(which less) ]]; then
+if command -v less > /dev/null; then
     export PAGER=less
     export LESS='-R'
 fi
-if [[ -x $(which lesspipe) ]]; then
+if command -v lesspipe > /dev/null; then
     export LESSOPEN="|lesspipe %s"
 fi
 

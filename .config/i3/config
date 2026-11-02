@@ -57,7 +57,9 @@ bindsym $mod+Shift+p exec --no-startup-id "loginctl lock-session"
 bindsym $mod+Shift+w exec feh --randomize --bg-fill --no-xinerama /home/richard/sync/images/wallpaper/wide
 
 # start dmenu (a program launcher)
-bindsym $mod+space exec dmenu_run
+# i3wsmenu = dmenu_run, but the launched window stays on the workspace it was
+# started from even if you switch away while it loads (see i3wslaunch)
+bindsym $mod+space exec --no-startup-id i3wsmenu
 
 # change focus
 bindsym $mod+h focus left
@@ -82,6 +84,9 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
+
+# temp focus mouse
+bindsym $mod+F12 focus mouse
 
 # split in horizontal orientation
 bindsym $mod+g split h
@@ -226,18 +231,18 @@ bindsym $mod+Shift+f exec --no-startup-id firefox
 bindsym $mod+$alt+f exec --no-startup-id "jumpapp firefox"
 
 # brave
-bindsym $mod+Shift+b exec --no-startup-id "brave"
+bindsym $mod+Shift+b exec --no-startup-id "i3wslaunch -- brave"
 bindsym $mod+$alt+b exec --no-startup-id "jumpapp brave"
 
 # vlc
-bindsym $mod+Shift+v exec --no-startup-id vlc
+bindsym $mod+Shift+v exec --no-startup-id "i3wslaunch -- vlc"
 bindsym $mod+$alt+v exec --no-startup-id "jumpapp vlc"
 
 # gvim
-bindsym $mod+Shift+e exec --no-startup-id gvim
+bindsym $mod+Shift+e exec --no-startup-id "i3wslaunch -- gvim"
 
 # obsidian
-bindsym $mod+Shift+o exec --no-startup-id obsidian
+bindsym $mod+Shift+o exec --no-startup-id "i3wslaunch -- obsidian"
 
 # debug to show PATH
 # bindsym $mod+I exec --no-startup-id "i3-nagbar -m $PATH"
