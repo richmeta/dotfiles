@@ -21,6 +21,9 @@ return {
         -- \kq = prompt for what to select
         {"<Leader>kq", ":QuickhlManualAdd<space>", mode = "n", noremap = true},
 
+        -- \kQ = clear highlight under cursor
+        {"<Leader>kQ", ":QuickhlManualDelete<space>", mode = "n", noremap = true},
+
         -- alt-n = next mark
         -- alt-N = prev mark
         {"<a-n>", "<Plug>(quickhl-manual-go-to-next)", mode = "n", noremap = true},
